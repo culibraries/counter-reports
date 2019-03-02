@@ -1,0 +1,15 @@
+<mat-drawer-container class="container" autosize>
+  <mat-drawer #drawer class="sidenav" mode="side">
+
+    <button color="primary" mat-button routerLink="/create-new">Create New</button>
+    <button color="primary" mat-button routerLink="/create-new">Create New</button>
+    <button color="primary" mat-button routerLink="/create-new">Create New</button>
+  </mat-drawer>
+  <div class="sidenav-content">
+    <button mat-icon-button (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+
+    </button>
+
+  </div>
+</mat-drawer-container>

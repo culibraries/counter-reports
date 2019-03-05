@@ -22,7 +22,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/style.css"
+              "src/style.css",
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
             ],
             "scripts": [],
             "es5BrowserSupport": true

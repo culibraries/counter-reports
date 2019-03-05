@@ -7607,6 +7607,13 @@ button.mat-menu-item {
   outline: none;
 }
 
+.header-right-icon {
+  height: 18px;
+  position: absolute;
+  bottom: 12px;
+  right: 0px;
+}
+
 .ucb-footer img.ucb-footer-be-boulder {
   max-width: 240px;
   width: 100%;

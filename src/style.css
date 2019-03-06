@@ -5799,6 +5799,10 @@ a:focus {
   margin-left: auto;
 }
 
+.container a {
+  outline: none;
+}
+
 @media (min-width: 768px) {
   .container.container-small {
     max-width: 540px;

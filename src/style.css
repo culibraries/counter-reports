@@ -56,12 +56,6 @@ label,
 legend,
 table,
 caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
 article,
 aside,
 canvas,
@@ -1688,7 +1682,7 @@ a.mailto {
 
 /** Table styles */
 /* TABLES */
-table {
+/* table {
   border-collapse: collapse;
   border: none;
   border: 1px solid rgba(128, 128, 128, 0.333);
@@ -1800,7 +1794,7 @@ table.table-noborder th {
 
 table td p:last-child {
   margin-bottom: 0;
-}
+} */
 
 /** List styles */
 ol {

@@ -6,13 +6,13 @@
           alt="University of Colorado Boulder" />
       </a>
       <div class="header-right-icon">
-        <button mat-icon-button>
+        <button aria-label="help" mat-icon-button>
           <mat-icon>help_outline</mat-icon>
         </button>
-        <button mat-icon-button>
+        <button aria-label="settings" mat-icon-button>
           <mat-icon>settings</mat-icon>
         </button>
-        <button mat-icon-button [matMenuTriggerFor]="menu" style="background-color: black; color: white">
+        <button aria-label="account" mat-icon-button [matMenuTriggerFor]="menu" style="background-color: black; color: white">
           <mat-icon>account_circle</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
@@ -26,7 +26,6 @@
           </button>
         </mat-menu>
       </div>
-
     </div>
   </div>
 </div>
@@ -49,11 +48,8 @@
       <ul>
         <li><a href="/"> <i class="fa fa-home"></i> <span class="display-inline invisible-md invisible-lg"> Home</span></a></li>
         <li><a href="#">New Report</a></li>
-        <li><a href="#" class="active">My Reports</a></li>
-
+        <li><a href="#" class="active">View / Run</a></li>
       </ul>
-
-
     </nav>
   </div>
 </div>

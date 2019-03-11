@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-filter',
@@ -6,10 +6,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+  items: number[] = [];
+  show: boolean;
+  constructor() {
+    this.show = false;
   }
 
+  ngOnInit() {}
+  activeFilter() {
+    this.items.push(this.items.length);
+    this.show = true;
+  }
+  increment() {
+    this.items.push(this.items.length);
+  }
+  decrement(item) {
+    this.items.splice(item);
+    if (this.items.length === 0) {
+      this.show = false;
+    }
+  }
 }

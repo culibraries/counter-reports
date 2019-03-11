@@ -1,3 +1,19 @@
-<p>
-  filter works!
-</p>
+<button mat-icon-button (click)="activeFilter()" style="margin-left: 10px;">
+  <mat-icon>filter_list</mat-icon>
+</button>
+<span *ngIf="show">Publisher: ACM > Platform: ACM Digital Library > Year: 2018</span>
+<div *ngIf="show" class="control-filter-button">
+  <button mat-raised-button>Reset</button>
+  <button mat-raised-button>Save</button>
+  <button mat-raised-button style="background-color: #3677BD; color: white ">Apply</button>
+</div>
+
+<div *ngFor="let item of items" class="control-filter-content">
+  <app-filter-item></app-filter-item>
+  <button mat-icon-button (click)="increment()" style="margin-left: 45px;">
+    <mat-icon>add_circle_outline</mat-icon>
+  </button>
+  <button mat-icon-button (click)="decrement(item)">
+    <mat-icon>remove_circle_outline</mat-icon>
+  </button>
+</div>

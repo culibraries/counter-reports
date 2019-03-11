@@ -132,10 +132,10 @@ del {
   text-decoration: line-through;
 }
 
-table {
+/* table {
   border-collapse: collapse;
   border-spacing: 0;
-}
+} */
 
 /** A11Y styles */
 .focus--keyboard,

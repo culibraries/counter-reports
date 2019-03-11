@@ -1,0 +1,16 @@
+<mat-form-field>
+  <mat-select>
+    <mat-option *ngFor="let filter of filters" [value]="filter.value">
+      {{filter.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<span class="control-filter-text">is</span>
+
+<mat-form-field class="example-full-width">
+  <mat-select>
+    <mat-option *ngFor="let content of contents" [value]="content.value">
+      {{content.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

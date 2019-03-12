@@ -1,4 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { SaveModalBoxComponent } from '../save-modal-box/save-modal-box.component';
+export interface DialogData {
+  animal: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-filter',
@@ -8,7 +14,10 @@ import { Component, OnInit, Input } from '@angular/core';
 export class FilterComponent implements OnInit {
   items: number[] = [];
   show: boolean;
-  constructor() {
+  animal: string;
+  name: string;
+
+  constructor(public dialog: MatDialog) {
     this.show = false;
   }
 
@@ -25,5 +34,17 @@ export class FilterComponent implements OnInit {
     if (this.items.length === 0) {
       this.show = false;
     }
+  }
+
+  openSaveModal() {
+    const dialogRef = this.dialog.open(SaveModalBoxComponent, {
+      width: '500px',
+      data: { name: this.name, animal: this.animal }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+    });
   }
 }

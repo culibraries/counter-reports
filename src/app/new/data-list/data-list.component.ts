@@ -330,7 +330,6 @@ export class DataListComponent implements OnInit {
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    console.log(this.dataSource);
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }

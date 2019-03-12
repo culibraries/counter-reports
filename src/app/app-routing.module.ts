@@ -10,6 +10,10 @@ const routes: Routes = [
   {
     path: 'new-reports',
     loadChildren: './new/new.module#NewModule'
+  },
+  {
+    path: 'viewandrun',
+    loadChildren: './viewandrun/viewandrun.module#ViewandrunModule'
   }
 ];
 

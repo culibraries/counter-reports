@@ -3,9 +3,11 @@
 </button>
 <span *ngIf="show">Publisher: ACM > Platform: ACM Digital Library > Year: 2018</span>
 <div *ngIf="show" class="control-filter-button">
-  <button mat-raised-button>Reset</button>
-  <button mat-raised-button>Save</button>
-  <button mat-raised-button style="background-color: #3677BD; color: white ">Apply</button>
+  <button mat-stroked-button>Reset</button>
+  <button mat-stroked-button (click)="openSaveModal()">Save</button>
+  <button mat-stroked-button style="background-color: #3677BD; color: white ">
+    Apply
+  </button>
 </div>
 
 <div *ngFor="let item of items" class="control-filter-content">

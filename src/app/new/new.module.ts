@@ -11,18 +11,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDialogModule } from '@angular/material/dialog';
+
 import { NewRoutingModule } from './new-routing.module';
 import { FilterComponent } from './filter/filter.component';
 import { DataListComponent } from './data-list/data-list.component';
 import { NewComponent } from './new.component';
 import { FilterItemComponent } from './filter-item/filter-item.component';
+import { SaveModalBoxComponent } from './save-modal-box/save-modal-box.component';
+
 @NgModule({
   declarations: [
     FilterComponent,
     DataListComponent,
     NewComponent,
-    FilterItemComponent
+    FilterItemComponent,
+    SaveModalBoxComponent
   ],
+  entryComponents: [SaveModalBoxComponent],
   imports: [
     CommonModule,
     NewRoutingModule,
@@ -36,7 +42,8 @@ import { FilterItemComponent } from './filter-item/filter-item.component';
     MatButtonModule,
     MatSelectModule,
     MatGridListModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatDialogModule
   ]
 })
 export class NewModule {}

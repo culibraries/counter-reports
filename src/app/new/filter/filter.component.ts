@@ -29,9 +29,10 @@ export class FilterComponent implements OnInit {
   increment() {
     this.items.push(this.items.length);
   }
-  decrement(item) {
-    this.items.splice(item);
-
+  decrement(item: number) {
+    let index = this.items.indexOf(item);
+    this.items.splice(index, 1);
+    console.log(this.items);
     if (this.items.length === 0) {
       this.show = false;
     }

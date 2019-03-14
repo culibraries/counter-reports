@@ -31,6 +31,7 @@ export class FilterComponent implements OnInit {
   }
   decrement(item) {
     this.items.splice(item);
+
     if (this.items.length === 0) {
       this.show = false;
     }

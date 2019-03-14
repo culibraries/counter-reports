@@ -19,6 +19,7 @@ import { DataListComponent } from './data-list/data-list.component';
 import { NewComponent } from './new.component';
 import { FilterItemComponent } from './filter-item/filter-item.component';
 import { SaveModalBoxComponent } from './save-modal-box/save-modal-box.component';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { SaveModalBoxComponent } from './save-modal-box/save-modal-box.component
     MatSelectModule,
     MatGridListModule,
     MatAutocompleteModule,
-    MatDialogModule
+    MatDialogModule,
+    NgxPrintModule
   ]
 })
 export class NewModule {}

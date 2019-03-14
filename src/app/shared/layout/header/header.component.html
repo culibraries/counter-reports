@@ -46,9 +46,9 @@
       </label>
       <input type="checkbox" id="show-main-menu" role="button">
       <ul>
-        <li><a href="/"> <i class="fa fa-home"></i> <span class="display-inline invisible-md invisible-lg"> Home</span></a></li>
-        <li><a href="#">New Report</a></li>
-        <li><a href="#" class="active">View / Run</a></li>
+        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true}"> Dashboard</a></li>
+        <li><a routerLink="/new-reports" routerLinkActive="active">New Report</a></li>
+        <li><a routerLink="/viewandrun" routerLinkActive="active">View / Run</a></li>
       </ul>
     </nav>
   </div>

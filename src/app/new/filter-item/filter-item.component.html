@@ -1,0 +1,18 @@
+<div style="float: left; padding-left: 1%">
+  <mat-form-field>
+    <mat-select>
+      <mat-option (onSelectionChange)="change($event)" *ngFor="let filter of filters" [value]="filter.value">
+        {{filter.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<span class="control-filter-text" style="float: left; margin-top: 22px">is</span>
+<mat-form-field class="example-full-width">
+  <input matInput [formControl]="myControl" [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      {{option}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

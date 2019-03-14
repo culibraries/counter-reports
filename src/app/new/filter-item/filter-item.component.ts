@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 export interface Filter {
   value: string;
@@ -13,10 +15,7 @@ export interface Publisher {
   value: string;
   viewValue: string;
 }
-export interface Platform {
-  value: string;
-  viewValue: string;
-}
+
 export interface Year {
   value: string;
   viewValue: string;
@@ -27,6 +26,10 @@ export interface Year {
   styleUrls: ['./filter-item.component.css']
 })
 export class FilterItemComponent implements OnInit {
+  myControl = new FormControl();
+  options: any;
+  filteredOptions: Observable<any>;
+
   filters: Filter[] = [
     { value: 'publisher', viewValue: 'Publisher' },
     { value: 'platform', viewValue: 'Platform' },
@@ -34,54 +37,58 @@ export class FilterItemComponent implements OnInit {
     { value: 'year', viewValue: 'Year' }
   ];
 
-  publishers: Platform[] = [
-    { value: 'acm-digital-library', viewValue: 'ACM Digital Library ' },
-    { value: 'wed-digital-library', viewValue: 'WED Digital Library ' },
-    { value: 'abc-digital-library', viewValue: 'TGD Digital Library ' },
-    { value: 'pof-digital-library', viewValue: 'HJQ Digital Library ' }
+  publishers: string[] = [
+    'ACM Digital Library ',
+    'WED Digital Library ',
+    'TGD Digital Library ',
+    'HJQ Digital Library '
   ];
 
-  platforms: Platform[] = [
-    { value: 'acm', viewValue: 'ACM' },
-    { value: 'wed', viewValue: 'WED ' },
-    { value: 'abc', viewValue: 'TGD ' },
-    { value: 'pof', viewValue: 'HJQ ' }
-  ];
+  platforms: string[] = ['ACM', 'CNN', 'ABC', 'WED'];
 
   contents: Content[] = [];
 
-  years: Year[] = [
-    { value: '2018', viewValue: '2018' },
-    { value: '2017', viewValue: '2017' },
-    { value: '2016', viewValue: '2016' },
-    { value: '2015', viewValue: '2015' },
-    { value: '2014', viewValue: '2014' },
-    { value: '2013', viewValue: '2013' },
-    { value: '2012', viewValue: '2012' },
-    { value: '2011', viewValue: '2011' },
-    { value: '2010', viewValue: '2010' },
-    { value: '2009', viewValue: '2009' },
-    { value: '2008', viewValue: '2008' },
-    { value: '2007', viewValue: '2007' },
-    { value: '2006', viewValue: '2006' },
-    { value: '2005', viewValue: '2005' }
+  years: string[] = [
+    '2018',
+    '2017',
+    '2016',
+    '2015',
+    '2014',
+    '2013',
+    '2012',
+    '2011',
+    '2010',
+    '2009'
   ];
 
   constructor() {
-    this.contents = this.publishers;
+    this.options = [];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option =>
+      option.toLowerCase().includes(filterValue)
+    );
+  }
   change(event) {
     if (event.isUserInput) {
       if (event.source.value === 'year') {
-        this.contents = this.years;
+        this.options = this.years;
       }
       if (event.source.value === 'publisher') {
-        this.contents = this.publishers;
+        this.options = this.publishers;
       }
       if (event.source.value === 'platform') {
-        this.contents = this.platforms;
+        this.options = this.platforms;
       }
     }
   }

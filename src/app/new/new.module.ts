@@ -20,6 +20,7 @@ import { NewComponent } from './new.component';
 import { FilterItemComponent } from './filter-item/filter-item.component';
 import { SaveModalBoxComponent } from './save-modal-box/save-modal-box.component';
 import { NgxPrintModule } from 'ngx-print';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,9 @@ import { NgxPrintModule } from 'ngx-print';
     MatGridListModule,
     MatAutocompleteModule,
     MatDialogModule,
-    NgxPrintModule
+    NgxPrintModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class NewModule {}

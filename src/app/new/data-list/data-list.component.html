@@ -1,108 +1,106 @@
-<div id="print-section">
-  <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
-    <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
-      <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-    </ng-container>
+<table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+  </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Journal Title </th>
-      <td mat-cell *matCellDef="let element"> {{element.title}} </td>
-    </ng-container>
+  <!-- Name Column -->
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Journal Title </th>
+    <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+  </ng-container>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="publisher">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Publisher </th>
-      <td mat-cell *matCellDef="let element"> {{element.publisher}} </td>
-    </ng-container>
+  <!-- Weight Column -->
+  <ng-container matColumnDef="publisher">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Publisher </th>
+    <td mat-cell *matCellDef="let element"> {{element.publisher}} </td>
+  </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="platform">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Platform </th>
-      <td mat-cell *matCellDef="let element"> {{element.platform}} </td>
-    </ng-container>
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="platform">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Platform </th>
+    <td mat-cell *matCellDef="let element"> {{element.platform}} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="print_issn">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Print ISSN </th>
-      <td mat-cell *matCellDef="let element"> {{element.print_issn}} </td>
-    </ng-container>
+  <ng-container matColumnDef="print_issn">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Print ISSN </th>
+    <td mat-cell *matCellDef="let element"> {{element.print_issn}} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="online_issn">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Online ISSN </th>
-      <td mat-cell *matCellDef="let element"> {{element.online_issn}} </td>
-    </ng-container>
+  <ng-container matColumnDef="online_issn">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Online ISSN </th>
+    <td mat-cell *matCellDef="let element"> {{element.online_issn}} </td>
+  </ng-container>
 
 
-    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-    <ng-container matColumnDef="expandedDetail">
-      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-        <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-          <div class="example-element-description">
-            Reporting Period Total : <br>
-            Reporting Period HTML : <br>
-            Reporting Period PDF : <br>
-            Journal DOI :<br>
-
-          </div>
-          <div>
-            <strong>{{element.reporting_period_total}}</strong><br>
-            <strong>{{element.reporting_period_html}}</strong><br>
-            <strong>{{element.reporting_period_pdf}}</strong><br>
-            <strong>{{element.doi}}</strong>
-          </div>
-          <div style="padding-left: 40px;">
-            January : <br>
-            Feburary : <br>
-            March : <br>
-            April : <br>
-            May : <br>
-            June : <br>
-          </div>
-          <div>
-            <strong>{{element.jan}}</strong><br>
-            <strong>{{element.feb}}</strong><br>
-            <strong>{{element.march}}</strong><br>
-            <strong>{{element.april}}</strong><br>
-            <strong>{{element.may}}</strong><br>
-            <strong>{{element.june}}</strong><br>
-          </div>
-          <div style="padding-left: 40px">
-            July : <br>
-            August :<br>
-            September :<br>
-            October : <br>
-            November : <br>
-            December : <br>
-          </div>
-          <div>
-            <strong>{{element.july}}</strong><br>
-            <strong>{{element.aug}}</strong><br>
-            <strong>{{element.sep}}</strong><br>
-            <strong>{{element.oct}}</strong><br>
-            <strong>{{element.nov}}</strong><br>
-            <strong>{{element.dec}}</strong><br>
-          </div>
+  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+      <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <div class="example-element-description">
+          Reporting Period Total : <br>
+          Reporting Period HTML : <br>
+          Reporting Period PDF : <br>
+          Journal DOI :<br>
 
         </div>
-      </td>
-    </ng-container>
+        <div>
+          <strong>{{element.reporting_period_total}}</strong><br>
+          <strong>{{element.reporting_period_html}}</strong><br>
+          <strong>{{element.reporting_period_pdf}}</strong><br>
+          <strong>{{element.doi}}</strong>
+        </div>
+        <div style="padding-left: 40px;">
+          January : <br>
+          Feburary : <br>
+          March : <br>
+          April : <br>
+          May : <br>
+          June : <br>
+        </div>
+        <div>
+          <strong>{{element.jan}}</strong><br>
+          <strong>{{element.feb}}</strong><br>
+          <strong>{{element.march}}</strong><br>
+          <strong>{{element.april}}</strong><br>
+          <strong>{{element.may}}</strong><br>
+          <strong>{{element.june}}</strong><br>
+        </div>
+        <div style="padding-left: 40px">
+          July : <br>
+          August :<br>
+          September :<br>
+          October : <br>
+          November : <br>
+          December : <br>
+        </div>
+        <div>
+          <strong>{{element.july}}</strong><br>
+          <strong>{{element.aug}}</strong><br>
+          <strong>{{element.sep}}</strong><br>
+          <strong>{{element.oct}}</strong><br>
+          <strong>{{element.nov}}</strong><br>
+          <strong>{{element.dec}}</strong><br>
+        </div>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
-      [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = expandedElement === element ? null : element">
-    </tr>
-    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-  </table>
-</div>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
+    [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = expandedElement === element ? null : element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>
+
 <div style=" width: 100%">
   <mat-paginator style="float: left" [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
   <mat-form-field style="width: 400px; float: left">
     <input style="outline: 0" matInput (keyup)="applyFilter($event.target.value)" placeholder="Search...">
   </mat-form-field>
   <button mat-stroked-button style="float: right; outline: 0; background-color:#3677BD; color: white">Export</button>
-  <button mat-stroked-button style="float: right; outline: 0; margin-right: 10px" printSectionId="print-section"
-    ngxPrint>Print</button>
+  <button mat-stroked-button style="float: right; outline: 0; margin-right: 10px">Print</button>
 
 
 </div>

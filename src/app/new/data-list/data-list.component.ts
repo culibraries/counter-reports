@@ -10,7 +10,6 @@ import {
 
 export interface PeriodicElement {
   title: string;
-  position: number;
   publisher: string;
   platform: string;
   print_issn: string;
@@ -36,7 +35,6 @@ export interface PeriodicElement {
 
 const ELEMENT_DATA: PeriodicElement[] = [
   {
-    position: 1,
     title: 'Communications of the ACM',
     publisher: 'ACM',
     platform: 'ACM Digital Library',
@@ -61,7 +59,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
     description: 'Reporting Period Total 17640 <br>'
   },
   {
-    position: 2,
     title: 'Journal of Data and Information Quality (JDIQ)',
     publisher: 'ACM',
     platform: 'ACM Digital Library',
@@ -86,7 +83,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
     doi: '10.1090/ecgd'
   },
   {
-    position: 3,
     title: 'ACM SIGOPS Operating Systems Review',
     publisher: 'ABM',
     platform: 'ACM Digital Library',
@@ -111,7 +107,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
     doi: '10.1090/ecgd'
   },
   {
-    position: 4,
     title: 'ACM Transactions on Mathematical Software (TOMS)',
     publisher: 'ACM',
     platform: 'ACM Digital Library',
@@ -136,7 +131,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
     doi: '10.1090/ecgd'
   },
   {
-    position: 5,
     title: 'Personal and Ubiquitous Computing',
     publisher: 'ACM',
     platform: 'ACM Digital Library',
@@ -161,7 +155,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
     doi: '10.1090/ecgd'
   },
   {
-    position: 10,
     title: 'ACM Transactions on Computation Theory (TOCT)',
     publisher: 'ACM',
     platform: 'ACM Digital Library',
@@ -186,7 +179,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
     doi: '10.1090/ecgd'
   },
   {
-    position: 6,
     title: 'ACM Transactions on Economics and Computation (TEAC)',
     publisher: 'CNN',
     platform: 'ACM Digital Library',
@@ -211,7 +203,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
     doi: '10.1090/ecgd'
   },
   {
-    position: 7,
     title:
       'IEEE/ACM Transactions on Computational Biology and Bioinformatics (TCBB)',
     publisher: 'ACM',
@@ -237,7 +228,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
     doi: '10.1090/ecgd'
   },
   {
-    position: 8,
     title: 'ACM SIGBED Review',
     publisher: 'ACM',
     platform: 'ACM Digital Library',
@@ -262,7 +252,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
     doi: '10.1090/ecgd'
   },
   {
-    position: 9,
     title: 'ACM Inroads',
     publisher: 'ACM',
     platform: 'ACM Digital Library',
@@ -308,12 +297,12 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class DataListComponent implements OnInit {
   displayedColumns: string[] = [
-    'position',
     'title',
     'publisher',
     'platform',
     'print_issn',
-    'online_issn'
+    'online_issn',
+    'reporting_period_total'
   ];
   expandedElement: PeriodicElement | null;
   dataSource = new MatTableDataSource(ELEMENT_DATA);

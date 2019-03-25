@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { PlatformService, Platform } from '../../core';
 
 export interface Filter {
   value: string;
@@ -27,8 +28,10 @@ export interface Year {
 })
 export class FilterItemComponent implements OnInit {
   myControl = new FormControl();
-  options: any;
+  options = [];
   filteredOptions: Observable<any>;
+  selectedFilter: string;
+  platforms1: Platform[];
 
   filters: Filter[] = [
     { value: 'publisher', viewValue: 'Publisher' },
@@ -44,7 +47,7 @@ export class FilterItemComponent implements OnInit {
     'HJQ Digital Library '
   ];
 
-  platforms: string[] = ['ACM', 'CNN', 'ABC', 'WED'];
+  platforms: string[] = [];
 
   contents: Content[] = [];
 
@@ -61,15 +64,24 @@ export class FilterItemComponent implements OnInit {
     '2009'
   ];
 
-  constructor() {
-    this.options = [];
-  }
+  constructor(private platformService: PlatformService) {}
 
   ngOnInit() {
+    this.platformService.getAll().subscribe(data => {
+      data.forEach(e => {
+        this.platforms.push(e.name);
+      });
+      console.log(this.platforms);
+    });
+
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
     );
+  }
+
+  resetFilterOption() {
+    this.selectedFilter = undefined;
   }
 
   private _filter(value: string): string[] {
@@ -79,15 +91,15 @@ export class FilterItemComponent implements OnInit {
       option.toLowerCase().includes(filterValue)
     );
   }
-  change(event) {
-    if (event.isUserInput) {
-      if (event.source.value === 'year') {
+  onChangeFilterOption() {
+    if (this.selectedFilter) {
+      if (this.selectedFilter === 'year') {
         this.options = this.years;
       }
-      if (event.source.value === 'publisher') {
+      if (this.selectedFilter === 'publisher') {
         this.options = this.publishers;
       }
-      if (event.source.value === 'platform') {
+      if (this.selectedFilter === 'platform') {
         this.options = this.platforms;
       }
     }

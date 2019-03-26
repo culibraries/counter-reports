@@ -2,17 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { PlatformService, Platform } from '../../core';
+import { PlatformService, Platform, PublisherService } from '../../core';
 
 export interface Filter {
   value: string;
   viewValue: string;
 }
 export interface Content {
-  value: string;
-  viewValue: string;
-}
-export interface Publisher {
   value: string;
   viewValue: string;
 }
@@ -27,11 +23,10 @@ export interface Year {
   styleUrls: ['./filter-item.component.css']
 })
 export class FilterItemComponent implements OnInit {
-  myControl = new FormControl();
+  filterControl = new FormControl();
   options = [];
   filteredOptions: Observable<any>;
   selectedFilter: string;
-  platforms1: Platform[];
 
   filters: Filter[] = [
     { value: 'publisher', viewValue: 'Publisher' },
@@ -40,16 +35,9 @@ export class FilterItemComponent implements OnInit {
     { value: 'year', viewValue: 'Year' }
   ];
 
-  publishers: string[] = [
-    'ACM Digital Library ',
-    'WED Digital Library ',
-    'TGD Digital Library ',
-    'HJQ Digital Library '
-  ];
+  publishers: string[] = [];
 
   platforms: string[] = [];
-
-  contents: Content[] = [];
 
   years: string[] = [
     '2018',
@@ -64,17 +52,25 @@ export class FilterItemComponent implements OnInit {
     '2009'
   ];
 
-  constructor(private platformService: PlatformService) {}
+  constructor(
+    private platformService: PlatformService,
+    private publisherService: PublisherService
+  ) {}
 
   ngOnInit() {
     this.platformService.getAll().subscribe(data => {
       data.forEach(e => {
         this.platforms.push(e.name);
       });
-      console.log(this.platforms);
     });
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
+    this.publisherService.getAll().subscribe(data => {
+      data.forEach(e => {
+        this.publishers.push(e.name);
+      });
+    });
+
+    this.filteredOptions = this.filterControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
     );
@@ -82,6 +78,7 @@ export class FilterItemComponent implements OnInit {
 
   resetFilterOption() {
     this.selectedFilter = undefined;
+    this.filterControl.setValue('');
   }
 
   private _filter(value: string): string[] {
@@ -91,17 +88,18 @@ export class FilterItemComponent implements OnInit {
       option.toLowerCase().includes(filterValue)
     );
   }
+
   onChangeFilterOption() {
-    if (this.selectedFilter) {
-      if (this.selectedFilter === 'year') {
-        this.options = this.years;
-      }
-      if (this.selectedFilter === 'publisher') {
-        this.options = this.publishers;
-      }
-      if (this.selectedFilter === 'platform') {
-        this.options = this.platforms;
-      }
+    this.filterControl.setValue('');
+
+    if (this.selectedFilter === 'year') {
+      this.options = this.years;
+    }
+    if (this.selectedFilter === 'publisher') {
+      this.options = this.publishers;
+    }
+    if (this.selectedFilter === 'platform') {
+      this.options = this.platforms;
     }
   }
 }

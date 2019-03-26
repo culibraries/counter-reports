@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { Platform } from '../models';
+import { Publisher } from '../models';
 import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class PlatformService {
+export class PublisherService {
   constructor(private apiService: ApiService) {}
-  getAll(): Observable<Platform[]> {
-    return this.apiService.get('/platforms/').pipe(map(data => data.results));
+  getAll(): Observable<Publisher[]> {
+    return this.apiService
+      .get('/publishers?ordering=name')
+      .pipe(map(data => data.results));
   }
 }

@@ -1,12 +1,27 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController
+} from '@angular/common/http/testing';
 
 import { PlatformService } from './platform.service';
 
 describe('PlatformService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  let injector: TestBed;
+  let service: PlatformService;
+  let httpMock: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [PlatformService]
+    });
+    injector = getTestBed();
+    service = injector.get(PlatformService);
+    httpMock = injector.get(HttpTestingController);
+  });
 
   it('should be created', () => {
-    const service: PlatformService = TestBed.get(PlatformService);
     expect(service).toBeTruthy();
   });
 });

@@ -1,4 +1,5 @@
 export interface Platform {
-  url: string;
+  id: number;
+  // url: string;
   name: string;
 }

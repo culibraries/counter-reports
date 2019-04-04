@@ -3,24 +3,21 @@ import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
+import { PublicationService } from './publication.service';
 
-import { ApiService } from './api.service';
-
-describe('ApiService', () => {
+describe('PublisherService', () => {
   let injector: TestBed;
-  let service: ApiService;
+  let service: PublicationService;
   let httpMock: HttpTestingController;
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ApiService]
+      providers: [PublicationService]
     });
     injector = getTestBed();
-    service = injector.get(ApiService);
+    service = injector.get(PublicationService);
     httpMock = injector.get(HttpTestingController);
   });
-
   it('should be created', () => {
     expect(service).toBeTruthy();
   });

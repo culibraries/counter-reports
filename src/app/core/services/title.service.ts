@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { Publisher } from '../models';
+import { Title } from '../models';
 import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class PublisherService {
+export class TitleService {
   constructor(private apiService: ApiService) {}
-  getAll(): Observable<Publisher[]> {
-    return this.apiService.get('/publishers').pipe(map(data => data));
+  getAll(): Observable<Title[]> {
+    return this.apiService.get('/publications/').pipe(map(data => data));
   }
 }

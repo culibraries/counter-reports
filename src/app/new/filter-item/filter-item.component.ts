@@ -2,7 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { PlatformService, Platform, PublisherService } from '../../core';
+import {
+  PlatformService,
+  Platform,
+  PublisherService,
+  PublicationService
+} from '../../core';
 
 export interface Filter {
   value: string;
@@ -39,6 +44,8 @@ export class FilterItemComponent implements OnInit {
 
   platforms: string[] = [];
 
+  titles: string[] = [];
+
   years: string[] = [
     '2018',
     '2017',
@@ -54,7 +61,8 @@ export class FilterItemComponent implements OnInit {
 
   constructor(
     private platformService: PlatformService,
-    private publisherService: PublisherService
+    private publisherService: PublisherService,
+    private publicationService: PublicationService
   ) {}
 
   ngOnInit() {
@@ -67,6 +75,12 @@ export class FilterItemComponent implements OnInit {
     this.publisherService.getAll().subscribe(data => {
       data.forEach(e => {
         this.publishers.push(e.name);
+      });
+    });
+
+    this.publicationService.getAll().subscribe(data => {
+      data.forEach(e => {
+        this.titles.push(e.title);
       });
     });
 
@@ -100,6 +114,9 @@ export class FilterItemComponent implements OnInit {
     }
     if (this.selectedFilter === 'platform') {
       this.options = this.platforms;
+    }
+    if (this.selectedFilter === 'title') {
+      this.options = this.titles;
     }
   }
 }

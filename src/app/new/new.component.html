@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-content>
-    <app-filter></app-filter>
-    <app-data-list></app-data-list>
+    <app-filter (applyFilterEvent)="datalist.sendData($event)" (resetEvent)="datalist.reset($event)"></app-filter>
+    <app-data-list #datalist></app-data-list>
   </mat-card-content>
 </mat-card>

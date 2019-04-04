@@ -4,9 +4,9 @@
 <!-- <span *ngIf="show">Publisher: <strong>ACM</strong> > Platform: <strong>ACM Digital Library</strong> > Year: <strong>2018</strong></span> -->
 <div *ngIf="isShowFilterOption">
   <div class="control-filter-button">
-    <button mat-stroked-button (click)="resetFilterOption()">Reset</button>
+    <button mat-stroked-button (click)="resetAll()">Reset</button>
     <button mat-stroked-button (click)="openSaveModal()">Save</button>
-    <button mat-stroked-button style="background-color: #3677BD; color: white ">
+    <button mat-stroked-button (click)="applyFilter()" style="background-color: #3677BD; color: white ">
       Apply
     </button>
   </div>

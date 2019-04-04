@@ -1,5 +1,6 @@
 export interface Publisher {
-  url: string;
+  id: number;
+  // url: string;
   name: string;
   platform: string;
 }

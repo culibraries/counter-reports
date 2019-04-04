@@ -1,4 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  QueryList,
+  ViewChildren,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { SaveModalBoxComponent } from '../save-modal-box/save-modal-box.component';
 import { FilterItemComponent } from '../filter-item/filter-item.component';
@@ -9,12 +17,14 @@ import { FilterItemComponent } from '../filter-item/filter-item.component';
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent implements OnInit {
-  @ViewChild('filterItem')
-  private filterItem: FilterItemComponent;
+  @ViewChildren('filterItem') filterItem: QueryList<FilterItemComponent>;
 
   items: number[] = [];
   isShowFilterOption = false;
 
+  filterCollection: any[][] = [];
+  @Output() applyFilterEvent = new EventEmitter();
+  @Output() resetEvent = new EventEmitter();
   constructor(public dialog: MatDialog) {}
 
   ngOnInit() {
@@ -27,10 +37,44 @@ export class FilterComponent implements OnInit {
     this.isShowFilterOption = !this.isShowFilterOption;
   }
 
-  resetFilterOption() {
+  resetAll() {
     this.items = [];
     this.items.push(this.items.length);
-    this.filterItem.resetFilterOption();
+    this.resetEvent.emit('reset-data');
+    this.filterItem.forEach(e => {
+      e.resetFilterOption();
+    });
+  }
+
+  applyFilter() {
+    this.filterCollection['publisher'] = [];
+    this.filterCollection['platform'] = [];
+    this.filterCollection['title'] = [];
+    let flag = true;
+    this.filterItem.forEach(element => {
+      if (!element.selectedFilter) {
+        flag = false;
+      }
+    });
+
+    if (!flag) {
+      if (
+        !confirm(
+          'You have not select any filters. ALL publications will be retrived. Are you sure you wanna do it ?'
+        )
+      ) {
+        this.filterCollection = [];
+      }
+    } else {
+      this.filterItem.forEach(element => {
+        this.filterCollection[element.selectedFilter].push(
+          element.filterControl.value
+        );
+      });
+    }
+
+    console.log(this.filterCollection);
+    this.applyFilterEvent.emit(this.filterCollection);
   }
   increment() {
     this.items.push(this.items.length);
@@ -48,8 +92,6 @@ export class FilterComponent implements OnInit {
       width: '500px'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 }

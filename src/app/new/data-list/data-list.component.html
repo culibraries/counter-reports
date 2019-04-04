@@ -1,13 +1,11 @@
 <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
-
+  <ng-container matColumnDef="publisher_id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Publisher </th>
+    <td mat-cell *matCellDef="let element" style="width: 300px;"> {{element.publisher_id}} </td>
+  </ng-container>
   <ng-container matColumnDef="title">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Journal Title </th>
     <td mat-cell *matCellDef="let element"> {{element.title}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="publisher">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Publisher </th>
-    <td mat-cell *matCellDef="let element"> {{element.publisher}} </td>
   </ng-container>
 
   <ng-container matColumnDef="platform">
@@ -26,7 +24,7 @@
   </ng-container>
   <ng-container matColumnDef="reporting_period_total">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
-    <td mat-cell *matCellDef="let element"> {{element.reporting_period_total}} </td>
+    <td mat-cell *matCellDef="let element"> 1780 </td>
   </ng-container>
 
 
@@ -38,7 +36,7 @@
 
         </div>
         <div>
-          <strong>{{element.doi}}</strong>
+          <strong>doi</strong>
         </div>
         <div style="padding-left: 40px;">
           January : <br>
@@ -49,12 +47,12 @@
           June : <br>
         </div>
         <div>
-          <strong>{{element.jan}}</strong><br>
-          <strong>{{element.feb}}</strong><br>
-          <strong>{{element.march}}</strong><br>
-          <strong>{{element.april}}</strong><br>
-          <strong>{{element.may}}</strong><br>
-          <strong>{{element.june}}</strong><br>
+          <strong>12</strong><br>
+          <strong>22</strong><br>
+          <strong>32</strong><br>
+          <strong>32</strong><br>
+          <strong>543</strong><br>
+          <strong>432</strong><br>
         </div>
         <div style="padding-left: 40px">
           July : <br>
@@ -65,12 +63,12 @@
           December : <br>
         </div>
         <div>
-          <strong>{{element.july}}</strong><br>
-          <strong>{{element.aug}}</strong><br>
-          <strong>{{element.sep}}</strong><br>
-          <strong>{{element.oct}}</strong><br>
-          <strong>{{element.nov}}</strong><br>
-          <strong>{{element.dec}}</strong><br>
+          <strong>432</strong><br>
+          <strong>432</strong><br>
+          <strong>453</strong><br>
+          <strong>123</strong><br>
+          <strong>123</strong><br>
+          <strong>321</strong><br>
         </div>
 
       </div>

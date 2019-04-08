@@ -1,4 +1,4 @@
 export const env = {
   production: true,
-  apiUrl: 'http://localhost/api/counter'
+  apiUrl: 'http://localhost:3000'
 };

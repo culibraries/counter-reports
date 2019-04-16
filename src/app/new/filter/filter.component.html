@@ -1,21 +1,23 @@
-<button mat-icon-button (click)="activeFilter()" style="margin-left: 10px;">
+<button mat-icon-button (click)="toggleFilterOption()" style="margin-left: 10px; margin-bottom: 7px;">
   <mat-icon>filter_list</mat-icon>
 </button>
-<span *ngIf="show">Publisher: <strong>ACM</strong> > Platform: <strong>ACM Digital Library</strong> > Year: <strong>2018</strong></span>
-<div *ngIf="show" class="control-filter-button">
-  <button mat-stroked-button>Reset</button>
-  <button mat-stroked-button (click)="openSaveModal()">Save</button>
-  <button mat-stroked-button style="background-color: #3677BD; color: white ">
-    Apply
-  </button>
-</div>
+<span>{{filterDisplay}}</span>
 
-<div *ngFor="let item of items" class="control-filter-content">
-  <app-filter-item></app-filter-item>
-  <button mat-icon-button (click)="increment()" style="margin-left: 45px;">
-    <mat-icon>add_circle_outline</mat-icon>
-  </button>
-  <button mat-icon-button (click)="decrement(item)">
-    <mat-icon>remove_circle_outline</mat-icon>
-  </button>
+<div [hidden]="!isShowFilterOption">
+  <div *ngFor="let item of items" class="control-filter-content">
+    <app-filter-item #filterItem (messageEvent)="receiveMessage($event)"></app-filter-item>
+    <button mat-icon-button (click)="increment()" style="margin-left: 45px;">
+      <mat-icon>add_circle_outline</mat-icon>
+    </button>
+    <button mat-icon-button (click)="decrement(item)">
+      <mat-icon>remove_circle_outline</mat-icon>
+    </button>
+  </div>
+  <div class="control-filter-button">
+    <button mat-stroked-button (click)="resetAll()">Reset</button>
+    <button mat-stroked-button (click)="openSaveModal()">Save</button>
+    <button mat-stroked-button (click)="applyFilter()" style="background-color: #3677BD; color: white ">
+      Apply
+    </button>
+  </div>
 </div>

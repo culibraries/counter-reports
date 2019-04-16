@@ -19,8 +19,8 @@ import { DataListComponent } from './data-list/data-list.component';
 import { NewComponent } from './new.component';
 import { FilterItemComponent } from './filter-item/filter-item.component';
 import { SaveModalBoxComponent } from './save-modal-box/save-modal-box.component';
-import { NgxPrintModule } from 'ngx-print';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -46,9 +46,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatGridListModule,
     MatAutocompleteModule,
     MatDialogModule,
-    NgxPrintModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressBarModule
   ]
 })
 export class NewModule {}

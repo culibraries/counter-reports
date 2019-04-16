@@ -20,6 +20,7 @@ import { NewComponent } from './new.component';
 import { FilterItemComponent } from './filter-item/filter-item.component';
 import { SaveModalBoxComponent } from './save-modal-box/save-modal-box.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatAutocompleteModule,
     MatDialogModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressBarModule
   ]
 })
 export class NewModule {}

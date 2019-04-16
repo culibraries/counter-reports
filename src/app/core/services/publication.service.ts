@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { Publication } from '../models';
+import { Publication, Filter } from '../models';
 import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
@@ -11,9 +11,10 @@ export class PublicationService {
   getAll(): Observable<Publication[]> {
     return this.apiService.get('/publications/').pipe(map(data => data));
   }
-  getByFilters(publishers, title): Observable<Publication[]> {
+  getByFilters(filterParameterURL: string): Observable<Publication[]> {
+    console.log(filterParameterURL);
     return this.apiService
-      .get('/publications/' + publishers + '/' + title)
+      .get('/publications/?' + filterParameterURL)
       .pipe(map(data => data));
   }
 }

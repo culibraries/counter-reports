@@ -1,12 +1,33 @@
-// import { TestBed } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
+import { TitleService } from './title.service';
+import { of } from 'rxjs';
+import { ApiService } from './api.service';
+import { Title } from '../models';
 
-// import { TitleService } from './title.service';
+describe('TitleService', () => {
+  let injector: TestBed;
+  let titleService: TitleService;
+  let apiServiceSpy: jasmine.SpyObj<ApiService>;
 
-// describe('TitleService', () => {
-//   beforeEach(() => TestBed.configureTestingModule({}));
+  const mockObservableTitle = [{ id: 1, title: 'this is the title' }];
+  beforeEach(() => {
+    const spy = jasmine.createSpyObj('ApiService', ['get']);
 
-//   it('should be created', () => {
-//     const service: TitleService = TestBed.get(TitleService);
-//     expect(service).toBeTruthy();
-//   });
-// });
+    TestBed.configureTestingModule({
+      imports: [],
+      providers: [TitleService, { provide: ApiService, useValue: spy }]
+    });
+    injector = getTestBed();
+    titleService = injector.get(TitleService);
+    apiServiceSpy = injector.get(ApiService);
+  });
+
+  it('should return an Observable<Title[]>', () => {
+    const title: Title[] = [{ id: 1, title: 'this is the title' }];
+    apiServiceSpy.get.and.returnValue(of(title));
+    titleService.getAll().subscribe(result => {
+      expect(result.length).toBe(1);
+      expect(result).toEqual(title);
+    });
+  });
+});

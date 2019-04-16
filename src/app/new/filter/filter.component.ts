@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  ViewChild,
   QueryList,
   ViewChildren,
   Output,
@@ -10,11 +9,12 @@ import {
 import { MatDialog } from '@angular/material';
 import { SaveModalBoxComponent } from '../save-modal-box/save-modal-box.component';
 import { FilterItemComponent } from '../filter-item/filter-item.component';
-
+import { Filter } from '../../core/models/filter.model';
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.css']
+  styleUrls: ['./filter.component.css'],
+  providers: [Filter]
 })
 export class FilterComponent implements OnInit {
   @ViewChildren('filterItem') filterItem: QueryList<FilterItemComponent>;
@@ -22,13 +22,14 @@ export class FilterComponent implements OnInit {
   items: number[] = [];
   isShowFilterOption = false;
 
-  filterCollection: any[][] = [];
+  filterDisplay = '';
   @Output() applyFilterEvent = new EventEmitter();
   @Output() resetEvent = new EventEmitter();
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private filter: Filter) {}
 
   ngOnInit() {
     this.items.push(this.items.length);
+    this.filter = new Filter();
   }
   toggleFilterOption() {
     if (this.items.length === 0) {
@@ -47,38 +48,33 @@ export class FilterComponent implements OnInit {
   }
 
   applyFilter() {
-    this.filterCollection['publisher'] = [];
-    this.filterCollection['platform'] = [];
-    this.filterCollection['title'] = [];
-    let flag = true;
-    this.filterItem.forEach(element => {
-      if (!element.selectedFilter) {
-        flag = false;
+    this.filter.reset();
+    this.filterItem.forEach(e => {
+      if (e.selectedFilter === 'from') {
+        this.filter.setFrom(
+          e.yearSelected + '-' + e.monthSelected + '-' + '01'
+        );
+      }
+      if (e.selectedFilter === 'to') {
+        this.filter.setTo(e.yearSelected + '-' + e.monthSelected + '-' + '01');
+      }
+      if (e.selectedFilter === 'platform') {
+        this.filter.setPlatform(e.filterControl.value);
+      }
+      if (e.selectedFilter === 'publisher') {
+        this.filter.setPublisher(e.filterControl.value);
+      }
+      if (e.selectedFilter === 'title') {
+        this.filter.setTitle(e.filterControl.value);
       }
     });
-
-    if (!flag) {
-      if (
-        !confirm(
-          'You have not select any filters. ALL publications will be retrived. Are you sure you wanna do it ?'
-        )
-      ) {
-        this.filterCollection = [];
-      }
-    } else {
-      this.filterItem.forEach(element => {
-        this.filterCollection[element.selectedFilter].push(
-          element.filterControl.value
-        );
-      });
-    }
-
-    console.log(this.filterCollection);
-    this.applyFilterEvent.emit(this.filterCollection);
+    this.applyFilterEvent.emit(this.filter.getFilterURL());
   }
+
   increment() {
     this.items.push(this.items.length);
   }
+
   decrement(item: number) {
     const index = this.items.indexOf(item);
     this.items.splice(index, 1);
@@ -93,5 +89,9 @@ export class FilterComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {});
+  }
+
+  receiveMessage($event) {
+    this.filterDisplay = $event;
   }
 }

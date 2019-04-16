@@ -1,3 +1,3 @@
 export interface Title {
-  name: string;
+  title: string;
 }

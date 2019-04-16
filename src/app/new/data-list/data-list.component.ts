@@ -7,276 +7,15 @@ import {
   transition,
   trigger
 } from '@angular/animations';
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 import { PublicationService, Publication, PublisherService } from '../../core';
+import { Result, MonthData } from '../../core/models/result.model';
 
-export interface PeriodicElement {
-  title: string;
-  publisher: string;
-  platform: string;
-  print_issn: string;
-  online_issn: string;
-  description: string;
-  reporting_period_total: number;
-  reporting_period_html: number;
-  reporting_period_pdf: number;
-  jan: number;
-  feb: number;
-  march: number;
-  april: number;
-  may: number;
-  june: number;
-  july: number;
-  aug: number;
-  sep: number;
-  oct: number;
-  nov: number;
-  dec: number;
-  doi: string;
-}
+const EXCEL_TYPE =
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 
-const ELEMENT_DATA: Publication[] = [
-  // {
-  //   title: 'Communications of the ACM',
-  //   publisher: 'ACM',
-  //   platform: 'ACM Digital Library',
-  //   print_issn: '0001-0782',
-  //   online_issn: '1557-7317',
-  //   reporting_period_total: 17640,
-  //   reporting_period_html: 432,
-  //   reporting_period_pdf: 563,
-  //   jan: 13,
-  //   feb: 15,
-  //   march: 43,
-  //   april: 223,
-  //   may: 32,
-  //   june: 52,
-  //   july: 12,
-  //   aug: 43,
-  //   sep: 3,
-  //   oct: 12,
-  //   nov: 12,
-  //   dec: 432,
-  //   doi: '10.1090/ecgd',
-  //   description: 'Reporting Period Total 17640 <br>'
-  // },
-  // {
-  //   title: 'Journal of Data and Information Quality (JDIQ)',
-  //   publisher: 'ACM',
-  //   platform: 'ACM Digital Library',
-  //   print_issn: '',
-  //   online_issn: '1557-7317',
-  //   description: 'ok: 38298392',
-  //   reporting_period_total: 17640,
-  //   reporting_period_html: 432,
-  //   reporting_period_pdf: 563,
-  //   jan: 13,
-  //   feb: 15,
-  //   march: 43,
-  //   april: 223,
-  //   may: 32,
-  //   june: 52,
-  //   july: 12,
-  //   aug: 43,
-  //   sep: 3,
-  //   oct: 12,
-  //   nov: 12,
-  //   dec: 432,
-  //   doi: '10.1090/ecgd'
-  // },
-  // {
-  //   title: 'ACM SIGOPS Operating Systems Review',
-  //   publisher: 'ABM',
-  //   platform: 'ACM Digital Library',
-  //   print_issn: '1936-1955',
-  //   online_issn: '1557-7317',
-  //   description: 'ok: 38298392',
-  //   reporting_period_total: 17640,
-  //   reporting_period_html: 432,
-  //   reporting_period_pdf: 563,
-  //   jan: 13,
-  //   feb: 15,
-  //   march: 43,
-  //   april: 223,
-  //   may: 32,
-  //   june: 52,
-  //   july: 12,
-  //   aug: 43,
-  //   sep: 3,
-  //   oct: 12,
-  //   nov: 12,
-  //   dec: 432,
-  //   doi: '10.1090/ecgd'
-  // },
-  // {
-  //   title: 'ACM Transactions on Mathematical Software (TOMS)',
-  //   publisher: 'ACM',
-  //   platform: 'ACM Digital Library',
-  //   print_issn: '1936-1955',
-  //   online_issn: '1557-7317',
-  //   description: 'ok: 38298392',
-  //   reporting_period_total: 17640,
-  //   reporting_period_html: 432,
-  //   reporting_period_pdf: 563,
-  //   jan: 13,
-  //   feb: 15,
-  //   march: 43,
-  //   april: 223,
-  //   may: 32,
-  //   june: 52,
-  //   july: 12,
-  //   aug: 43,
-  //   sep: 3,
-  //   oct: 12,
-  //   nov: 12,
-  //   dec: 432,
-  //   doi: '10.1090/ecgd'
-  // },
-  // {
-  //   title: 'Personal and Ubiquitous Computing',
-  //   publisher: 'ACM',
-  //   platform: 'ACM Digital Library',
-  //   print_issn: '1936-1955',
-  //   online_issn: '1557-7317',
-  //   description: 'ok: 38298392',
-  //   reporting_period_total: 17640,
-  //   reporting_period_html: 432,
-  //   reporting_period_pdf: 563,
-  //   jan: 13,
-  //   feb: 15,
-  //   march: 43,
-  //   april: 223,
-  //   may: 32,
-  //   june: 52,
-  //   july: 12,
-  //   aug: 43,
-  //   sep: 3,
-  //   oct: 12,
-  //   nov: 12,
-  //   dec: 432,
-  //   doi: '10.1090/ecgd'
-  // },
-  // {
-  //   title: 'ACM Transactions on Computation Theory (TOCT)',
-  //   publisher: 'ACM',
-  //   platform: 'ACM Digital Library',
-  //   print_issn: '1936-1955',
-  //   online_issn: '1557-7317',
-  //   description: 'ok: 38298392',
-  //   reporting_period_total: 17640,
-  //   reporting_period_html: 432,
-  //   reporting_period_pdf: 563,
-  //   jan: 13,
-  //   feb: 15,
-  //   march: 43,
-  //   april: 223,
-  //   may: 32,
-  //   june: 52,
-  //   july: 12,
-  //   aug: 43,
-  //   sep: 3,
-  //   oct: 12,
-  //   nov: 12,
-  //   dec: 432,
-  //   doi: '10.1090/ecgd'
-  // },
-  // {
-  //   title: 'ACM Transactions on Economics and Computation (TEAC)',
-  //   publisher: 'CNN',
-  //   platform: 'ACM Digital Library',
-  //   print_issn: '1936-1955',
-  //   online_issn: '',
-  //   description: 'ok: 38298392',
-  //   reporting_period_total: 17640,
-  //   reporting_period_html: 432,
-  //   reporting_period_pdf: 563,
-  //   jan: 13,
-  //   feb: 15,
-  //   march: 43,
-  //   april: 223,
-  //   may: 32,
-  //   june: 52,
-  //   july: 12,
-  //   aug: 43,
-  //   sep: 3,
-  //   oct: 12,
-  //   nov: 12,
-  //   dec: 432,
-  //   doi: '10.1090/ecgd'
-  // },
-  // {
-  //   title:
-  //     'IEEE/ACM Transactions on Computational Biology and Bioinformatics (TCBB)',
-  //   publisher: 'ACM',
-  //   platform: 'ACM Digital Library',
-  //   print_issn: '1936-1955',
-  //   online_issn: '',
-  //   description: 'ok: 38298392',
-  //   reporting_period_total: 17640,
-  //   reporting_period_html: 432,
-  //   reporting_period_pdf: 563,
-  //   jan: 13,
-  //   feb: 15,
-  //   march: 43,
-  //   april: 223,
-  //   may: 32,
-  //   june: 52,
-  //   july: 12,
-  //   aug: 43,
-  //   sep: 3,
-  //   oct: 12,
-  //   nov: 12,
-  //   dec: 432,
-  //   doi: '10.1090/ecgd'
-  // },
-  // {
-  //   title: 'ACM SIGBED Review',
-  //   publisher: 'ACM',
-  //   platform: 'ACM Digital Library',
-  //   print_issn: '',
-  //   online_issn: '1557-7317',
-  //   description: 'ok: 38298392',
-  //   reporting_period_total: 17640,
-  //   reporting_period_html: 432,
-  //   reporting_period_pdf: 563,
-  //   jan: 13,
-  //   feb: 15,
-  //   march: 43,
-  //   april: 223,
-  //   may: 32,
-  //   june: 52,
-  //   july: 12,
-  //   aug: 43,
-  //   sep: 3,
-  //   oct: 12,
-  //   nov: 12,
-  //   dec: 432,
-  //   doi: '10.1090/ecgd'
-  // },
-  // {
-  //   title: 'ACM Inroads',
-  //   publisher: 'ACM',
-  //   platform: 'ACM Digital Library',
-  //   print_issn: '1936-1955',
-  //   online_issn: '',
-  //   description: 'ok: 38298392',
-  //   reporting_period_total: 17640,
-  //   reporting_period_html: 432,
-  //   reporting_period_pdf: 563,
-  //   jan: 13,
-  //   feb: 15,
-  //   march: 43,
-  //   april: 223,
-  //   may: 32,
-  //   june: 52,
-  //   july: 12,
-  //   aug: 43,
-  //   sep: 3,
-  //   oct: 12,
-  //   nov: 12,
-  //   dec: 432,
-  //   doi: '10.1090/ecgd'
-  // }
-];
+const EXCEL_EXTENSION = '.xlsx';
 
 @Component({
   selector: 'app-data-list',
@@ -298,81 +37,181 @@ const ELEMENT_DATA: Publication[] = [
 })
 export class DataListComponent implements OnInit {
   displayedColumns: string[] = [
-    'publisher_id',
-    'title',
-    'platform',
-    'print_issn',
-    'online_issn',
-    'reporting_period_total'
+    'Publisher',
+    'Title',
+    'Platform',
+    'PrintISSN',
+    'OnlineISSN',
+    'Total'
   ];
-
+  results: Result[] = [];
+  resultPublication: Result = {
+    title: '',
+    platform: '',
+    publisher: '',
+    monthTotals: [],
+    total: 0
+  };
+  monthDatas: MonthData[] = [];
+  monthData: MonthData = { month: '', total: 0 };
   expandedElement: Publication | null;
-  publicationData: Publication[] = [];
+  publicationData: any[] = [];
   dataSource = new MatTableDataSource(this.publicationData);
-  tmpPublisher: any[] = [];
-  publishers: any[] = [];
+  // tmpPublisher: any[] = [];
+  // publishers: any[] = [];
+  activeExportButton: boolean;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(
-    private publicationService: PublicationService,
-    private publisherService: PublisherService
-  ) {}
+  constructor(private publicationService: PublicationService) {}
 
   ngOnInit() {
+    this.activeExportButton = true;
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.publisherService.getAll().subscribe(data => {
-      this.publishers = data;
-    });
+    // this.publisherService.getAll().subscribe(data => {
+    //   this.publishers = data;
+    // });
   }
   reset(data: any[]) {
     this.dataSource.data = [];
+    this.activeExportButton = true;
   }
-  sendData(data: any[]) {
-    let publisherR = data['publisher'];
-    this.tmpPublisher = [];
-    console.log(publisherR);
-    let titleR = data['title'];
-    if (publisherR.length !== 0) {
-      publisherR.forEach(element => {
-        this.publishers.forEach(e => {
-          if (element === e.name) {
-            this.tmpPublisher.push(e.id);
+  sendData(data: string) {
+    this.publicationService.getByFilters(data).subscribe(result => {
+      // console.log(result);
+      let total = 0;
+      const output = Object.values(
+        result.reduce((r, o) => {
+          const key = `${o.Title}-${o.Publisher}-${o.Platform}`;
+
+          if (!r[key]) {
+            total = 0;
+            r[key] = { ...o, MonthsTotal: [] };
           }
-        });
-      });
-    } else {
-      this.tmpPublisher.push('pass');
+
+          r[key].MonthsTotal.push({
+            month: this.convertDatetoMonth(o.Period),
+            total: o.Total
+          });
+          total += o.Total;
+          r[key].Total = total;
+          return r;
+        }, {})
+      );
+      // console.log(output);
+      this.dataSource.data = output;
+      if (this.dataSource.data.length > 0) {
+        this.activeExportButton = false;
+      }
+    });
+  }
+
+  private convertDatetoMonth(period: string): string {
+    let arrDate = period.split('-');
+    let output = '';
+    switch (arrDate[1]) {
+      case '01': {
+        output = 'January';
+        break;
+      }
+      case '02': {
+        output = 'Febuary';
+        break;
+      }
+      case '03': {
+        output = 'March';
+        break;
+      }
+      case '04': {
+        output = 'April';
+        break;
+      }
+      case '05': {
+        output = 'May';
+        break;
+      }
+      case '06': {
+        output = 'June';
+        break;
+      }
+      case '07': {
+        output = 'July';
+        break;
+      }
+      case '08': {
+        output = 'August';
+        break;
+      }
+      case '09': {
+        output = 'September';
+        break;
+      }
+      case '10': {
+        output = 'October';
+        break;
+      }
+      case '11': {
+        output = 'November';
+        break;
+      }
+      case '12': {
+        output = 'December';
+        break;
+      }
     }
 
-    if (data['publisher'].length === 0 && data['title'] === 0) {
-      this.publicationService.getAll().subscribe(data => {
-        this.dataSource.data = data;
-      });
-    } else {
-      console.log(this.tmpPublisher.toString(), titleR.toString());
-      this.publicationService
-        .getByFilters(this.tmpPublisher.toString(), titleR.toString())
-        .subscribe(result => {
-          result.forEach(e => {
-            this.publishers.forEach(item => {
-              if (item.id === e.publisher_id) {
-                e.publisher_id = item['name'];
-              }
-            });
-          });
-          this.dataSource.data = result;
-        });
-    }
+    return output;
   }
-  resetDataListTable() {
-    console.log('ok');
-  }
+
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+  export() {
+    // let x = this.dataSource.data.map(function(val) {
+    //   return val.splice(0, -1);
+    // });
+    // console.log(x);
+    this.dataSource.data.forEach(function(i) {
+      i.MonthsTotal.forEach(function(months) {
+        i[months.month] = months.total;
+      });
+      delete i.MonthsTotal;
+      delete i.Period;
+      // delete i['is_active'];
+    });
+    console.log(this.dataSource.data);
+
+    this.exportAsExcelFile(this.dataSource.data, 'Counter_Report_');
+  }
+
+  private exportAsExcelFile(json: any[], excelFileName: string): void {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json, {
+      header: [
+        'Title',
+        'Publisher',
+        'Platform',
+        'PrintISSN',
+        'OnlineISSN',
+        'Total'
+      ]
+    });
+    const workbook: XLSX.WorkBook = {
+      Sheets: { data: worksheet },
+      SheetNames: ['data']
+    };
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array'
+    });
+    this.saveAsExcelFile(excelBuffer, excelFileName);
+  }
+
+  private saveAsExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    FileSaver.saveAs(data, fileName + new Date().getTime() + EXCEL_EXTENSION);
   }
 }

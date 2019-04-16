@@ -9,6 +9,6 @@ import { map } from 'rxjs/operators';
 export class TitleService {
   constructor(private apiService: ApiService) {}
   getAll(): Observable<Title[]> {
-    return this.apiService.get('/publications/').pipe(map(data => data));
+    return this.apiService.get('/titles/').pipe(map(data => data));
   }
 }

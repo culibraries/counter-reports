@@ -4,13 +4,20 @@ import {
   ApiService,
   PlatformService,
   PublisherService,
-  PublicationService
+  PublicationService,
+  TitleService
 } from './services';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [],
   imports: [CommonModule, HttpClientModule],
-  providers: [ApiService, PlatformService, PublisherService, PublicationService]
+  providers: [
+    ApiService,
+    PlatformService,
+    PublisherService,
+    PublicationService,
+    TitleService
+  ]
 })
 export class CoreModule {}

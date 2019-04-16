@@ -1,24 +1,33 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController
-} from '@angular/common/http/testing';
 import { PublisherService } from './publisher.service';
+import { of } from 'rxjs';
+import { ApiService } from './api.service';
+import { Publisher } from '../models';
 
 describe('PublisherService', () => {
   let injector: TestBed;
-  let service: PublisherService;
-  let httpMock: HttpTestingController;
+  let publisherService: PublisherService;
+  let apiServiceSpy: jasmine.SpyObj<ApiService>;
+
+  const mockObservablePublisher = [{ id: 1, name: 'ACM' }];
   beforeEach(() => {
+    const spy = jasmine.createSpyObj('ApiService', ['get']);
+
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [PublisherService]
+      imports: [],
+      providers: [PublisherService, { provide: ApiService, useValue: spy }]
     });
     injector = getTestBed();
-    service = injector.get(PublisherService);
-    httpMock = injector.get(HttpTestingController);
+    publisherService = injector.get(PublisherService);
+    apiServiceSpy = injector.get(ApiService);
   });
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+
+  it('should return an Observable<Publisher[]>', () => {
+    const publisher: Publisher[] = [{ id: 1, name: 'ACM' }];
+    apiServiceSpy.get.and.returnValue(of(publisher));
+    publisherService.getAll().subscribe(result => {
+      expect(result.length).toBe(1);
+      expect(result).toEqual(publisher);
+    });
   });
 });

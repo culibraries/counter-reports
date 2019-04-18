@@ -9,7 +9,10 @@ import {
 import { MatDialog } from '@angular/material';
 import { SaveModalBoxComponent } from '../save-modal-box/save-modal-box.component';
 import { FilterItemComponent } from '../filter-item/filter-item.component';
+import { AlertService } from '../../core';
 import { Filter } from '../../core/models/filter.model';
+import { and } from '@angular/router/src/utils/collection';
+
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
@@ -25,7 +28,11 @@ export class FilterComponent implements OnInit {
   filterDisplay = '';
   @Output() applyFilterEvent = new EventEmitter();
   @Output() resetEvent = new EventEmitter();
-  constructor(public dialog: MatDialog, private filter: Filter) {}
+  constructor(
+    public dialog: MatDialog,
+    private filter: Filter,
+    private alertService: AlertService
+  ) {}
 
   ngOnInit() {
     this.items.push(this.items.length);
@@ -49,26 +56,95 @@ export class FilterComponent implements OnInit {
 
   applyFilter() {
     this.filter.reset();
+    // this.resetEvent.emit('reset-data');
+
+    let flag = 1;
+    let fromCount = 0;
+    let toCount = 0;
+    let fromDate: Date;
+    let toDate: Date;
     this.filterItem.forEach(e => {
       if (e.selectedFilter === 'from') {
-        this.filter.setFrom(
-          e.yearSelected + '-' + e.monthSelected + '-' + '01'
-        );
+        fromCount++;
+        if (fromCount === 2) {
+          this.alertService.error('A From field has been already selected.');
+          flag = 0;
+        }
+        if (!e.yearSelected || !e.monthSelected) {
+          this.alertService.error('From : MM/YYYY is required');
+          flag = 0;
+        } else {
+          fromDate = new Date(
+            e.yearSelected + '-' + e.monthSelected + '-' + '01'
+          );
+          this.filter.setFrom(
+            e.yearSelected + '-' + e.monthSelected + '-' + '01'
+          );
+        }
       }
+
       if (e.selectedFilter === 'to') {
-        this.filter.setTo(e.yearSelected + '-' + e.monthSelected + '-' + '01');
+        toCount++;
+        if (toCount === 2) {
+          this.alertService.error('A To field has been already selected.');
+          flag = 0;
+        }
+        if (!e.yearSelected || !e.monthSelected) {
+          this.alertService.error('To: MM/YYYY is required');
+          flag = 0;
+        } else {
+          toDate = new Date(
+            e.yearSelected + '-' + e.monthSelected + '-' + '01'
+          );
+
+          this.filter.setTo(
+            e.yearSelected + '-' + e.monthSelected + '-' + '01'
+          );
+        }
       }
+
+      if (fromDate && toDate) {
+        if (toDate < fromDate) {
+          this.alertService.error('No way !');
+          flag = 0;
+        }
+      }
+
+      if (!fromDate && toDate) {
+        this.alertService.error('From : is required');
+        flag = 0;
+      }
+
       if (e.selectedFilter === 'platform') {
-        this.filter.setPlatform(e.filterControl.value);
+        if (!e.filterControl.value) {
+          this.alertService.error('Platform: Platform name is required');
+          flag = 0;
+        } else {
+          this.filter.setPlatform(e.filterControl.value);
+        }
       }
       if (e.selectedFilter === 'publisher') {
-        this.filter.setPublisher(e.filterControl.value);
+        if (!e.filterControl.value) {
+          this.alertService.error('Publisher: Publisher name is required');
+          flag = 0;
+        } else {
+          this.filter.setPublisher(e.filterControl.value);
+        }
       }
       if (e.selectedFilter === 'title') {
-        this.filter.setTitle(e.filterControl.value);
+        if (!e.filterControl.value) {
+          this.alertService.error('Title: Title name is required');
+          flag = 0;
+        } else {
+          this.filter.setTitle(e.filterControl.value);
+        }
       }
     });
-    this.applyFilterEvent.emit(this.filter.getFilterURL());
+    if (flag) {
+      this.applyFilterEvent.emit(this.filter.getFilterURL());
+    } else {
+      return;
+    }
   }
 
   increment() {

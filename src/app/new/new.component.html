@@ -1,13 +1,5 @@
-  <!-- <div
-    style="color: #155724; background-color: #d4edda; border-color: #c3e6cb; position: relative; padding: .75rem 1.25rem; margin-bottom: 1rem; border: 1px solid transparent; border-radius: .25rem">
-    Success - Your publication has been loaded succesfully!</div>
-  <div
-    style="color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; position: relative; padding: .75rem 1.25rem; margin-bottom: 1rem; border: 1px solid transparent; border-radius: .25rem">
-    Alert - The filter is wrong ! Error retriving the data</div>
-  <div
-    style="color: #856404; background-color: #fff3cd; border-color: #ffeeba; position: relative; padding: .75rem 1.25rem; margin-bottom: 1rem; border: 1px solid transparent; border-radius: .25rem">
-    Warning - You have not select any filter ! All of your publication will be retrived . Are you sure you want to do
-    that ?</div> -->
+  <app-alert></app-alert>
+
   <mat-card>
     <mat-card-content>
       <app-filter (applyFilterEvent)="datalist.sendData($event)" (resetEvent)="datalist.reset($event)"></app-filter>

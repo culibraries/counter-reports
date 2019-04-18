@@ -4,3 +4,4 @@ export * from './publication.model';
 export * from './title.model';
 export * from './filter.model';
 export * from './result.model';
+export * from './alert.model';

@@ -26,6 +26,7 @@ export class Filter {
     this.publisher.push(publisher);
   }
   public setTitle(title: string) {
+    title = title.replace(/&/g, '%26').replace(/ /g, '%20');
     this.title.push(title);
   }
   public setFrom(from: string) {

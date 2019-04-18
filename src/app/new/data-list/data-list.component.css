@@ -1,8 +1,6 @@
 table {
   width: 100%;
-  padding-top: 20px;
 }
-
 
 tr.example-detail-row {
   height: 0;
@@ -23,14 +21,30 @@ tr.example-element-row:not(.example-expanded-row):active {
 .example-element-detail {
   overflow: hidden;
   display: flex;
-  padding-bottom: 5px;
 }
 
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
 
 .example-element-description-attribution {
   opacity: 0.5;
 }
-
 
 .mat-form-field {
   font-size: 14px;
@@ -47,4 +61,24 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .export-button:disabled {
   background-color: white;
+}
+
+.total-expendiable {
+  float: right;
+  margin-left: 5px;
+}
+
+.list-expendiable {
+  list-style-type: none;
+}
+
+/* @media only screen and (max-width: 1440px) {
+  .list-expendiable {
+    list-style-type: none;
+    margin-right: 60px;
+  }
+} */
+
+ul {
+  padding-left: 0em;
 }

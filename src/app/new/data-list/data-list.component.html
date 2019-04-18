@@ -1,11 +1,11 @@
 <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort matSortActive="Total" matSortDirection="desc">
-  <ng-container matColumnDef="Publisher">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Publisher </th>
-    <td mat-cell *matCellDef="let element" style="width: 300px;"> {{element.Publisher}} </td>
-  </ng-container>
   <ng-container matColumnDef="Title">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Journal Title </th>
-    <td mat-cell *matCellDef="let element"> {{element.Title}} </td>
+    <td mat-cell *matCellDef="let element" style="width: 400px;"> {{element.Title}} </td>
+  </ng-container>
+  <ng-container matColumnDef="Publisher">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Publisher </th>
+    <td mat-cell *matCellDef="let element"> {{element.Publisher}} </td>
   </ng-container>
 
   <ng-container matColumnDef="Platform">
@@ -27,15 +27,61 @@
     <td mat-cell *matCellDef="let element"> {{element.Total}} </td>
   </ng-container>
 
-
   <ng-container matColumnDef="expandedDetail">
     <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
       <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-        <ul>
+        <ul class="list-expendiable">
           <li *ngFor="let month of element.MonthsTotal">
-            {{ month.month }} - <strong>{{month.total}}</strong>
+            <span>{{ month.month }}</span>:
+            <strong class="total-expendiable">{{month.total}}</strong>
           </li>
+
         </ul>
+        <ul *ngIf="element.JournalDOI || element.ProprietaryID" style="list-style-type: none;margin-left: 254px;">
+          <li *ngIf="element.JournalDOI">Journal DOI: <strong class="total-expendiable">{{element.JournalDOI}}</strong>
+          </li>
+          <li *ngIf="element.ProprietaryID">Proprietary ID: <strong>{{element.ProprietaryID}}</strong></li>
+        </ul>
+
+
+        <!-- <span *ngFor="let month of element.MonthsTotal"> {{month.month}}<br></span>
+
+          <span *ngFor="let month of element.MonthsTotal"> <strong>{{month.total}}</strong><br>
+          </span> -->
+        <!-- <span *ngIf="element.MonthsTotal.length < 7">
+          <ul>
+            <li *ngFor="let month of element.MonthsTotal">
+              {{ month.month }} : <strong style="margin-left: 20px;">{{month.total}}</strong>
+            </li>
+          </ul>
+        </span>
+
+        <ng-template [ngIf]="element.MonthsTotal.length <= 6" [ngIfElse]="longDisplay">
+            <ul>
+                <li *ngFor="let month of element.MonthsTotal">
+                  {{ month.month }} : <strong>{{month.total}}</strong>
+                </li>
+              </ul>
+        </ng-template>
+
+        <ng-template #longDisplay>
+          <div>
+              <ul>
+                  <li *ngFor="let month of element.MonthsTotal">
+                    {{ month.month }} : <strong>{{month.total}}</strong>
+                  </li>
+                </ul>
+          </div>
+        </ng-template> -->
+
+
+
+
+        <!-- <ul>
+          <li *ngIf="element.JournalDOI">Journal DOI: {{element.JournalDOI}}</li>
+          <li *ngIf="element.ProprietaryID">Proprietary ID: {{element.ProprietaryID}}</li>
+        </ul> -->
+
 
         <!-- <div class="example-element-description">
           Journal DOI :<br>

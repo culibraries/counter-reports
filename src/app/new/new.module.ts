@@ -22,6 +22,10 @@ import { SaveModalBoxComponent } from './save-modal-box/save-modal-box.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AlertComponent } from '../core/alert/alert.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgProgressModule } from '@ngx-progressbar/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 @NgModule({
   declarations: [
     FilterComponent,
@@ -49,7 +53,10 @@ import { AlertComponent } from '../core/alert/alert.component';
     MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    NgProgressModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ]
 })
 export class NewModule {}

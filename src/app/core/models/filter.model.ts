@@ -35,7 +35,37 @@ export class Filter {
   public setTo(to: string) {
     this.to = to;
   }
-  getString() {}
+  getString(): string {
+    let outString = '';
+    if (this.platform.length > 0) {
+      outString += '<strong> Platform : </strong>' + this.platform.join(' OR');
+    }
+    if (this.publisher.length > 0) {
+      outString +=
+        '<strong> Publisher : </strong> ' + this.publisher.join(' OR ');
+    }
+    if (this.title.length > 0) {
+      outString += '<strong> Title : </strong>' + this.title.join(' OR');
+    }
+    if (this.from) {
+      outString += '<strong> From : </strong>' + this.from;
+      if (this.to) {
+        outString += '<strong> To : </strong>' + this.to;
+      } else {
+        let now: Date = new Date();
+
+        outString +=
+          '<strong> To : </strong>' +
+          now.getFullYear() +
+          '-' +
+          now.getMonth() +
+          '-' +
+          now.getDay();
+      }
+    }
+
+    return outString;
+  }
 
   getFilterURL(): string {
     let output = [];

@@ -12,6 +12,7 @@ import * as XLSX from 'xlsx';
 import { PublicationService, Publication, PublisherService } from '../../core';
 import { Result, MonthData } from '../../core';
 import { AlertService } from '../../core';
+import { MatSnackBar } from '@angular/material';
 
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -64,7 +65,8 @@ export class DataListComponent implements OnInit {
 
   constructor(
     private publicationService: PublicationService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -79,28 +81,40 @@ export class DataListComponent implements OnInit {
   }
 
   sendData(data: string) {
+    this.snackBar.open('loading...', '', {
+      duration: 4000,
+      panelClass: ['alert-success']
+    });
     this.publicationService.getByFilters(data).subscribe(result => {
       let total = 0;
       const output = Object.values(
         result.reduce((r, o) => {
-          const key = `${o.Title}-${o.Publisher}-${o.Platform}`;
+          const key = `${o.title}-${o.publisher}-${o.platform}`;
           if (!r[key]) {
             total = 0;
             r[key] = { ...o, MonthsTotal: [] };
           }
           r[key].MonthsTotal.push({
-            month: this.convertDatetoMonth(o.Period),
-            total: o.Total
+            month: this.convertDatetoMonth(o.period),
+            total: o.requests
           });
-          total += o.Total;
+          total += o.requests;
           r[key].Total = total;
           return r;
         }, {})
       );
       this.dataSource.data = output;
       if (this.dataSource.data.length > 0) {
-        this.alertService.success(
-          this.dataSource.data.length + ' record(s) has found successfully'
+        // this.alertService.success(
+        //   this.dataSource.data.length + ' record(s) has found successfully'
+        // );
+        this.snackBar.open(
+          'All Done ! ' + this.dataSource.data.length + ' record(s) has found',
+          '',
+          {
+            duration: 4000,
+            panelClass: ['alert-success']
+          }
         );
         this.activeExportButton = false;
       }
@@ -178,7 +192,8 @@ export class DataListComponent implements OnInit {
         i[months.month] = months.total;
       });
       delete i.MonthsTotal;
-      delete i.Period;
+      delete i.period;
+      delete i.requests;
     });
     // console.log(this.dataSource.data);
 
@@ -188,13 +203,13 @@ export class DataListComponent implements OnInit {
   private exportAsExcelFile(json: any[], excelFileName: string): void {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json, {
       header: [
-        'Title',
-        'Publisher',
-        'Platform',
-        'JournalDOI',
-        'ProprietaryID',
-        'PrintISSN',
-        'OnlineISSN',
+        'title',
+        'publisher',
+        'platform',
+        'journal_doi',
+        'proprietary_id',
+        'print_issn',
+        'online_issn',
         'Total'
       ]
     });

@@ -11,7 +11,7 @@ import { SaveModalBoxComponent } from '../save-modal-box/save-modal-box.componen
 import { FilterItemComponent } from '../filter-item/filter-item.component';
 import { AlertService } from '../../core';
 import { Filter } from '../../core/models/filter.model';
-import { and } from '@angular/router/src/utils/collection';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-filter',
@@ -26,12 +26,14 @@ export class FilterComponent implements OnInit {
   isShowFilterOption = false;
 
   filterDisplay = '';
+  duration = 4000;
   @Output() applyFilterEvent = new EventEmitter();
   @Output() resetEvent = new EventEmitter();
   constructor(
     public dialog: MatDialog,
     private filter: Filter,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -43,6 +45,12 @@ export class FilterComponent implements OnInit {
       this.items.push(this.items.length);
     }
     this.isShowFilterOption = !this.isShowFilterOption;
+
+    if (this.isShowFilterOption) {
+      this.filterDisplay = '';
+    } else {
+      this.filterDisplay = '';
+    }
   }
 
   resetAll() {
@@ -56,8 +64,6 @@ export class FilterComponent implements OnInit {
 
   applyFilter() {
     this.filter.reset();
-    // this.resetEvent.emit('reset-data');
-
     let flag = 1;
     let fromCount = 0;
     let toCount = 0;
@@ -71,7 +77,11 @@ export class FilterComponent implements OnInit {
           flag = 0;
         }
         if (!e.yearSelected || !e.monthSelected) {
-          this.alertService.error('From : MM/YYYY is required');
+          this.snackBar.open('(*) From : MM/YYYY is required', '', {
+            duration: this.duration,
+            panelClass: ['alert-danger']
+          });
+
           flag = 0;
         } else {
           fromDate = new Date(
@@ -86,11 +96,17 @@ export class FilterComponent implements OnInit {
       if (e.selectedFilter === 'to') {
         toCount++;
         if (toCount === 2) {
-          this.alertService.error('A To field has been already selected.');
+          this.snackBar.open('(*) A To field has been already selected', '', {
+            duration: this.duration,
+            panelClass: ['alert-danger']
+          });
           flag = 0;
         }
         if (!e.yearSelected || !e.monthSelected) {
-          this.alertService.error('To: MM/YYYY is required');
+          this.snackBar.open('(*) To: MM/YYYY is required', '', {
+            duration: this.duration,
+            panelClass: ['alert-danger']
+          });
           flag = 0;
         } else {
           toDate = new Date(
@@ -105,19 +121,28 @@ export class FilterComponent implements OnInit {
 
       if (fromDate && toDate) {
         if (toDate < fromDate) {
-          this.alertService.error('No way !');
+          this.snackBar.open('(*) No way !', '', {
+            duration: this.duration,
+            panelClass: ['alert-danger']
+          });
           flag = 0;
         }
       }
 
       if (!fromDate && toDate) {
-        this.alertService.error('From : is required');
+        this.snackBar.open('(*) From : is required', '', {
+          duration: this.duration,
+          panelClass: ['alert-danger']
+        });
         flag = 0;
       }
 
       if (e.selectedFilter === 'platform') {
         if (!e.filterControl.value) {
-          this.alertService.error('Platform: Platform name is required');
+          this.snackBar.open('(*) Platform: Platform name is required', '', {
+            duration: this.duration,
+            panelClass: ['alert-danger']
+          });
           flag = 0;
         } else {
           this.filter.setPlatform(e.filterControl.value);
@@ -125,7 +150,10 @@ export class FilterComponent implements OnInit {
       }
       if (e.selectedFilter === 'publisher') {
         if (!e.filterControl.value) {
-          this.alertService.error('Publisher: Publisher name is required');
+          this.snackBar.open('(*) Publisher: Publisher name is required', '', {
+            duration: this.duration,
+            panelClass: ['alert-danger']
+          });
           flag = 0;
         } else {
           this.filter.setPublisher(e.filterControl.value);
@@ -133,7 +161,11 @@ export class FilterComponent implements OnInit {
       }
       if (e.selectedFilter === 'title') {
         if (!e.filterControl.value) {
-          this.alertService.error('Title: Title name is required');
+          this.snackBar.open('(*) Title: Title name is required', '', {
+            duration: this.duration,
+            panelClass: ['alert-danger']
+          });
+
           flag = 0;
         } else {
           this.filter.setTitle(e.filterControl.value);

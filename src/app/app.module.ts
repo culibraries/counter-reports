@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { FooterComponent } from './shared/layout/footer/footer.component';
 import { HeaderComponent } from './shared/layout/header/header.component';
 import { CoreModule } from './core/core.module';
+import { NgProgressModule } from '@ngx-progressbar/core';
 
 @NgModule({
   declarations: [AppComponent, FooterComponent, HeaderComponent],
@@ -26,7 +27,8 @@ import { CoreModule } from './core/core.module';
     MatMenuModule,
     FormsModule,
     ReactiveFormsModule,
-    CoreModule
+    CoreModule,
+    NgProgressModule
   ],
   providers: [],
   bootstrap: [AppComponent]

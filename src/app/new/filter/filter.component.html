@@ -1,7 +1,7 @@
 <button mat-icon-button (click)="toggleFilterOption()" style="margin-left: 10px; margin-bottom: 7px;">
   <mat-icon>filter_list</mat-icon>
 </button>
-<span>{{filterDisplay}}</span>
+<span [innerHTML]="filterDisplay"></span>
 
 <div [hidden]="!isShowFilterOption">
   <div class="control-filter-button">

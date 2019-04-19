@@ -1,9 +1,9 @@
 export interface Publication {
-  Title: string;
-  Publisher: string;
-  Platform: string;
-  PrintISSN: string | null;
-  OnlineISSN: string | null;
-  Period: string | null;
-  Total: number;
+  title: string;
+  publisher: string;
+  platform: string;
+  print_issn: string | null;
+  online_issn: string | null;
+  period: string | null;
+  requests: number;
 }

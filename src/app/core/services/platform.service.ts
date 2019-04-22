@@ -9,6 +9,8 @@ import { map } from 'rxjs/operators';
 export class PlatformService {
   constructor(private apiService: ApiService) {}
   getAll(): Observable<Platform[]> {
-    return this.apiService.get('/platforms/').pipe(map(data => data));
+    return this.apiService
+      .get('/platforms/?format=json')
+      .pipe(map(data => data));
   }
 }

@@ -21,6 +21,10 @@ import { FilterItemComponent } from './filter-item/filter-item.component';
 import { SaveModalBoxComponent } from './save-modal-box/save-modal-box.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { AlertComponent } from '../core/alert/alert.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgProgressModule } from '@ngx-progressbar/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     DataListComponent,
     NewComponent,
     FilterItemComponent,
-    SaveModalBoxComponent
+    SaveModalBoxComponent,
+    AlertComponent
   ],
   entryComponents: [SaveModalBoxComponent],
   imports: [
@@ -48,7 +53,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    NgProgressModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ]
 })
 export class NewModule {}

@@ -1,9 +1,16 @@
 <button mat-icon-button (click)="toggleFilterOption()" style="margin-left: 10px; margin-bottom: 7px;">
   <mat-icon>filter_list</mat-icon>
 </button>
-<span>{{filterDisplay}}</span>
+<span [innerHTML]="filterDisplay"></span>
 
 <div [hidden]="!isShowFilterOption">
+  <div class="control-filter-button">
+    <button mat-stroked-button (click)="resetAll()">Reset</button>
+    <button mat-stroked-button (click)="openSaveModal()">Save</button>
+    <button mat-stroked-button (click)="applyFilter()" style="background-color: #3677BD; color: white ">
+      Apply
+    </button>
+  </div>
   <div *ngFor="let item of items" class="control-filter-content">
     <app-filter-item #filterItem (messageEvent)="receiveMessage($event)"></app-filter-item>
     <button mat-icon-button (click)="increment()" style="margin-left: 45px;">
@@ -13,11 +20,5 @@
       <mat-icon>remove_circle_outline</mat-icon>
     </button>
   </div>
-  <div class="control-filter-button">
-    <button mat-stroked-button (click)="resetAll()">Reset</button>
-    <button mat-stroked-button (click)="openSaveModal()">Save</button>
-    <button mat-stroked-button (click)="applyFilter()" style="background-color: #3677BD; color: white ">
-      Apply
-    </button>
-  </div>
+
 </div>

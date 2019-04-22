@@ -1,17 +1,3 @@
-.control-filter-button {
-  float: right;
-}
-
-.control-filter-button button {
-  margin-left: 10px;
-  outline: 0;
-}
-
-.control-filter-content {
-  padding-top: 10px;
-  padding-left: 10px;
-}
-
 .alert {
   position: relative;
   padding: 0.75rem 1.25rem;
@@ -26,18 +12,20 @@
   border-color: #c3e6cb;
 }
 
-::ng-deep .test {
-  background-color: white;
-}
-
 .alert.alert-warning {
   color: #856404;
   background-color: #fff3cd;
   border-color: #ffeeba;
 }
 
-::ng-deep .alert-danger {
+.alert.alert-danger {
   color: #721c24;
   background-color: #f8d7da;
   border-color: #f5c6cb;
+}
+
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 16px;
 }

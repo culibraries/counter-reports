@@ -5,8 +5,10 @@ import {
   PlatformService,
   PublisherService,
   PublicationService,
-  TitleService
+  TitleService,
+  AlertService
 } from './services';
+
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
@@ -17,7 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
     PlatformService,
     PublisherService,
     PublicationService,
-    TitleService
+    TitleService,
+    AlertService
   ]
 })
 export class CoreModule {}

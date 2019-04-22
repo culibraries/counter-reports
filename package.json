@@ -21,6 +21,8 @@
     "@angular/platform-browser": "~7.2.9",
     "@angular/platform-browser-dynamic": "~7.2.9",
     "@angular/router": "~7.2.9",
+    "@ngx-progressbar/core": "^5.3.2",
+    "@ngx-progressbar/http": "^5.3.2",
     "core-js": "^2.5.4",
     "file-saver": "^2.0.1",
     "rxjs": "~6.4.0",

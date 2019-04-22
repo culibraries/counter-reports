@@ -10,7 +10,9 @@ import {
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import { PublicationService, Publication, PublisherService } from '../../core';
-import { Result, MonthData } from '../../core/models/result.model';
+import { Result, MonthData } from '../../core';
+import { AlertService } from '../../core';
+import { MatSnackBar } from '@angular/material';
 
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -37,71 +39,83 @@ const EXCEL_EXTENSION = '.xlsx';
 })
 export class DataListComponent implements OnInit {
   displayedColumns: string[] = [
-    'Publisher',
     'Title',
+    'Publisher',
     'Platform',
     'PrintISSN',
     'OnlineISSN',
     'Total'
   ];
-  results: Result[] = [];
-  resultPublication: Result = {
-    title: '',
-    platform: '',
-    publisher: '',
-    monthTotals: [],
-    total: 0
-  };
+  expandedElement: [] | null;
+  // results: Result[] = [];
+  // resultPublication: Result = {
+  //   title: '',
+  //   platform: '',
+  //   publisher: '',
+  //   monthTotals: [],
+  //   total: 0
+  // };
   monthDatas: MonthData[] = [];
   monthData: MonthData = { month: '', total: 0 };
-  expandedElement: Publication | null;
-  publicationData: any[] = [];
-  dataSource = new MatTableDataSource(this.publicationData);
-  // tmpPublisher: any[] = [];
-  // publishers: any[] = [];
+  dataSource = new MatTableDataSource([]);
   activeExportButton: boolean;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private publicationService: PublicationService) {}
+  constructor(
+    private publicationService: PublicationService,
+    private alertService: AlertService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
     this.activeExportButton = true;
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    // this.publisherService.getAll().subscribe(data => {
-    //   this.publishers = data;
-    // });
   }
+
   reset(data: any[]) {
     this.dataSource.data = [];
     this.activeExportButton = true;
   }
+
   sendData(data: string) {
+    this.snackBar.open('loading...', '', {
+      duration: 4000,
+      panelClass: ['alert-success']
+    });
     this.publicationService.getByFilters(data).subscribe(result => {
-      // console.log(result);
       let total = 0;
       const output = Object.values(
         result.reduce((r, o) => {
-          const key = `${o.Title}-${o.Publisher}-${o.Platform}`;
-
+          const key = `${o.title}-${o.publisher}-${o.platform}`;
           if (!r[key]) {
             total = 0;
             r[key] = { ...o, MonthsTotal: [] };
           }
-
           r[key].MonthsTotal.push({
-            month: this.convertDatetoMonth(o.Period),
-            total: o.Total
+            month: this.convertDatetoMonth(o.period),
+            total: o.requests
           });
-          total += o.Total;
+          total += o.requests;
           r[key].Total = total;
           return r;
         }, {})
       );
-      // console.log(output);
       this.dataSource.data = output;
       if (this.dataSource.data.length > 0) {
+        // this.alertService.success(
+        //   this.dataSource.data.length + ' record(s) has found successfully'
+        // );
+        this.snackBar.open(
+          'All Done ! ' + this.dataSource.data.length + ' record(s) has found',
+          '',
+          {
+            duration: 4000,
+            panelClass: ['alert-success']
+          }
+        );
         this.activeExportButton = false;
       }
     });
@@ -109,6 +123,7 @@ export class DataListComponent implements OnInit {
 
   private convertDatetoMonth(period: string): string {
     let arrDate = period.split('-');
+    let year = arrDate[0];
     let output = '';
     switch (arrDate[1]) {
       case '01': {
@@ -160,7 +175,7 @@ export class DataListComponent implements OnInit {
         break;
       }
     }
-
+    output += '-' + year;
     return output;
   }
 
@@ -170,20 +185,17 @@ export class DataListComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
   export() {
-    // let x = this.dataSource.data.map(function(val) {
-    //   return val.splice(0, -1);
-    // });
-    // console.log(x);
     this.dataSource.data.forEach(function(i) {
       i.MonthsTotal.forEach(function(months) {
         i[months.month] = months.total;
       });
       delete i.MonthsTotal;
-      delete i.Period;
-      // delete i['is_active'];
+      delete i.period;
+      delete i.requests;
     });
-    console.log(this.dataSource.data);
+    // console.log(this.dataSource.data);
 
     this.exportAsExcelFile(this.dataSource.data, 'Counter_Report_');
   }
@@ -191,11 +203,13 @@ export class DataListComponent implements OnInit {
   private exportAsExcelFile(json: any[], excelFileName: string): void {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json, {
       header: [
-        'Title',
-        'Publisher',
-        'Platform',
-        'PrintISSN',
-        'OnlineISSN',
+        'title',
+        'publisher',
+        'platform',
+        'journal_doi',
+        'proprietary_id',
+        'print_issn',
+        'online_issn',
         'Total'
       ]
     });

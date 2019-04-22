@@ -9,7 +9,9 @@ import { map } from 'rxjs/operators';
 export class PublicationService {
   constructor(private apiService: ApiService) {}
   getAll(): Observable<Publication[]> {
-    return this.apiService.get('/publications/').pipe(map(data => data));
+    return this.apiService
+      .get('/publications/?format=json')
+      .pipe(map(data => data));
   }
   getByFilters(filterParameterURL: string): Observable<Publication[]> {
     console.log(filterParameterURL);

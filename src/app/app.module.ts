@@ -15,9 +15,19 @@ import { FooterComponent } from './shared/layout/footer/footer.component';
 import { HeaderComponent } from './shared/layout/header/header.component';
 import { CoreModule } from './core/core.module';
 import { NgProgressModule } from '@ngx-progressbar/core';
+import { LoginComponent } from './login/login.component';
+import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
-  declarations: [AppComponent, FooterComponent, HeaderComponent],
+  declarations: [
+    AppComponent,
+    FooterComponent,
+    HeaderComponent,
+    LoginComponent,
+    AppLayoutComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -28,7 +38,9 @@ import { NgProgressModule } from '@ngx-progressbar/core';
     FormsModule,
     ReactiveFormsModule,
     CoreModule,
-    NgProgressModule
+    NgProgressModule,
+    MatCardModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

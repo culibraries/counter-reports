@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FilterDisplayService } from './filter-display.service';
+import { ExportExcelService } from './export-excel.service';
 
-describe('FilterDisplayService', () => {
+describe('ExportExcelService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: FilterDisplayService = TestBed.get(FilterDisplayService);
+    const service: ExportExcelService = TestBed.get(ExportExcelService);
     expect(service).toBeTruthy();
   });
 });

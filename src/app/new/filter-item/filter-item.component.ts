@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { PlatformService, PublisherService, TitleService } from '../../core';
-import { Output, EventEmitter } from '@angular/core';
+import { Config } from '../../core';
 
 export interface Filter {
   value: string;
@@ -24,7 +24,6 @@ export class FilterItemComponent implements OnInit {
   publishers: string[] = [];
   platforms: string[] = [];
   titles: string[] = [];
-  icon: string;
   monthSelected: string;
   yearSelected: string;
 
@@ -36,51 +35,26 @@ export class FilterItemComponent implements OnInit {
     { value: 'to', viewValue: 'To' }
   ];
 
-  years: string[] = [
-    '2018',
-    '2017',
-    '2016',
-    '2015',
-    '2014',
-    '2013',
-    '2012',
-    '2011',
-    '2010',
-    '2009'
-  ];
-
-  months: string[] = [
-    '01',
-    '02',
-    '03',
-    '04',
-    '05',
-    '06',
-    '07',
-    '08',
-    '09',
-    '10',
-    '11',
-    '12'
-  ];
+  years: string[] = Config.years;
+  months: string[] = Config.months;
   filterDisplayTransform: [] = [];
-  @Output() messageEvent = new EventEmitter<string>();
 
   constructor(
     private platformService: PlatformService,
     private publisherService: PublisherService,
     private titleService: TitleService
   ) {}
+
   ngOnInit() {
     this.filteredOptions = this.filterControl.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value))
+      map(value => (value.length >= 1 ? this._filter(value) : []))
     );
   }
+
   onChangeFilterOption() {
     this.filterControl.setValue('');
     this.selectedFilterValue = '!';
-
     switch (this.selectedFilter) {
       case 'platform': {
         this.platformService.getAll().subscribe(data => {
@@ -128,6 +102,7 @@ export class FilterItemComponent implements OnInit {
     this.selectedFilter = undefined;
     this.filterControl.setValue('');
   }
+
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 

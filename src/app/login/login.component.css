@@ -12,3 +12,7 @@
   font-family: "Neue Helvetica W05", "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 25px;
 }
+
+.form-control {
+  margin-top: 20px;
+}

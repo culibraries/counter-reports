@@ -32,7 +32,7 @@
 
 
 <mat-form-field style="width: 300px;" *ngIf="selectedFilterValue=='!'">
-  <input matInput [formControl]="filterControl" [matAutocomplete]="auto">
+  <input matInput #trigger="matAutocompleteTrigger" [formControl]="filterControl" [matAutocomplete]="auto">
   <mat-autocomplete #auto="matAutocomplete">
     <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
       {{option}}

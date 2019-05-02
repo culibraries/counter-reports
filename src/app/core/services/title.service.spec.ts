@@ -23,7 +23,7 @@ describe('TitleService', () => {
   });
 
   it('should return an Observable<Title[]>', () => {
-    const title: Title[] = [{ id: 1, title: 'this is the title' }];
+    const title: Title[] = [{ title: 'this is the title' }];
     apiServiceSpy.get.and.returnValue(of(title));
     titleService.getAll().subscribe(result => {
       expect(result.length).toBe(1);

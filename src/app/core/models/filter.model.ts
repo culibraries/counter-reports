@@ -26,7 +26,7 @@ export class Filter {
     this.publisher.push(publisher);
   }
   public setTitle(title: string) {
-    title = title.replace(/&/g, '%26').replace(/ /g, '%20');
+    title = title.replace(/&/g, '%26');
     this.title.push(title);
   }
   public setFrom(from: string) {
@@ -35,27 +35,26 @@ export class Filter {
   public setTo(to: string) {
     this.to = to;
   }
-  getString(): string {
+  public getString(): string {
     let outString = '';
     if (this.platform.length > 0) {
-      outString += '<strong> Platform : </strong>' + this.platform.join(' OR');
+      outString += '<strong> Platform: </strong>' + this.platform.join(', ');
     }
     if (this.publisher.length > 0) {
-      outString +=
-        '<strong> Publisher : </strong> ' + this.publisher.join(' OR ');
+      outString += '<strong> Publisher: </strong>' + this.publisher.join(', ');
     }
     if (this.title.length > 0) {
-      outString += '<strong> Title : </strong>' + this.title.join(' OR');
+      outString += '<strong> Title: </strong>' + this.title.join(', ');
     }
     if (this.from) {
-      outString += '<strong> From : </strong>' + this.from;
+      outString += '<strong> From: </strong>' + this.from;
       if (this.to) {
-        outString += '<strong> To : </strong>' + this.to;
+        outString += '<strong> To: </strong>' + this.to;
       } else {
-        let now: Date = new Date();
+        const now: Date = new Date();
 
         outString +=
-          '<strong> To : </strong>' +
+          '<strong> To: </strong>' +
           now.getFullYear() +
           '-' +
           now.getMonth() +
@@ -67,7 +66,7 @@ export class Filter {
     return outString;
   }
 
-  getFilterURL(): string {
+  public getFilterURL(): string {
     let output = [];
     let range = '';
     if (this.title.length > 0) {
@@ -84,7 +83,7 @@ export class Filter {
       if (this.to) {
         range += '|' + this.to;
       } else {
-        let now: Date = new Date();
+        const now: Date = new Date();
         range +=
           '|' + now.getFullYear() + '-' + now.getMonth() + '-' + now.getDay();
       }

@@ -82,10 +82,3 @@ tr.example-element-row:not(.example-expanded-row):active {
 ul {
   padding-left: 0em;
 }
-
-
-::ng-deep .alert-success {
-  color: #155724;
-  background-color: #d4edda;
-  border-color: #c3e6cb;
-}

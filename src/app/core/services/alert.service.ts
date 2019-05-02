@@ -1,49 +1,48 @@
 import { Injectable } from '@angular/core';
-import { Alert, AlertType } from '../../core/models';
-import { Subject, Observable } from 'rxjs';
-import { Router, NavigationStart } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
+import { Config } from '../config';
+
+const durationTime = Config.snackBar.duration;
+
 @Injectable({
   providedIn: 'root'
 })
 export class AlertService {
-  private subject = new Subject<Alert>();
-  private keepAfterRouteChange = false;
+  constructor(private snackBar: MatSnackBar) {}
 
-  constructor(private router: Router) {
-    router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        this.keepAfterRouteChange = false;
-      } else {
-        this.clear();
-      }
+  danger(message: string) {
+    return this.alert('alert-danger', message);
+  }
+
+  success(message: string) {
+    return this.alert('alert-success', message);
+  }
+
+  warn(message: string) {
+    return this.alert('alert-warn', message);
+  }
+
+  default(message: string) {
+    return this.alert('alert-default', message);
+  }
+
+  undo(message: string) {
+    return this.alertWithButton('undo', message);
+  }
+
+  private alert(type: string, message: string) {
+    return this.snackBar.open(message, '', {
+      duration: durationTime,
+      panelClass: [type],
+      horizontalPosition: 'left'
     });
   }
 
-  getAlert(): Observable<any> {
-    return this.subject.asObservable();
-  }
-
-  success(message: string, keepAfterRouteChange = false) {
-    this.alert(AlertType.Success, message, keepAfterRouteChange);
-  }
-
-  error(message: string, keepAfterRouteChange = false) {
-    this.alert(AlertType.Error, message, keepAfterRouteChange);
-  }
-
-  info(message: string, keepAfterRouteChange = false) {
-    this.alert(AlertType.Info, message, keepAfterRouteChange);
-  }
-
-  warn(message: string, keepAfterRouteChange = false) {
-    this.alert(AlertType.Warning, message, keepAfterRouteChange);
-  }
-
-  alert(type: AlertType, message: string, keepAfterRouteChange = false) {
-    this.keepAfterRouteChange = keepAfterRouteChange;
-    this.subject.next(<Alert>{ type: type, message: message });
-  }
-  clear() {
-    this.subject.next();
+  private alertWithButton(button: string, message: string) {
+    return this.snackBar.open(message, button, {
+      duration: durationTime,
+      horizontalPosition: 'left',
+      panelClass: ['alert-with-undo']
+    });
   }
 }

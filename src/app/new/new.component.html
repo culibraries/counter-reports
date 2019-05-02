@@ -1,8 +1,7 @@
-  <app-alert></app-alert>
-
   <mat-card>
     <mat-card-content>
-      <app-filter (applyFilterEvent)="datalist.sendData($event)" (resetEvent)="datalist.reset($event)"></app-filter>
+      <app-filter (applyFilterEvent)="datalist.loadDataToTable($event)" (resetEvent)="datalist.resetDataTable($event)">
+      </app-filter>
     </mat-card-content>
 
     <mat-card-content>

@@ -20,6 +20,15 @@ export class ApiService {
       .pipe(catchError(this.formatErrors));
   }
 
+  // API: POST
+  public post(path: string, body: {}): Observable<any> {
+    return this.httpClient
+      .post(API_URL + path, JSON.stringify(body), {
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .pipe(catchError(this.formatErrors));
+  }
+
   private formatErrors(error: any) {
     return throwError(error.error);
   }

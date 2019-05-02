@@ -23,7 +23,8 @@
             ],
             "styles": [
               "src/style.css",
-              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/custom.css"
             ],
             "scripts": [],
             "es5BrowserSupport": true
@@ -80,7 +81,6 @@
             ],
             "scripts": [],
             "assets": [
-              "src/favicon.ico",
               "src/assets"
             ]
           }

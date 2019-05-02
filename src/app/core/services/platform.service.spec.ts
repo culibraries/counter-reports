@@ -11,9 +11,9 @@ describe('PlatformService', () => {
   let apiServiceSpy: jasmine.SpyObj<ApiService>;
 
   const mockObservablePlatform = [
-    { id: 1, name: 'ACM Digital Library' },
-    { id: 2, name: 'ACS Publications' },
-    { id: 3, name: 'AEA Publications' }
+    { name: 'ACM Digital Library' },
+    { name: 'ACS Publications' },
+    { name: 'AEA Publications' }
   ];
   beforeEach(() => {
     const spy = jasmine.createSpyObj('ApiService', ['get']);
@@ -29,9 +29,9 @@ describe('PlatformService', () => {
 
   it('should return an Observable<Platform[]>', () => {
     const platform: Platform[] = [
-      { id: 1, name: 'ACM Digital Library' },
-      { id: 2, name: 'ACS Publications' },
-      { id: 3, name: 'AEA Publications' }
+      { name: 'ACM Digital Library' },
+      { name: 'ACS Publications' },
+      { name: 'AEA Publications' }
     ];
     apiServiceSpy.get.and.returnValue(of(platform));
     platformService.getAll().subscribe(result => {

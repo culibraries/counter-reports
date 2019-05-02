@@ -9,7 +9,7 @@ describe('PublisherService', () => {
   let publisherService: PublisherService;
   let apiServiceSpy: jasmine.SpyObj<ApiService>;
 
-  const mockObservablePublisher = [{ id: 1, name: 'ACM' }];
+  const mockObservablePublisher = [{ name: 'ACM' }];
   beforeEach(() => {
     const spy = jasmine.createSpyObj('ApiService', ['get']);
 
@@ -23,7 +23,7 @@ describe('PublisherService', () => {
   });
 
   it('should return an Observable<Publisher[]>', () => {
-    const publisher: Publisher[] = [{ id: 1, name: 'ACM' }];
+    const publisher: Publisher[] = [{ name: 'ACM' }];
     apiServiceSpy.get.and.returnValue(of(publisher));
     publisherService.getAll().subscribe(result => {
       expect(result.length).toBe(1);

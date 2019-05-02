@@ -11,15 +11,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FooterComponent } from './shared/layout/footer/footer.component';
-import { HeaderComponent } from './shared/layout/header/header.component';
+
 import { CoreModule } from './core/core.module';
 import { NgProgressModule } from '@ngx-progressbar/core';
+import { LoginComponent } from './login/login.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { LogoutComponent } from './logout/logout.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
-  declarations: [AppComponent, FooterComponent, HeaderComponent],
+  declarations: [AppComponent, LoginComponent, LogoutComponent],
   imports: [
     BrowserModule,
+    SharedModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
@@ -28,7 +33,9 @@ import { NgProgressModule } from '@ngx-progressbar/core';
     FormsModule,
     ReactiveFormsModule,
     CoreModule,
-    NgProgressModule
+    NgProgressModule,
+    MatCardModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

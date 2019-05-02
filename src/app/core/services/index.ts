@@ -4,3 +4,7 @@ export * from './publisher.service';
 export * from './publication.service';
 export * from './title.service';
 export * from './alert.service';
+export * from './auth.service';
+export * from './auth-guard.service';
+export * from './export-excel.service';
+export * from './validator.service';

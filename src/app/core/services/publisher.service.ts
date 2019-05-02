@@ -10,7 +10,7 @@ export class PublisherService {
   constructor(private apiService: ApiService) {}
   getAll(): Observable<Publisher[]> {
     return this.apiService
-      .get('/publishers/?format=json')
+      .get('/counter/publishers/?format=json')
       .pipe(map(data => data));
   }
 }

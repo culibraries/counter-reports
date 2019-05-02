@@ -10,7 +10,7 @@ export class PlatformService {
   constructor(private apiService: ApiService) {}
   getAll(): Observable<Platform[]> {
     return this.apiService
-      .get('/platforms/?format=json')
+      .get('/counter/platforms/?format=json')
       .pipe(map(data => data));
   }
 }

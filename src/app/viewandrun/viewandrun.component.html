@@ -1,5 +1,6 @@
-<span style="font-size: 13px">Home > View/Run</span>
-<table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z8" style="margin-top: 10px;">
+<!-- <span style="font-size: 13px">Home > View/Run</span> -->
+<table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z8"
+  style="margin-top: 10px;">
 
   <!-- Position Column -->
   <ng-container matColumnDef="position">
@@ -50,7 +51,8 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 <div style=" width: 100%">
-  <mat-paginator style="float: left" [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  <mat-paginator style="float: left" [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
 
 
 </div>

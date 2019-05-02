@@ -2,7 +2,8 @@
   <div class="container">
     <div class="ucb-brand-bar ucb-brand-bar-black" style="position: relative">
       <a href="https://www.colorado.edu" class="ucb-home-link">
-        <img class="ucb-logo" src="https://cdn.colorado.edu/static/brand-assets/live/images/cu-boulder-logo-text-white.svg"
+        <img class="ucb-logo"
+          src="https://cdn.colorado.edu/static/brand-assets/live/images/cu-boulder-logo-text-white.svg"
           alt="University of Colorado Boulder" />
       </a>
       <div class="header-right-icon">
@@ -12,7 +13,8 @@
         <button aria-label="settings" mat-icon-button>
           <mat-icon>settings</mat-icon>
         </button>
-        <button aria-label="account" mat-icon-button [matMenuTriggerFor]="menu" style="background-color: black; color: white">
+        <button aria-label="account" mat-icon-button [matMenuTriggerFor]="menu"
+          style="background-color: black; color: white">
           <mat-icon>account_circle</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
@@ -20,10 +22,10 @@
             <mat-icon>recent_actors</mat-icon>
             <span>Profile</span>
           </button>
-          <button mat-menu-item>
+          <a routerLink="/logout" mat-menu-item>
             <mat-icon>power_settings_new</mat-icon>
             <span>Logout</span>
-          </button>
+          </a>
         </mat-menu>
       </div>
     </div>
@@ -46,7 +48,8 @@
       </label>
       <input type="checkbox" id="show-main-menu" role="button">
       <ul>
-        <li><a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true}"> Dashboard</a></li>
+        <li><a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true}">
+            Dashboard</a></li>
         <li><a routerLink="/new-reports" routerLinkActive="active">New Report</a></li>
         <li><a routerLink="/viewandrun" routerLinkActive="active">View / Run</a></li>
       </ul>

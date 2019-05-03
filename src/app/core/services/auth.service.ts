@@ -39,7 +39,7 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    return this.apiService.post('/api/token/', { username, password }).pipe(
+    return this.apiService.post('/token/', { username, password }).pipe(
       map(data => {
         localStorage.setItem('token', data.access);
       })

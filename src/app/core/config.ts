@@ -13,7 +13,9 @@ export const Config = {
   authenticationMessage: {
     unauthorizedAccess: 'You are not authorized', // Account exist but not belong to admin group
     notExist: 'No active account found with the given credentials', // Account Not found in the system
-    tokenisNotValid: 'You are out of session ! Please log back in' // Invalid Token
+    tokenisNotValid: 'You are out of session ! Please log back in', // Invalid Token
+    generalErrorMessage:
+      'Error ! Please create a ticket to LIT for further assistanct'
   },
   snackBar: {
     duration: 4000

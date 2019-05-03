@@ -44,17 +44,18 @@ export class AuthInterceptor implements HttpInterceptor {
         error => {
           if (error instanceof HttpErrorResponse) {
             let message = '';
-            console.log(error);
             if (error.status === 401 || error.status === 403) {
               if (error.error.code && error.error.code === 'token_not_valid') {
                 message = config.tokenisNotValid;
               } else {
                 message = config.notExist;
               }
-              this.alert.danger(message);
-              this.router.navigate(['/login']);
-              return;
+            } else {
+              message = config.generalErrorMessage;
             }
+            this.alert.danger(message);
+            this.router.navigate(['/login']);
+            return;
           }
         }
       )

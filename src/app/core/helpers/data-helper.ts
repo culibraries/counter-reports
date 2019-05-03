@@ -24,17 +24,17 @@ export class DataHelper {
     return output;
   }
 
-  trimData(data: any) {
-    data.forEach(i => {
-      i.MonthsTotal.forEach(months => {
-        i[months.month] = months.total;
-      });
-      delete i.MonthsTotal;
-      delete i.period;
-      delete i.requests;
-      delete i.id;
-      delete i.Total;
+  trimData(data: any[]) {
+    data.map(r => {
+      if (r.MonthsTotal) {
+        r.MonthsTotal.forEach(months => {
+          r[months.month] = months.total;
+        });
+      }
     });
-    return data;
+    const output = data.map(
+      ({ id, period, MonthsTotal, requests, ...title }) => title
+    );
+    return output;
   }
 }

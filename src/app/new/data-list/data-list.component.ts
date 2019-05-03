@@ -9,7 +9,7 @@ import {
   ExportExcelService
 } from '../../core';
 import { Config } from '../../core';
-import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY } from '@angular/cdk/overlay/typings/overlay-directives';
+
 @Component({
   selector: 'app-data-list',
   templateUrl: './data-list.component.html',
@@ -34,7 +34,7 @@ export class DataListComponent implements OnInit {
     'total'
   ];
   expandedElement: [] | null;
-
+  data: any;
   monthDatas: MonthData[] = [];
   monthData: MonthData = { month: '', total: 0 };
   dataSource = new MatTableDataSource([]);
@@ -68,16 +68,18 @@ export class DataListComponent implements OnInit {
   private applyFilterByCallingAPI(filterURL: string) {
     this.publicationService.getByFilters(filterURL).subscribe(result => {
       /* Reformating Data from API*/
-      this.dataSource.data = this.dataHelper.convertPublicationData(result);
+      this.data = this.dataHelper.convertPublicationData(result);
 
-      this.alert.success(this.dataSource.data.length + ' record(s) has found');
+      this.alert.success(this.data.length + ' record(s) has found');
 
       /* Enable export button */
-      if (this.dataSource.data.length > 0) {
+      if (this.data.length > 0) {
         this.disabledExportButton = false;
       } else {
         this.disabledExportButton = true;
       }
+
+      this.dataSource.data = this.data;
     });
   }
 
@@ -94,9 +96,8 @@ export class DataListComponent implements OnInit {
   }
 
   export() {
-    this.dataHelper.trimData(this.dataSource.data);
     this.exportService.exportAsExcelFile(
-      this.dataSource.data,
+      this.dataHelper.trimData(this.data),
       'Counter_Report_'
     );
   }

@@ -1,46 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-export interface PeriodicElement {
-  title: string;
-  position: number;
-  description: string;
-  created_by: string;
-  created_at: string;
-}
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    position: 1,
-    title: 'JR1 ACM 2017',
-    description:
-      'This report is exported in order to get all JR1 report of ACM platform of 2017',
-    created_by: 'Fred Schumacher',
-    created_at: '2019-02-12 11:32:00'
-  },
-  {
-    position: 2,
-    title: 'JR1 ACM 2016',
-    description:
-      'This report is exported in order to get all JR1 report of ACM platform of 2017',
-    created_by: 'Fred Schumacher',
-    created_at: '2019-02-12 11:32:00'
-  },
-  {
-    position: 3,
-    title: 'JR1 ACM 2018',
-    description:
-      'This report is exported in order to get all JR1 report of ACM platform of 2017',
-    created_by: 'Erin Block',
-    created_at: '2019-02-12 11:32:00'
-  },
-  {
-    position: 4,
-    title: 'JR1 ACM 2019',
-    description:
-      'This report is exported in order to get all JR1 report of ACM platform of 2017',
-    created_by: 'Erin Block',
-    created_at: '2019-02-12 11:32:00'
-  }
-];
+import { FilterRecordService, FilterRecord } from '../core';
+import { MatDialog } from '@angular/material';
+import { SaveModalBoxComponent } from '../shared';
+
 @Component({
   selector: 'app-viewandrun',
   templateUrl: './viewandrun.component.html',
@@ -48,19 +11,55 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class ViewandrunComponent implements OnInit {
   displayedColumns: string[] = [
-    'position',
-    'title',
+    'name',
     'description',
-    'created_by',
+    'owner',
     'created_at',
+    'updated_at',
     'actions'
   ];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
-  @ViewChild(MatSort) sort: MatSort;
+  dataSource = new MatTableDataSource([]);
+  filterRecord: FilterRecord[];
 
-  constructor() {}
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  constructor(
+    public dialog: MatDialog,
+    private filterRecordService: FilterRecordService
+  ) {}
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.loadAllFiltersRecord();
+  }
+
+  loadAllFiltersRecord() {
+    // this.dataSource.data = this.filterRecord;
+
+    this.filterRecordService.getAll().subscribe(result => {
+      this.dataSource.data = result;
+    });
+  }
+
+  delete(id) {
+    this.filterRecordService.delete(id).subscribe(result => {
+      this.loadAllFiltersRecord();
+    });
+  }
+  edit() {
+    const dialogRef = this.dialog.open(SaveModalBoxComponent, {
+      width: '500px'
+      // data: this.filter
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {});
+  }
+  searchFilterRecord(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }

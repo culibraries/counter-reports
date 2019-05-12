@@ -1410,12 +1410,10 @@ input[type="button"] {
 }
 
 input.form-text,
-textarea.form-textarea,
 input[type=text],
 input[type=email],
 input[type=tel],
-input[type=password],
-textarea {
+input[type=password] {
   padding: 10px;
   border: 1px solid rgba(128, 128, 128, 0.333);
   background-color: rgba(128, 128, 128, 0.1);
@@ -1423,10 +1421,10 @@ textarea {
   line-height: 150%;
 }
 
-textarea {
+/* textarea {
   display: block;
   width: 100%;
-}
+} */
 
 input.form-text,
 input[type=text],
@@ -1442,8 +1440,6 @@ input[type=tel] {
 }
 
 input.form-text:focus,
-textarea.form-textarea:focus,
-textarea:focus,
 input[type=text]:focus,
 input[type=email]:focus,
 input[type=password]:focus,

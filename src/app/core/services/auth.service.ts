@@ -34,6 +34,12 @@ export class AuthService {
   getToken(): string {
     return localStorage.getItem('token');
   }
+
+  getUserName(): string {
+    const token = localStorage.getItem('token');
+    const tokenPayload = this.jwtHelper.decodeToken(token);
+    return tokenPayload.username;
+  }
   isTokenExist(): boolean {
     return localStorage.hasOwnProperty('token');
   }

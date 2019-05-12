@@ -7,9 +7,10 @@ import {
   EventEmitter
 } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { SaveModalBoxComponent } from '../save-modal-box/save-modal-box.component';
+import { SaveModalBoxComponent } from '../../shared';
 import { FilterItemComponent } from '../filter-item/filter-item.component';
-import { AlertService, Filter, ValidatorService } from '../../core';
+import { Filter, ValidatorService } from '../../core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-filter',
@@ -20,7 +21,7 @@ import { AlertService, Filter, ValidatorService } from '../../core';
 export class FilterComponent implements OnInit {
   @ViewChildren('filterItem') filterItem: QueryList<FilterItemComponent>;
 
-  filterItems: number[] = [];
+  filterItems = [];
   isShowFilterOption = false;
 
   filterDisplay = '';
@@ -31,12 +32,36 @@ export class FilterComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private filter: Filter,
-    private validator: ValidatorService
-  ) {}
+    private validator: ValidatorService,
+    private route: ActivatedRoute
+  ) {
+    this.route.params.subscribe(params => {
+      if (!this.isEmpty(params)) {
+        const newFilter = new Filter();
+        const filterObject = newFilter.getFilterObject(params.params);
+        this.filterDisplay = filterObject.getString();
+        this.isShowFilterOption = true;
+        this.filterItems.length = filterObject.countItem();
+        filterObject.toJson().forEach((element, i) => {
+          this.filterItems[i] = element;
+        });
 
-  ngOnInit() {
-    this.filterItems.push(this.filterItems.length);
+        setTimeout(() => {
+          this.applyFilterEvent.emit(filterObject.getFilterURL());
+        }, 500);
+      }
+    });
   }
+
+  isEmpty(obj) {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  ngOnInit() {}
 
   toggleFilterOption() {
     if (this.filterItems.length === 0) {
@@ -96,9 +121,10 @@ export class FilterComponent implements OnInit {
 
   openSaveModal() {
     const dialogRef = this.dialog.open(SaveModalBoxComponent, {
-      width: '500px'
+      width: '500px',
+      data: this.filter
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    // dialogRef.afterClosed().subscribe(result => {});
   }
 }

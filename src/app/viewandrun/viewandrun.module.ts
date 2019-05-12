@@ -8,6 +8,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material';
 
 @NgModule({
   declarations: [ViewandrunComponent],
@@ -19,7 +21,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatSortModule,
     MatIconModule,
     MatButtonModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    FormsModule,
+    MatInputModule
   ]
 })
 export class ViewandrunModule {}

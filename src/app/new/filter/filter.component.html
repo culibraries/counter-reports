@@ -13,7 +13,7 @@
     </button>
   </div>
   <div *ngFor="let item of filterItems" class="control-filter-content">
-    <app-filter-item #filterItem></app-filter-item>
+    <app-filter-item #filterItem [itemDetail]=item></app-filter-item>
     <button mat-icon-button (click)="increment()" style="margin-left: 45px;">
       <mat-icon>add_circle_outline</mat-icon>
     </button>

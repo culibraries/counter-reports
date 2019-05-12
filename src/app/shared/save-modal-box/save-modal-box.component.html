@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Save Report</h1>
+
+<div mat-dialog-content>
+  <div class="example-container">
+
+    <mat-form-field>
+      <input name="inputName" matInput placeholder="Name" [formControl]="nameFormControl">
+      <mat-error *ngIf="nameFormControl.hasError('required')">
+        Name is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea name="textDescription" [formControl]="descriptionFormControl" matInput placeholder="Description"
+        style="height: 100px;"></textarea>
+    </mat-form-field>
+    <p [innerHTML]="filters">Filters : </p>
+    <p>Today : {{now}}</p>
+  </div>
+
+</div>
+<div mat-dialog-actions style="float: right;margin-bottom: 8px">
+  <button mat-stroked-button (click)="onNoClick()" style="outline:0;">No Thanks</button>
+  <button mat-stroked-button (click)="onSave()"
+    style="background-color: #3677BD; color: white;margin-left: 5px; outline: 0 ">Save</button>
+</div>

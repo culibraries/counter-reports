@@ -88,7 +88,7 @@ export class DataListComponent implements OnInit {
     this.disabledExportButton = true;
   }
 
-  applyFilter(filterValue: string) {
+  searchFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();

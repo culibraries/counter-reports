@@ -10,7 +10,8 @@ import {
   AuthService,
   AuthGuardService,
   ExportExcelService,
-  ValidatorService
+  ValidatorService,
+  FilterRecordService
 } from './services';
 import { DataHelper } from './helpers';
 import { httpInterceptorProviders } from '../core/interceptors';
@@ -32,6 +33,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ExportExcelService,
     DataHelper,
     ValidatorService,
+    FilterRecordService,
     httpInterceptorProviders
   ]
 })

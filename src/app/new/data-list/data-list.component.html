@@ -61,7 +61,7 @@
   <mat-paginator style="float: left" [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
   </mat-paginator>
   <mat-form-field style="width: 400px; float: left">
-    <input style="outline: 0" matInput (keyup)="applyFilter($event.target.value)" placeholder="Search...">
+    <input style="outline: 0" matInput (keyup)="searchFilter($event.target.value)" placeholder="Search...">
   </mat-form-field>
   <button class="export-button" mat-stroked-button (click)="export()" [disabled]="disabledExportButton">Export</button>
 </div>

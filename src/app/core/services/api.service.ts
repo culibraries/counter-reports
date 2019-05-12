@@ -29,6 +29,12 @@ export class ApiService {
       .pipe(catchError(this.formatErrors));
   }
 
+  // API: DELETE
+  public delete(path: string): Observable<any> {
+    return this.httpClient
+      .delete(API_URL + path)
+      .pipe(catchError(this.formatErrors));
+  }
   private formatErrors(error: any) {
     return throwError(error.error);
   }

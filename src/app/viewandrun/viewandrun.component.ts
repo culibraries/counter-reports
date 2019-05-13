@@ -45,7 +45,6 @@ export class ViewandrunComponent implements OnInit {
   loadAllFiltersRecord() {
     this.filterRecordService.getAll().subscribe(result => {
       result.forEach(e => {
-        console.log(e);
         e['isBelongsToMe'] = this.auth.isUser(e.owner);
         e['filterDisplay'] = this.filter.getFilterObject(e.params).getString();
       });

@@ -49,7 +49,9 @@ export class FilterItemComponent implements OnInit {
   ngOnInit() {
     if (this.itemDetail) {
       const key = Object.keys(this.itemDetail);
-      const value = Object.values(this.itemDetail).toString();
+      const value = Object.values(this.itemDetail)
+        .toString()
+        .replace(/%26/g, '&');
       this.selectedFilter = key[0];
       this.filterControl.setValue(value);
       this.loadFilterValueBySelectedFilter(this.selectedFilter);

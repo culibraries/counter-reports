@@ -37,7 +37,7 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef width="105px;" style="padding-left: 8px;"> Actions </th>
         <td mat-cell *matCellDef="let element">
-          <button aria-label="delete" mat-icon-button (click)="edit(element.id)" *ngIf=element.isBelongsToMe>
+          <button aria-label="edit" mat-icon-button (click)="edit(element.id)" *ngIf=element.isBelongsToMe>
             <mat-icon style="color: #2E7D32">edit</mat-icon>
           </button>
           <button aria-label="delete" mat-icon-button (click)="delete(element.id)" *ngIf=element.isBelongsToMe>

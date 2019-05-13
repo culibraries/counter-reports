@@ -16,7 +16,7 @@ import {
   AuthService,
   AlertService
 } from 'src/app/core';
-/** Error when invalid control is dirty, touched, or submitted. */
+
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
     control: FormControl | null,
@@ -82,13 +82,7 @@ export class SaveModalBoxComponent implements OnInit {
         .getString();
     }
 
-    this.now = this.getDateString();
-  }
-
-  private getDateString(): string {
-    const fullDate = new Date().toLocaleDateString();
-    const arrFullDate = fullDate.split('/');
-    return arrFullDate[2] + '-' + arrFullDate[0] + '-' + arrFullDate[1];
+    this.now = new Date().toISOString().slice(0, 10);
   }
 
   onNoClick(): void {
@@ -114,8 +108,8 @@ export class SaveModalBoxComponent implements OnInit {
             this.descriptionFormControl.value,
             this.data.message.getFilterURL(),
             this.auth.getUserName(),
-            this.getDateString(),
-            this.getDateString()
+            this.now,
+            this.now
           );
           this.filterRecordService
             .save(this.filterRecord)
@@ -129,7 +123,7 @@ export class SaveModalBoxComponent implements OnInit {
             this.data.message.getFilterURL(),
             this.data.message2.owner,
             this.data.message2.created_at,
-            this.getDateString()
+            this.now
           );
 
           this.filterRecordService
@@ -146,14 +140,14 @@ export class SaveModalBoxComponent implements OnInit {
           this.data.message.params,
           this.data.message.owner,
           this.data.message.created_at,
-          this.getDateString()
+          this.now
         );
 
         this.filterRecordService
           .update(this.filterRecord, this.data.message.id)
           .subscribe(data => {});
       }
-      this.alert.success('Great ! You got it');
+      this.alert.success('Great ! You have got it');
       this.dialogRef.close();
     } catch (error) {
       this.alert.danger('Oops ! Something went wrong');

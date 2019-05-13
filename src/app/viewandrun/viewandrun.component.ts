@@ -79,7 +79,7 @@ export class ViewandrunComponent implements OnInit {
           this.filterRecordService.delete(id).subscribe(result => {
             this.loadAllFiltersRecord();
           });
-          this.alert.success('Great ! The record has been deleted');
+          this.alert.success('All right ! The record has been deleted');
         } catch (error) {
           this.alert.danger('Oops ! Something went wrong');
         }

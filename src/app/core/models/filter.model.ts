@@ -35,6 +35,7 @@ export class Filter {
     filter.to = range ? range.split('|')[1] : '';
     return filter;
   }
+
   public toJson() {
     let output = [];
     if (this.title.length > 0) {
@@ -75,6 +76,9 @@ export class Filter {
     title = title.replace(/&/g, '%26');
     this.title.push(title);
   }
+  public getTitle(title: string) {
+    return title.replace(/%26/g, '&');
+  }
   public setFrom(from: string) {
     this.from = from;
   }
@@ -90,7 +94,8 @@ export class Filter {
       outString += '<strong> Publisher: </strong>' + this.publisher.join(', ');
     }
     if (this.title.length > 0) {
-      outString += '<strong> Title: </strong>' + this.title.join(', ');
+      const titleOut = this.getTitle(this.title.join(', '));
+      outString += '<strong> Title: </strong>' + titleOut;
     }
     if (this.from) {
       outString += '<strong> From: </strong>' + this.from;
@@ -99,13 +104,7 @@ export class Filter {
       } else {
         const now: Date = new Date();
 
-        outString +=
-          '<strong> To: </strong>' +
-          now.getFullYear() +
-          '-' +
-          now.getMonth() +
-          '-' +
-          now.getDay();
+        outString += '<strong> To: </strong>' + now.toISOString().slice(0, 10);
       }
     }
 
@@ -130,8 +129,7 @@ export class Filter {
         range += '|' + this.to;
       } else {
         const now: Date = new Date();
-        range +=
-          '|' + now.getFullYear() + '-' + now.getMonth() + '-' + now.getDay();
+        range += '|' + now.toISOString().slice(0, 10);
       }
       output.push('range=' + range);
     }

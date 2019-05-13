@@ -1,20 +1,21 @@
-.example-container {
+.form-container {
   display: flex;
   flex-direction: column;
+  font-size: 14px;
 }
 
-.example-container input {
+.form-container input {
   outline: 0;
 }
 
-.example-container>* {
+.form-container>* {
   width: 100%;
 }
 
-.example-container form {
+.form-container form {
   margin-bottom: 20px;
 }
 
-.example-container form>* {
+.form-container form>* {
   margin: 5px 0;
 }

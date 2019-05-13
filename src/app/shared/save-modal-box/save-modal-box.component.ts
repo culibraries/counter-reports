@@ -40,42 +40,115 @@ export class SaveModalBoxComponent implements OnInit {
   descriptionFormControl = new FormControl('');
   matcher = new MyErrorStateMatcher();
   now: string;
-  fullDate = new Date().toLocaleDateString();
-  arrFullDate = this.fullDate.split('/');
+  created_at: string;
+  updated_at: string;
+
   filters: string;
   filterRecord: FilterRecord;
+  isBelongsToMe: boolean = false;
+  isKeep: boolean = false;
   constructor(
     public dialogRef: MatDialogRef<SaveModalBoxComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Filter,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private filterRecordService: FilterRecordService,
     private auth: AuthService
   ) {}
 
+  isKeepOriginal(event) {
+    this.isKeep = event.checked;
+  }
+
   ngOnInit() {
-    this.filters = this.data.getString();
-    this.now =
-      this.arrFullDate[2] +
-      '-' +
-      this.arrFullDate[0] +
-      '-' +
-      this.arrFullDate[1];
+    console.log(this.data);
+    if (this.data.action === 'create') {
+      if (!this.data.params) {
+        this.filters = this.data.message.getString();
+      } else {
+        this.nameFormControl.setValue(this.data.message2.name);
+        this.descriptionFormControl.setValue(this.data.message2.description);
+        this.filters = this.data.message.getString();
+        this.isBelongsToMe = this.auth.isUser(this.data.message2.owner);
+      }
+    }
+
+    if (this.data.action === 'edit') {
+      const filter = new Filter();
+      this.nameFormControl.setValue(this.data.message.name);
+      this.descriptionFormControl.setValue(this.data.message.description);
+      this.filters = filter
+        .getFilterObject(this.data.message.params)
+        .getString();
+    }
+
+    this.now = this.getDateString();
+  }
+
+  private getDateString(): string {
+    const fullDate = new Date().toLocaleDateString();
+    const arrFullDate = fullDate.split('/');
+    return arrFullDate[2] + '-' + arrFullDate[0] + '-' + arrFullDate[1];
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-  onSave(): void {
-    this.filterRecord = new FilterRecord(
-      this.nameFormControl.value,
-      this.descriptionFormControl.value,
-      this.data.getFilterURL(),
-      this.auth.getUserName(),
-      this.now,
-      this.now
-    );
 
-    this.filterRecordService.save(this.filterRecord).subscribe(data => {
-      console.log(data);
-    });
+  onSave(): void {
+    if (!this.nameFormControl.valid) {
+      return;
+    }
+
+    if (this.data.action === 'create') {
+      console.log('create');
+      if (
+        (this.isKeep && this.data.params) ||
+        (!this.isKeep && !this.data.params) ||
+        (!this.isKeep &&
+          this.data.params &&
+          !this.auth.isUser(this.data.message2.owner))
+      ) {
+        this.filterRecord = new FilterRecord(
+          this.nameFormControl.value,
+          this.descriptionFormControl.value,
+          this.data.message.getFilterURL(),
+          this.auth.getUserName(),
+          this.getDateString(),
+          this.getDateString()
+        );
+        this.filterRecordService.save(this.filterRecord).subscribe(data => {});
+      } else {
+        console.log('update');
+
+        this.filterRecord = new FilterRecord(
+          this.nameFormControl.value,
+          this.descriptionFormControl.value,
+          this.data.message.getFilterURL(),
+          this.data.message2.owner,
+          this.data.message2.created_at,
+          this.getDateString()
+        );
+
+        this.filterRecordService
+          .update(this.filterRecord, this.data.message2.id)
+          .subscribe(data => {});
+      }
+    }
+
+    if (this.data.action === 'edit') {
+      console.log('edit');
+      this.filterRecord = new FilterRecord(
+        this.nameFormControl.value,
+        this.descriptionFormControl.value,
+        this.data.message.params,
+        this.data.message.owner,
+        this.data.message.created_at,
+        this.getDateString()
+      );
+
+      this.filterRecordService
+        .update(this.filterRecord, this.data.message.id)
+        .subscribe(data => {});
+    }
+    this.dialogRef.close();
   }
 }

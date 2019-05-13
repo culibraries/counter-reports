@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { PlatformService, PublisherService, TitleService } from '../../core';
 import { Config } from '../../core';
-import { ActivatedRoute } from '@angular/router';
 
 export interface Filter {
   value: string;
@@ -44,8 +43,7 @@ export class FilterItemComponent implements OnInit {
   constructor(
     private platformService: PlatformService,
     private publisherService: PublisherService,
-    private titleService: TitleService,
-    private router: ActivatedRoute
+    private titleService: TitleService
   ) {}
 
   ngOnInit() {

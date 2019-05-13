@@ -9,28 +9,32 @@ import { map } from 'rxjs/operators';
 })
 export class FilterRecordService {
   constructor(private apiService: ApiService) {}
+
   getAll(): Observable<FilterRecord[]> {
     return this.apiService
       .get('/counter/filters/?format=json')
       .pipe(map(data => data));
   }
 
-  delete(id: string) {
+  getById(id: number): Observable<FilterRecord> {
+    return this.apiService
+      .get('/counter/filters/' + id)
+      .pipe(map(data => data));
+  }
+
+  delete(id: number) {
     return this.apiService.delete('/counter/filters/' + id);
   }
 
   save(filterRecord: FilterRecord): Observable<boolean> {
-    // // If we're updating an existing article
-    // if (article.slug) {
-    //   return this.apiService.put('/articles/' + article.slug, {article: article})
-    //     .pipe(map(data => data.article));
-
-    // // Otherwise, create a new article
-    // } else {
-    console.log(filterRecord.toJson());
     return this.apiService
       .post('/counter/filters/', filterRecord.toJson())
       .pipe(map(data => data.filterRecord));
-    // }
+  }
+
+  update(filterRecord: FilterRecord, id: number): Observable<boolean> {
+    return this.apiService
+      .put('/counter/filters/' + id + '/', filterRecord.toJson())
+      .pipe(map(data => data.filterRecord));
   }
 }

@@ -9,7 +9,12 @@ import {
 import { MatDialog } from '@angular/material';
 import { SaveModalBoxComponent } from '../../shared';
 import { FilterItemComponent } from '../filter-item/filter-item.component';
-import { Filter, ValidatorService } from '../../core';
+import {
+  Filter,
+  ValidatorService,
+  FilterRecordService,
+  FilterRecord
+} from '../../core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -25,7 +30,8 @@ export class FilterComponent implements OnInit {
   isShowFilterOption = false;
 
   filterDisplay = '';
-
+  params: boolean = false;
+  filterRecord: FilterRecord;
   @Output() applyFilterEvent = new EventEmitter();
   @Output() resetEvent = new EventEmitter();
 
@@ -33,10 +39,12 @@ export class FilterComponent implements OnInit {
     public dialog: MatDialog,
     private filter: Filter,
     private validator: ValidatorService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private filterRecordService: FilterRecordService
   ) {
     this.route.params.subscribe(params => {
       if (!this.isEmpty(params)) {
+        this.params = true;
         const newFilter = new Filter();
         const filterObject = newFilter.getFilterObject(params.params);
         this.filterDisplay = filterObject.getString();
@@ -49,6 +57,10 @@ export class FilterComponent implements OnInit {
         setTimeout(() => {
           this.applyFilterEvent.emit(filterObject.getFilterURL());
         }, 500);
+
+        this.filterRecordService.getById(params.id).subscribe(result => {
+          this.filterRecord = result;
+        });
       }
     });
   }
@@ -61,6 +73,7 @@ export class FilterComponent implements OnInit {
     }
     return true;
   }
+
   ngOnInit() {}
 
   toggleFilterOption() {
@@ -94,15 +107,15 @@ export class FilterComponent implements OnInit {
     this.resetEvent.emit();
   }
 
-  applyFilter() {
+  applyFilter(): boolean {
     /* Initialize new filter object */
     this.filter = new Filter();
-
     if (this.validator.validateFilters(this.filterItem, this.filter)) {
       /* Only apply filter when it passes the validation */
       this.applyFilterEvent.emit(this.filter.getFilterURL());
+      return true;
     } else {
-      return;
+      return false;
     }
   }
 
@@ -120,11 +133,20 @@ export class FilterComponent implements OnInit {
   }
 
   openSaveModal() {
-    const dialogRef = this.dialog.open(SaveModalBoxComponent, {
-      width: '500px',
-      data: this.filter
-    });
-
-    // dialogRef.afterClosed().subscribe(result => {});
+    this.filter = new Filter();
+    if (this.validator.validateFilters(this.filterItem, this.filter)) {
+      this.dialog.open(SaveModalBoxComponent, {
+        width: '500px',
+        height: 'auto',
+        data: {
+          action: 'create',
+          params: this.params,
+          message: this.filter,
+          message2: this.filterRecord
+        }
+      });
+    } else {
+      return;
+    }
   }
 }

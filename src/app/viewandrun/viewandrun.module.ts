@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [ViewandrunComponent],
@@ -23,7 +24,8 @@ import { MatInputModule } from '@angular/material';
     MatButtonModule,
     MatFormFieldModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    MatCardModule
   ]
 })
 export class ViewandrunModule {}

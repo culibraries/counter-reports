@@ -21,7 +21,7 @@ export const Config = {
     duration: 4000
   },
   messages: {
-    warningAllRecords: 'All data will be retrieved'
+    warningAllRecords: 'All data are being retrieved'
   },
   group: 'admin-counter',
   years: [

@@ -1,58 +1,65 @@
-<!-- <span style="font-size: 13px">Home > View/Run</span> -->
-<table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z8"
-  style="margin-top: 10px;">
+<mat-card>
+  <mat-card-content>
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort style="margin-top: 10px;">
 
-  <!-- Position Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-    <td mat-cell *matCellDef="let element"><a
-        [routerLink]="['/new-reports',element.id,element.params]">{{element.name}}</a>
-    </td>
-  </ng-container>
+      <!-- Position Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let element"><a
+            [routerLink]="['/new-reports',element.id,element.params]">{{element.name}}</a>
+        </td>
+      </ng-container>
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="description">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 400px;"> Description </th>
-    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-  </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 450px;"> Description </th>
+        <td mat-cell *matCellDef="let element">
+          <!-- <div [innerHTML]=element.filterDisplay></div> -->
+          {{element.description}}
+        </td>
+      </ng-container>
 
-  <!-- Symbol Column -->
-  <ng-container matColumnDef="owner">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Owner </th>
-    <td mat-cell *matCellDef="let element"> {{element.owner}} </td>
-  </ng-container>
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="owner">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Owner </th>
+        <td mat-cell *matCellDef="let element"> {{element.owner}} </td>
+      </ng-container>
 
-  <ng-container matColumnDef="created_at">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header width="140px"> Created At </th>
-    <td mat-cell *matCellDef="let element"> {{element.created_at}} </td>
-  </ng-container>
+      <ng-container matColumnDef="created_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header width="100px"> Created At </th>
+        <td mat-cell *matCellDef="let element"> {{element.created_at}} </td>
+      </ng-container>
 
-  <ng-container matColumnDef="updated_at">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header width="140px"> Updated At </th>
-    <td mat-cell *matCellDef="let element"> {{element.updated_at}} </td>
-  </ng-container>
+      <ng-container matColumnDef="updated_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header width="100px"> Updated At </th>
+        <td mat-cell *matCellDef="let element"> {{element.updated_at}} </td>
+      </ng-container>
 
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header width="105px;" style="padding-left: 8px;"> Actions </th>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef width="105px;" style="padding-left: 8px;"> Actions </th>
+        <td mat-cell *matCellDef="let element">
 
-    <td mat-cell *matCellDef="let element">
-      <button aria-label="delete" mat-icon-button (click)="edit()">
-        <mat-icon style="color: green">edit</mat-icon>
-      </button>
-      <button aria-label="delete" mat-icon-button (click)="delete(element.id)">
-        <mat-icon style="color: #B71C1C">delete</mat-icon>
-      </button>
-    </td>
-  </ng-container>
+          <button aria-label="delete" mat-icon-button (click)="edit(element.id)" *ngIf=element.isBelongsToMe>
+            <mat-icon style="color: green">edit</mat-icon>
+          </button>
+          <button aria-label="delete" mat-icon-button (click)="delete(element.id)" *ngIf=element.isBelongsToMe>
+            <mat-icon style="color: #B71C1C">delete</mat-icon>
+          </button>
+        </td>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-<div style=" width: 100%">
-  <mat-paginator style="float: left" [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
-  </mat-paginator>
+      </ng-container>
 
-  <mat-form-field style="width: 400px; float: left">
-    <input style="outline: 0" matInput (keyup)="searchFilterRecord($event.target.value)" placeholder="Search...">
-  </mat-form-field>
-</div>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div style=" width: 100%">
+      <mat-paginator style="float: left" [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator>
+
+      <mat-form-field style="width: 400px; float: left">
+        <input style="outline: 0" matInput (keyup)="searchFilterRecord($event.target.value)" placeholder="Search...">
+      </mat-form-field>
+    </div>
+
+  </mat-card-content>
+</mat-card>

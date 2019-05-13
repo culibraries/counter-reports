@@ -1,18 +1,34 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import {
+  MatPaginator,
+  MatSort,
+  MatTableDataSource,
+  MatDialogRef
+} from '@angular/material';
 import {
   FilterRecordService,
   FilterRecord,
   AuthService,
-  Filter
+  Filter,
+  AlertService
 } from '../core';
 import { MatDialog } from '@angular/material';
-import { SaveModalBoxComponent } from '../shared';
+import { SaveModalBoxComponent, ConfirmComponent } from '../shared';
+import { trigger, state, style } from '@angular/animations';
 
 @Component({
   selector: 'app-viewandrun',
   templateUrl: './viewandrun.component.html',
-  styleUrls: ['./viewandrun.component.css']
+  styleUrls: ['./viewandrun.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state(
+        'collapsed',
+        style({ height: '0px', minHeight: '0', display: 'none' })
+      ),
+      state('expanded', style({ height: '*' }))
+    ])
+  ]
 })
 export class ViewandrunComponent implements OnInit {
   displayedColumns: string[] = [
@@ -27,13 +43,16 @@ export class ViewandrunComponent implements OnInit {
   filterRecord: FilterRecord[];
   isBelongsToMe: boolean;
   filter = new Filter();
+  expandedElement: [] | null;
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     public dialog: MatDialog,
     private filterRecordService: FilterRecordService,
-    private auth: AuthService
+    private auth: AuthService,
+    private alert: AlertService
   ) {}
 
   ngOnInit() {
@@ -53,8 +72,18 @@ export class ViewandrunComponent implements OnInit {
   }
 
   delete(id: number) {
-    this.filterRecordService.delete(id).subscribe(result => {
-      this.loadAllFiltersRecord();
+    const dialogRef = this.dialog.open(ConfirmComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        try {
+          this.filterRecordService.delete(id).subscribe(result => {
+            this.loadAllFiltersRecord();
+          });
+          this.alert.success('Great ! The record has been deleted');
+        } catch (error) {
+          this.alert.danger('Oops ! Something went wrong');
+        }
+      }
     });
   }
 

@@ -14,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ConfirmComponent } from './confirm/confirm.component';
 
 @NgModule({
   declarations: [
@@ -21,9 +22,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MonthConvertPipe,
     FooterComponent,
     HeaderComponent,
-    SaveModalBoxComponent
+    SaveModalBoxComponent,
+    ConfirmComponent
   ],
-  entryComponents: [SaveModalBoxComponent],
+  entryComponents: [SaveModalBoxComponent, ConfirmComponent],
   imports: [
     CommonModule,
     RouterModule,

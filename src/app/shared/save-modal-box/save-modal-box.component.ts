@@ -13,7 +13,8 @@ import {
   FilterRecordService,
   FilterRecord,
   Filter,
-  AuthService
+  AuthService,
+  AlertService
 } from 'src/app/core';
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -51,7 +52,8 @@ export class SaveModalBoxComponent implements OnInit {
     public dialogRef: MatDialogRef<SaveModalBoxComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private filterRecordService: FilterRecordService,
-    private auth: AuthService
+    private auth: AuthService,
+    private alert: AlertService
   ) {}
 
   isKeepOriginal(event) {
@@ -97,58 +99,64 @@ export class SaveModalBoxComponent implements OnInit {
     if (!this.nameFormControl.valid) {
       return;
     }
+    try {
+      if (this.data.action === 'create') {
+        console.log('create');
+        if (
+          (this.isKeep && this.data.params) ||
+          (!this.isKeep && !this.data.params) ||
+          (!this.isKeep &&
+            this.data.params &&
+            !this.auth.isUser(this.data.message2.owner))
+        ) {
+          this.filterRecord = new FilterRecord(
+            this.nameFormControl.value,
+            this.descriptionFormControl.value,
+            this.data.message.getFilterURL(),
+            this.auth.getUserName(),
+            this.getDateString(),
+            this.getDateString()
+          );
+          this.filterRecordService
+            .save(this.filterRecord)
+            .subscribe(data => {});
+        } else {
+          console.log('update');
 
-    if (this.data.action === 'create') {
-      console.log('create');
-      if (
-        (this.isKeep && this.data.params) ||
-        (!this.isKeep && !this.data.params) ||
-        (!this.isKeep &&
-          this.data.params &&
-          !this.auth.isUser(this.data.message2.owner))
-      ) {
+          this.filterRecord = new FilterRecord(
+            this.nameFormControl.value,
+            this.descriptionFormControl.value,
+            this.data.message.getFilterURL(),
+            this.data.message2.owner,
+            this.data.message2.created_at,
+            this.getDateString()
+          );
+
+          this.filterRecordService
+            .update(this.filterRecord, this.data.message2.id)
+            .subscribe(data => {});
+        }
+      }
+
+      if (this.data.action === 'edit') {
+        console.log('edit');
         this.filterRecord = new FilterRecord(
           this.nameFormControl.value,
           this.descriptionFormControl.value,
-          this.data.message.getFilterURL(),
-          this.auth.getUserName(),
-          this.getDateString(),
-          this.getDateString()
-        );
-        this.filterRecordService.save(this.filterRecord).subscribe(data => {});
-      } else {
-        console.log('update');
-
-        this.filterRecord = new FilterRecord(
-          this.nameFormControl.value,
-          this.descriptionFormControl.value,
-          this.data.message.getFilterURL(),
-          this.data.message2.owner,
-          this.data.message2.created_at,
+          this.data.message.params,
+          this.data.message.owner,
+          this.data.message.created_at,
           this.getDateString()
         );
 
         this.filterRecordService
-          .update(this.filterRecord, this.data.message2.id)
+          .update(this.filterRecord, this.data.message.id)
           .subscribe(data => {});
       }
+      this.alert.success('Great ! You got it');
+      this.dialogRef.close();
+    } catch (error) {
+      this.alert.danger('Oops ! Something went wrong');
     }
-
-    if (this.data.action === 'edit') {
-      console.log('edit');
-      this.filterRecord = new FilterRecord(
-        this.nameFormControl.value,
-        this.descriptionFormControl.value,
-        this.data.message.params,
-        this.data.message.owner,
-        this.data.message.created_at,
-        this.getDateString()
-      );
-
-      this.filterRecordService
-        .update(this.filterRecord, this.data.message.id)
-        .subscribe(data => {});
-    }
-    this.dialogRef.close();
   }
 }

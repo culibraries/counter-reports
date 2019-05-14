@@ -66,25 +66,36 @@ export class Filter {
 
     return output;
   }
+
   public setPlatform(platform: string) {
     this.platform.push(platform);
   }
+
   public setPublisher(publisher: string) {
     this.publisher.push(publisher);
   }
+
   public setTitle(title: string) {
-    title = title.replace(/&/g, '%26');
+    title = title.trim();
+    title = title
+      .replace(/&/g, '%26')
+      .replace(/#/g, '%23	')
+      .replace(/;/g, '%3B');
     this.title.push(title);
   }
+
   public getTitle(title: string) {
     return title.replace(/%26/g, '&');
   }
+
   public setFrom(from: string) {
     this.from = from;
   }
+
   public setTo(to: string) {
     this.to = to;
   }
+
   public getString(): string {
     let outString = '';
     if (this.platform.length > 0) {
@@ -160,18 +171,19 @@ export class Filter {
     arrayParams.forEach(i => {
       const each = i.split('=');
       if (each[0] === 'title') {
-        title = each[1];
+        title = each[1].trim();
       }
       if (each[0] === 'platform') {
-        platform = each[1];
+        platform = each[1].trim();
       }
       if (each[0] === 'publisher') {
-        publisher = each[1];
+        publisher = each[1].trim();
       }
       if (each[0] === 'range') {
-        range = each[1];
+        range = each[1].trim();
       }
     });
+
     return this.convertedObject(title, platform, publisher, range);
   }
 }

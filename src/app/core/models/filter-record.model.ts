@@ -32,29 +32,6 @@ export class FilterRecord {
       created_at: this.created_at,
       updated_at: this.updated_at
     };
-    // if (this.name) {
-    //   output['name'] = this.name;
-    // }
-    // if (this.description) {
-    //   output['description'] = this.description;
-    // }
-
-    // if (this.owner) {
-    //   output['owner'] = this.owner;
-    // }
-
-    // if (this.params) {
-    //   output['params'] = this.params;
-    // }
-
-    // if (this.created_at) {
-    //   output['created_at'] = this.created_at;
-    // }
-
-    // if (this.updated_at) {
-    //   output['updated_at'] = this.updated_at;
-    // }
-
     return output;
   }
 }

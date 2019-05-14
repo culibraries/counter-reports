@@ -18,7 +18,6 @@ import { FilterComponent } from './filter/filter.component';
 import { DataListComponent } from './data-list/data-list.component';
 import { NewComponent } from './new.component';
 import { FilterItemComponent } from './filter-item/filter-item.component';
-import { SaveModalBoxComponent } from './save-modal-box/save-modal-box.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -30,10 +29,8 @@ import { SharedModule } from '../shared/shared.module';
     FilterComponent,
     DataListComponent,
     NewComponent,
-    FilterItemComponent,
-    SaveModalBoxComponent
+    FilterItemComponent
   ],
-  entryComponents: [SaveModalBoxComponent],
   imports: [
     CommonModule,
     SharedModule,

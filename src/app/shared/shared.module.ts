@@ -8,19 +8,36 @@ import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { SaveModalBoxComponent } from './save-modal-box/save-modal-box.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ConfirmComponent } from './confirm/confirm.component';
+
 @NgModule({
   declarations: [
     AppLayoutComponent,
     MonthConvertPipe,
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    SaveModalBoxComponent,
+    ConfirmComponent
   ],
+  entryComponents: [SaveModalBoxComponent, ConfirmComponent],
   imports: [
     CommonModule,
     RouterModule,
     MatIconModule,
     MatButtonModule,
-    MatMenuModule
+    MatMenuModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatDialogModule,
+    MatCheckboxModule
   ],
   exports: [MonthConvertPipe]
 })

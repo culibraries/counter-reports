@@ -61,7 +61,6 @@ export class SaveModalBoxComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.data);
     if (this.data.action === 'create') {
       if (!this.data.params) {
         this.filters = this.data.message.getString();
@@ -86,7 +85,7 @@ export class SaveModalBoxComponent implements OnInit {
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close('just-close');
   }
 
   onSave(): void {
@@ -95,7 +94,6 @@ export class SaveModalBoxComponent implements OnInit {
     }
     try {
       if (this.data.action === 'create') {
-        console.log('create');
         if (
           (this.isKeep && this.data.params) ||
           (!this.isKeep && !this.data.params) ||
@@ -115,8 +113,6 @@ export class SaveModalBoxComponent implements OnInit {
             .save(this.filterRecord)
             .subscribe(data => {});
         } else {
-          console.log('update');
-
           this.filterRecord = new FilterRecord(
             this.nameFormControl.value,
             this.descriptionFormControl.value,
@@ -133,7 +129,6 @@ export class SaveModalBoxComponent implements OnInit {
       }
 
       if (this.data.action === 'edit') {
-        console.log('edit');
         this.filterRecord = new FilterRecord(
           this.nameFormControl.value,
           this.descriptionFormControl.value,

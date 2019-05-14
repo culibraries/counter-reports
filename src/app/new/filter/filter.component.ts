@@ -47,7 +47,6 @@ export class FilterComponent implements OnInit {
         this.params = true;
         const newFilter = new Filter();
         const filterObject = newFilter.getFilterObject(params.params);
-        console.log(filterObject);
         this.filterDisplay = filterObject.getString();
         this.isShowFilterOption = true;
         this.filterItems.length = filterObject.countItem();

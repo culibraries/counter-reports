@@ -71,7 +71,8 @@ export class ViewandrunComponent implements OnInit {
     });
   }
 
-  delete(id: number) {
+  delete(event: any, id: number) {
+    event.stopPropagation();
     const dialogRef = this.dialog.open(ConfirmComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -87,15 +88,19 @@ export class ViewandrunComponent implements OnInit {
     });
   }
 
-  edit(id: number) {
+  edit(event: any, id: number) {
+    event.stopPropagation();
     this.filterRecordService.getById(id).subscribe(result => {
-      let dialogRef = this.dialog.open(SaveModalBoxComponent, {
+      const dialogRef = this.dialog.open(SaveModalBoxComponent, {
         width: '500px',
         height: 'auto',
         data: { action: 'edit', message: result }
       });
+
       dialogRef.afterClosed().subscribe(result => {
-        this.loadAllFiltersRecord();
+        if (result !== 'just-close') {
+          this.loadAllFiltersRecord();
+        }
       });
     });
   }

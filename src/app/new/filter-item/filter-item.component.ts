@@ -120,6 +120,9 @@ export class FilterItemComponent implements OnInit {
   resetFilterOption() {
     this.selectedFilter = undefined;
     this.filterControl.setValue('');
+    this.platforms = [];
+    this.publishers = [];
+    this.titles = [];
   }
 
   private _filter(value: string): string[] {

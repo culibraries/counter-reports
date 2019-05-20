@@ -1,0 +1,19 @@
+.alert-danger {
+  color: #FFFFFF;
+  background-color: #B71B1C;
+}
+
+.alert-success {
+  color: #FFFFFF;
+  background-color: #2E7D32;
+}
+
+
+.alert-default {
+  color: white;
+  background-color: #000000;
+  width: auto;
+
+}
+
+.alert-with-undo {}

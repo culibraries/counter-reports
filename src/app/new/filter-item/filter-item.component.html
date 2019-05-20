@@ -1,0 +1,44 @@
+  <div style="float: left; padding-left: 1%">
+
+
+    <mat-form-field>
+      <mat-select [(value)]="selectedFilter" (selectionChange)="onChangeFilterOption()">
+        <mat-option *ngFor="let filter of filters" [value]="filter.value">
+          {{filter.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <span class="control-filter-text" style="float: left; margin-top: 22px" *ngIf="!doneLoading">is</span>
+  <span class="control-filter-text" style="float: left; margin-top: 22px" *ngIf="doneLoading"><img
+      src="./assets/images/loading.gif" width="20px;" /></span>
+
+  <span *ngIf="selectedFilterValue === 'from' || selectedFilterValue === 'to'">
+    <mat-form-field style="width: 80px;">
+      <mat-label>Month</mat-label>
+      <mat-select [(value)]="monthSelected">
+        <mat-option *ngFor="let month of months" [value]="month">
+          {{month}}
+        </mat-option>
+      </mat-select>
+
+    </mat-form-field>
+    <mat-form-field style="width: 100px;margin-left: 10px;">
+      <mat-label>Year</mat-label>
+      <mat-select [(value)]="yearSelected">
+        <mat-option *ngFor="let year of years" [value]="year">
+          {{year}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </span>
+
+  <mat-form-field style="width: 300px;" *ngIf="selectedFilterValue=='!'">
+    <input matInput #trigger="matAutocompleteTrigger" [formControl]="filterControl" [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{option}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>

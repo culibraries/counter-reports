@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { NewRoutingModule } from './new-routing.module';
 import { FilterComponent } from './filter/filter.component';
@@ -51,7 +52,8 @@ import { SharedModule } from '../shared/shared.module';
     ReactiveFormsModule,
     MatProgressBarModule,
     NgProgressModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTooltipModule
   ]
 })
 export class NewModule {}

@@ -57,7 +57,7 @@
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
 </table>
 
-<div style=" width: 100%">
+<div style=" width: 100%; display: inline-block">
   <mat-paginator style="float: left" [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
   </mat-paginator>
   <mat-form-field style="width: 400px; float: left">

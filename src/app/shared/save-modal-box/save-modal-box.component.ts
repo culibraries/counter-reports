@@ -46,8 +46,8 @@ export class SaveModalBoxComponent implements OnInit {
 
   filters: string;
   filterRecord: FilterRecord;
-  isBelongsToMe: boolean = false;
-  isKeep: boolean = false;
+  isBelongsToMe = false;
+  isKeep = false;
   constructor(
     public dialogRef: MatDialogRef<SaveModalBoxComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,

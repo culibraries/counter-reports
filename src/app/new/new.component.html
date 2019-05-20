@@ -3,7 +3,9 @@
       <app-filter (applyFilterEvent)="datalist.loadDataToTable($event)" (resetEvent)="datalist.resetDataTable($event)">
       </app-filter>
     </mat-card-content>
+  </mat-card>
 
+  <mat-card>
     <mat-card-content>
       <app-data-list #datalist></app-data-list>
     </mat-card-content>

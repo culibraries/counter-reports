@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { PlatformService, PublisherService, TitleService } from '../../core';
 import { Config } from '../../core';
+import { ActivatedRoute } from '@angular/router';
 
 export interface Filter {
   value: string;
@@ -26,7 +27,8 @@ export class FilterItemComponent implements OnInit {
   titles: string[] = [];
   monthSelected: string;
   yearSelected: string;
-  @Input() itemDetail: [];
+  doneLoading: boolean = false;
+  @Input() itemDetail: {};
 
   filters: Filter[] = [
     { value: 'platform', viewValue: 'Platform' },
@@ -40,14 +42,17 @@ export class FilterItemComponent implements OnInit {
   months: string[] = Config.months;
   filterDisplayTransform: [] = [];
 
+  @Output() platfomrsTest: EventEmitter<any> = new EventEmitter<any>();
+
   constructor(
     private platformService: PlatformService,
     private publisherService: PublisherService,
-    private titleService: TitleService
+    private titleService: TitleService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    if (this.itemDetail) {
+    if (typeof this.itemDetail !== 'number') {
       const key = Object.keys(this.itemDetail);
       const value = Object.values(this.itemDetail)
         .toString()
@@ -63,47 +68,77 @@ export class FilterItemComponent implements OnInit {
 
     this.filteredOptions = this.filterControl.valueChanges.pipe(
       startWith(''),
-      map(value => (value.length >= 1 ? this._filter(value) : []))
+      map(value => (value.length >= 1 ? this._filter(value).slice(0, 30) : []))
     );
   }
 
+  isEmpty(obj) {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   loadFilterValueBySelectedFilter(value: string) {
+    this.filterControl.disable();
+    this.doneLoading = true;
+
     switch (value) {
       case 'platform': {
+        this.filterControl.enable();
         this.platformService.getAll().subscribe(data => {
           data.forEach(r => {
             this.platforms.push(r.name);
           });
+          this.doneLoading = false;
         });
         this.options = this.platforms;
         break;
       }
-      case 'publisher': {
-        this.publisherService.getAll().subscribe(data => {
-          data.forEach(r => {
-            this.publishers.push(r.name);
+
+      case 'publisher':
+        {
+          this.publisherService.getAll().subscribe(data => {
+            this.filterControl.enable();
+            data.forEach(r => {
+              this.publishers.push(r.name);
+            });
+            this.doneLoading = false;
           });
-        });
+        }
         this.options = this.publishers;
         break;
-      }
+
       case 'title': {
         this.titleService.getAll().subscribe(data => {
+          this.filterControl.enable();
           data.forEach(r => {
             this.titles.push(r.title);
           });
+          this.doneLoading = false;
         });
         this.options = this.titles;
         break;
       }
+
       case 'from': {
+        this.filterControl.enable();
         this.selectedFilterValue = 'from';
+        this.doneLoading = false;
+
         break;
       }
+
       case 'to': {
+        this.filterControl.enable();
         this.selectedFilterValue = 'to';
+        this.doneLoading = false;
+
         break;
       }
+
       default: {
         this.selectedFilter = '!';
         break;

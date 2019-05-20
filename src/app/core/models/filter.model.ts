@@ -78,9 +78,9 @@ export class Filter {
   public setTitle(title: string) {
     title = title.trim();
     title = title
-      .replace(/&/g, '%26')
-      .replace(/#/g, '%23	')
-      .replace(/;/g, '%3B');
+      .replace('&', '%26')
+      .replace('#', '%23')
+      .replace(';', '%3B');
     this.title.push(title);
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PlatformService, PublisherService, TitleService } from '../core';
+import { StaticService } from '../core';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -9,23 +9,14 @@ export class DashboardComponent implements OnInit {
   publicationTotal: number;
   publisherTotal: number;
   platformTotal: number;
-  constructor(
-    private platformService: PlatformService,
-    private publisherService: PublisherService,
-    private titleService: TitleService
-  ) {}
+
+  constructor(private staticService: StaticService) {}
 
   ngOnInit() {
-    this.platformService.getAll().subscribe(data => {
-      this.platformTotal = data.length;
-    });
-
-    this.publisherService.getAll().subscribe(data => {
-      this.publisherTotal = data.length;
-    });
-
-    this.titleService.getAll().subscribe(data => {
-      this.publicationTotal = data.length;
+    this.staticService.get().subscribe(data => {
+      this.platformTotal = data['platform_count'];
+      this.publicationTotal = data['title_count'];
+      this.publisherTotal = data['publisher_count'];
     });
   }
 }

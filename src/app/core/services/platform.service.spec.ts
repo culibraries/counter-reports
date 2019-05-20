@@ -36,7 +36,7 @@ describe('PlatformService', () => {
     apiServiceSpy.get.and.returnValue(of(platform));
     platformService.getAll().subscribe(result => {
       expect(result.length).toBe(3);
-      expect(result).toEqual(platform);
+      expect(result).toEqual(mockObservablePlatform);
     });
   });
 });

@@ -1,4 +1,6 @@
   <div style="float: left; padding-left: 1%">
+
+
     <mat-form-field>
       <mat-select [(value)]="selectedFilter" (selectionChange)="onChangeFilterOption()">
         <mat-option *ngFor="let filter of filters" [value]="filter.value">
@@ -8,7 +10,9 @@
     </mat-form-field>
   </div>
 
-  <span class="control-filter-text" style="float: left; margin-top: 22px">is</span>
+  <span class="control-filter-text" style="float: left; margin-top: 22px" *ngIf="!doneLoading">is</span>
+  <span class="control-filter-text" style="float: left; margin-top: 22px" *ngIf="doneLoading"><img
+      src="./assets/images/loading.gif" width="20px;" /></span>
 
   <span *ngIf="selectedFilterValue === 'from' || selectedFilterValue === 'to'">
     <mat-form-field style="width: 80px;">

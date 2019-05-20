@@ -9,3 +9,4 @@ export * from './auth-guard.service';
 export * from './export-excel.service';
 export * from './validator.service';
 export * from './filter-record.service';
+export * from './static.service';

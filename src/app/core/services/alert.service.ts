@@ -26,8 +26,8 @@ export class AlertService {
     return this.alert('alert-default', message);
   }
 
-  undo(message: string) {
-    return this.alertWithButton('undo', message);
+  loading(message: string) {
+    return this.alertWithoutTime('alert-default', message);
   }
 
   private alert(type: string, message: string) {
@@ -38,11 +38,14 @@ export class AlertService {
     });
   }
 
-  private alertWithButton(button: string, message: string) {
-    return this.snackBar.open(message, button, {
-      duration: durationTime,
-      horizontalPosition: 'left',
-      panelClass: ['alert-with-undo']
+  private alertWithoutTime(type: string, message: string) {
+    return this.snackBar.open(message, '', {
+      panelClass: [type],
+      horizontalPosition: 'left'
     });
+  }
+
+  dismiss() {
+    this.snackBar.dismiss();
   }
 }

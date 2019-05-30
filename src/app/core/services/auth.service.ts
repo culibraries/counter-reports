@@ -41,6 +41,7 @@ export class AuthService {
     const tokenPayload = this.jwtHelper.decodeToken(token);
     return tokenPayload.username;
   }
+  
   isUser(currentUser: string): boolean {
     const token = localStorage.getItem('token');
     const tokenPayload = this.jwtHelper.decodeToken(token);

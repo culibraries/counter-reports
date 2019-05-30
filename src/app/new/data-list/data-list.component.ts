@@ -60,16 +60,17 @@ export class DataListComponent implements OnInit {
     if (filterURL === '') {
       this.alert.default(Config.messages.warningAllRecords);
     } else {
-      this.alert.default('loading...');
+      this.alert.loading('loading...');
     }
     this.applyFilterByCallingAPI(filterURL);
   }
 
   private applyFilterByCallingAPI(filterURL: string) {
+    this.resetDataTable();
     this.publicationService.getByFilters(filterURL).subscribe(result => {
       /* Reformating Data from API*/
       this.data = this.dataHelper.convertPublicationData(result);
-
+      this.alert.dismiss();
       this.alert.success(this.data.length + ' record(s) has found');
 
       /* Enable export button */

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, forkJoin, BehaviorSubject } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { ApiService } from './api.service';
 import { Publication } from '../models';
 import { map, switchMap } from 'rxjs/operators';
-import { pureFunction2 } from '@angular/core/src/render3';
 
 @Injectable({
   providedIn: 'root'

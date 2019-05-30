@@ -68,6 +68,7 @@ export class DataListComponent implements OnInit {
   private applyFilterByCallingAPI(filterURL: string) {
     this.resetDataTable();
     this.publicationService.getByFilters(filterURL).subscribe(result => {
+      
       /* Reformating Data from API*/
       this.data = this.dataHelper.convertPublicationData(result);
       this.alert.dismiss();

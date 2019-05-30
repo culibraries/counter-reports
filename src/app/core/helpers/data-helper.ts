@@ -4,7 +4,6 @@ export class DataHelper {
   constructor() {}
 
   convertPublicationData(publication: Publication[]): Array<{}> {
-    console.log('convert Publication');
     let total = 0;
     const output = Object.values(
       publication.reduce((r, o) => {

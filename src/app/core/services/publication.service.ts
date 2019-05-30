@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
 import { ApiService } from './api.service';
 import { Publication } from '../models';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -23,24 +23,28 @@ export class PublicationService {
           filterParameterURL
       )
       .pipe(
-        map(data => {
+        switchMap(data => {
           if (data['count'] <= 100000) {
             return data.results;
           } else {
             const count = Math.ceil(data['count'] / 100000);
-            return this.getByPageSize(data.results, count, filterParameterURL);
+            return this.getByPageSize(count, filterParameterURL).pipe(
+              map(folkJoinData => {
+                for (let j = 0; j <= count - 2; j++) {
+                  data.results = data.results.concat(
+                    folkJoinData[j]['results']
+                  );
+                }
+                return data.results;
+              })
+            );
           }
         })
       );
   }
 
-  getByPageSize(
-    firstPageData: any,
-    count: number,
-    filterParameterURL: string
-  ): any {
+  getByPageSize(count: number, filterParameterURL: string): any {
     const urls = [];
-    let results = firstPageData;
 
     for (let i = 2; i <= count; i++) {
       urls.push(
@@ -54,13 +58,6 @@ export class PublicationService {
           .pipe(map(data => data))
       );
     }
-
-    forkJoin(...urls).subscribe(data => {
-      data.forEach(element => {
-        results = results.concat(element.results);
-      });
-    });
-
-    return results;
+    return forkJoin(urls);
   }
 }

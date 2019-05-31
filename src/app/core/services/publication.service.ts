@@ -17,15 +17,12 @@ export class PublicationService {
   }
 
   getByPageNext(filterParameterURL: string): Observable<any> {
-    console.log(filterParameterURL);
     const url =
       '/counter/publications/?format=json&page_size=100000&' +
       filterParameterURL;
     return this.apiService.get(url).pipe(
       expand((response: any) => {
-        console.log(response);
         if (response && response.next) {
-          console.log(response.next);
           return this.apiService.getNextPage(response.next);
         } else {
           return empty();

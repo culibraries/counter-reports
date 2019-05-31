@@ -41,12 +41,13 @@ export class AuthService {
     const tokenPayload = this.jwtHelper.decodeToken(token);
     return tokenPayload.username;
   }
-  
+
   isUser(currentUser: string): boolean {
     const token = localStorage.getItem('token');
     const tokenPayload = this.jwtHelper.decodeToken(token);
     return currentUser === tokenPayload.username ? true : false;
   }
+
   isTokenExist(): boolean {
     return localStorage.hasOwnProperty('token');
   }

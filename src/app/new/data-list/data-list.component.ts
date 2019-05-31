@@ -9,6 +9,7 @@ import {
   ExportExcelService
 } from '../../core';
 import { Config } from '../../core';
+import { map, mergeMap, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-data-list',
@@ -66,11 +67,16 @@ export class DataListComponent implements OnInit {
   }
 
   private applyFilterByCallingAPI(filterURL: string) {
+    let output = [];
     this.resetDataTable();
-    this.publicationService.getByFilters(filterURL).subscribe(result => {
-      
+
+    this.publicationService.getByPageNext(filterURL).subscribe(result => {
+      result.forEach(element => {
+        output = output.concat(element);
+      });
+
       /* Reformating Data from API*/
-      this.data = this.dataHelper.convertPublicationData(result);
+      this.data = this.dataHelper.convertPublicationData(output);
       this.alert.dismiss();
       this.alert.success(this.data.length + ' record(s) has found');
 

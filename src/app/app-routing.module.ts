@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';
 import { AuthGuardService } from './core/services/auth-guard.service';
-import { LogoutComponent } from './logout/logout.component';
 
 const routes: Routes = [
   {
@@ -17,27 +15,18 @@ const routes: Routes = [
       },
       {
         path: 'dashboard',
-        loadChildren: './dashboard/dashboard.module#DashboardModule'
+        loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
         path: 'new-reports',
-        loadChildren: './new/new.module#NewModule'
+        loadChildren: () => import('./new/new.module').then(m => m.NewModule)
       },
       {
         path: 'viewandrun',
-        loadChildren: './viewandrun/viewandrun.module#ViewandrunModule'
+        loadChildren: () => import('./viewandrun/viewandrun.module').then(m => m.ViewandrunModule)
       }
     ],
     canActivate: [AuthGuardService]
-  },
-
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'logout',
-    component: LogoutComponent
   },
   { path: '**', redirectTo: '' }
 ];
@@ -52,4 +41,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

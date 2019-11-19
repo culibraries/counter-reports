@@ -15,7 +15,6 @@ import {
   StaticService
 } from './services';
 import { DataHelper } from './helpers';
-import { httpInterceptorProviders } from '../core/interceptors';
 
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -38,7 +37,6 @@ import { EnsureModuleLoadedOnceGuard } from './ensure-module-loaded-once.guard';
     ValidatorService,
     FilterRecordService,
     StaticService,
-    httpInterceptorProviders
   ]
 })
 export class CoreModule extends EnsureModuleLoadedOnceGuard {

@@ -45,15 +45,15 @@ export class ViewandrunComponent implements OnInit {
   filter = new Filter();
   expandedElement: [] | null;
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     public dialog: MatDialog,
     private filterRecordService: FilterRecordService,
     private auth: AuthService,
     private alert: AlertService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.dataSource.sort = this.sort;

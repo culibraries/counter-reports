@@ -10,7 +10,6 @@ import { CoreModule } from './core/core.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { ErrorComponent } from './error/error.component';
-import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [AppComponent, ErrorComponent],
@@ -22,8 +21,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     ReactiveFormsModule,
     BrowserAnimationsModule,
     CoreModule,
-    SharedModule,
-    NgxSpinnerModule
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

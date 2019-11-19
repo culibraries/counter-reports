@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -38,8 +39,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ReactiveFormsModule,
     MatInputModule,
     MatDialogModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    NgxSpinnerModule
   ],
   exports: [MonthConvertPipe]
 })
-export class SharedModule {}
+export class SharedModule { }

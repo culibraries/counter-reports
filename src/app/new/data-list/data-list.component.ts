@@ -41,15 +41,15 @@ export class DataListComponent implements OnInit {
   dataSource = new MatTableDataSource([]);
   disabledExportButton: boolean;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     private publicationService: PublicationService,
     private alert: AlertService,
     private exportService: ExportExcelService,
     private dataHelper: DataHelper
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.dataSource.sort = this.sort;

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';
 import { AuthGuardService } from './core/services/auth-guard.service';
+import { ErrorComponent } from './error/error.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
       }
     ],
     canActivate: [AuthGuardService]
+  },
+  {
+    path: 'error',
+    component: ErrorComponent
   },
   { path: '**', redirectTo: '' }
 ];

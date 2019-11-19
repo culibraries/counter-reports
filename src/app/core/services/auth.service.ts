@@ -13,13 +13,12 @@ export class AuthService {
   public isAuthenticated() {
     return this.http.get(userUrl).subscribe(
       data => {
-        if (!data['groups'].includes('counter-reports-admin')) {
+        if (!data['groups'].includes('LIT-Counter-Reports')) {
           this.router.navigate(['/error']);
           return false;
         } else {
           if (
-            !sessionStorage.getItem('token') ||
-            sessionStorage.getItem('token') === 'undefined'
+            !sessionStorage.getItem('token') || sessionStorage.getItem('token') === 'undefined'
           ) {
             sessionStorage.setItem('token', data['authentication']['auth-token']);
             sessionStorage.setItem('username', data['username']);

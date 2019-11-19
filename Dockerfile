@@ -22,4 +22,4 @@ RUN npm run ng build -- --prod --output-path=dist
 
 FROM nginx:alpine
 
-COPY --from=0 /app/dist /usr/share/nginx/html/reports/counter
+COPY --from=0 /app/dist /usr/share/nginx/html/counter-reports

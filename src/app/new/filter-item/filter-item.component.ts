@@ -14,13 +14,14 @@ export interface Filter {
 @Component({
   selector: 'app-filter-item',
   templateUrl: './filter-item.component.html',
-  styleUrls: ['./filter-item.component.css']
+  styleUrls: ['./filter-item.component.css'],
 })
 export class FilterItemComponent implements OnInit {
   filterControl = new FormControl();
   options = [];
   filteredOptions: Observable<any>;
   selectedFilter: string;
+  selectedFilterType: string;
   selectedFilterValue = '!';
   publishers: string[] = [];
   platforms: string[] = [];
@@ -35,7 +36,15 @@ export class FilterItemComponent implements OnInit {
     { value: 'publisher', viewValue: 'Publisher' },
     { value: 'title', viewValue: 'Title' },
     { value: 'from', viewValue: 'From' },
-    { value: 'to', viewValue: 'To' }
+    { value: 'to', viewValue: 'To' },
+  ];
+
+  filterTypes: Filter[] = [
+    { value: 'is', viewValue: 'is' },
+    { value: 'is-not', viewValue: 'is NOT' },
+    { value: 'starts-with', viewValue: 'starts with' },
+    { value: 'ends-with', viewValue: 'ends-with' },
+    { value: 'does-not-contain', viewValue: 'does NOT contain' },
   ];
 
   years: string[] = Config.years;
@@ -151,6 +160,8 @@ export class FilterItemComponent implements OnInit {
     this.selectedFilterValue = '!';
     this.loadFilterValueBySelectedFilter(this.selectedFilter);
   }
+
+  onChangeFilterType() {}
 
   resetFilterOption() {
     this.selectedFilter = undefined;

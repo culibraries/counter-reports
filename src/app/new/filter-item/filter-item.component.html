@@ -22,11 +22,11 @@
   </mat-form-field>
 </span>
 
-
-<span class="control-filter-text" style="float: left; margin-top: 22px"
-  *ngIf="doneLoading"><img
-    src="./assets/images/loading.gif" width="20px;" /></span>
-
+<span class="control-filter-text" *ngIf="doneLoading" style="float: left;
+  margin-top: 20px; text-align: center; width: 215px;">
+  <img
+    src="./assets/images/loading.gif" width="20px;" />
+</span>
 <span *ngIf="selectedFilterValue === 'from' || selectedFilterValue === 'to'">
   <mat-form-field style="width: 80px;">
     <mat-label>Month</mat-label>
@@ -47,12 +47,21 @@
   </mat-form-field>
 </span>
 
-<mat-form-field style="width: 300px;" *ngIf="selectedFilterValue=='!'">
+<mat-form-field [formGroup]="myGroup" style="width:
+  300px;"
+  *ngIf="selectedFilterValue=='!'">
   <input matInput #trigger="matAutocompleteTrigger"
-    [formControl]="filterControl" [matAutocomplete]="auto">
-  <mat-autocomplete #auto="matAutocomplete">
-    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-      {{option}}
-    </mat-option>
-  </mat-autocomplete>
+    formControlName="keyInput" [matAutocomplete]="auto"
+    (focus)="onKeySearchFocus()"
+    *ngIf="isAutocompleteDisabled">
+  <input matInput
+    formControlName="keyInput"
+    (focus)="onKeySearchFocus()"
+    *ngIf="!isAutocompleteDisabled">
 </mat-form-field>
+<mat-autocomplete #auto="matAutocomplete">
+  <mat-option *ngFor="let option of options" [value]="option"
+    hidden="disablePanel">
+    {{option}}
+  </mat-option>
+</mat-autocomplete>

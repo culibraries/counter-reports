@@ -1,20 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable, forkJoin, empty, of } from 'rxjs';
+import { Observable, empty } from 'rxjs';
 import { ApiService } from './api.service';
-import { Publication } from '../models';
-import { map, expand, concatMap, reduce } from 'rxjs/operators';
+import { map, expand, reduce } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PublicationService {
   constructor(private apiService: ApiService) {}
-
-  getAll(): Observable<Publication[]> {
-    return this.apiService
-      .get('/counter/publications/?format=json')
-      .pipe(map(data => data));
-  }
 
   getByPageNext(filterParameterURL: string): Observable<any> {
     const url =

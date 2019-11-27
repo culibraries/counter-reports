@@ -31,7 +31,7 @@ const routes: Routes = [
           ),
       },
     ],
-    // canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
   },
   {
     path: 'error',

@@ -4,13 +4,14 @@ import { ApiService } from './api.service';
 import { Publisher } from '../models';
 import { map } from 'rxjs/operators';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PublisherService {
   constructor(private apiService: ApiService) {}
-  getAll(): Observable<Publisher[]> {
+
+  get(key: string): Observable<Publisher[]> {
     return this.apiService
-      .get('/counter/publishers/?format=json')
-      .pipe(map(data => data));
+      .get('/counter/publishers/?format=json&limit=10&key=' + key)
+      .pipe(map(data => data['results']));
   }
 }

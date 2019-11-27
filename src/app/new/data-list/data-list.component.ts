@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { state, style, trigger } from '@angular/animations';
 
@@ -6,10 +6,9 @@ import { MonthData, DataHelper } from '../../core';
 import {
   AlertService,
   PublicationService,
-  ExportExcelService
+  ExportExcelService,
 } from '../../core';
 import { Config } from '../../core';
-import { map, mergeMap, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-data-list',
@@ -21,18 +20,19 @@ import { map, mergeMap, switchMap } from 'rxjs/operators';
         'collapsed',
         style({ height: '0px', minHeight: '0', display: 'none' })
       ),
-      state('expanded', style({ height: '*' }))
-    ])
-  ]
+      state('expanded', style({ height: '*' })),
+    ]),
+  ],
 })
-export class DataListComponent implements OnInit {
+export class DataListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'title',
     'publisher',
     'platform',
     'print_issn',
     'online_issn',
-    'total'
+    'effective_dates',
+    'total',
   ];
   expandedElement: [] | null;
   data: any;
@@ -40,7 +40,7 @@ export class DataListComponent implements OnInit {
   monthData: MonthData = { month: '', total: 0 };
   dataSource = new MatTableDataSource([]);
   disabledExportButton: boolean;
-
+  getResultSubscriber: any;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -49,7 +49,7 @@ export class DataListComponent implements OnInit {
     private alert: AlertService,
     private exportService: ExportExcelService,
     private dataHelper: DataHelper
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
@@ -70,25 +70,30 @@ export class DataListComponent implements OnInit {
     let output = [];
     this.resetDataTable();
 
-    this.publicationService.getByPageNext(filterURL).subscribe(result => {
-      result.forEach(element => {
-        output = output.concat(element);
+    if (this.getResultSubscriber) {
+      this.getResultSubscriber.unsubscribe();
+    }
+    this.getResultSubscriber = this.publicationService
+      .getByPageNext(filterURL)
+      .subscribe(result => {
+        result.forEach((element: any) => {
+          output = output.concat(element);
+        });
+
+        /* Reformating Data from API*/
+        this.data = this.dataHelper.convertPublicationData(output);
+
+        this.alert.dismiss();
+        this.alert.success(this.data.length + ' record(s) has found');
+
+        /* Enable export button */
+        if (this.data.length > 0) {
+          this.disabledExportButton = false;
+        } else {
+          this.disabledExportButton = true;
+        }
+        this.dataSource.data = this.data;
       });
-
-      /* Reformating Data from API*/
-      this.data = this.dataHelper.convertPublicationData(output);
-      this.alert.dismiss();
-      this.alert.success(this.data.length + ' record(s) has found');
-
-      /* Enable export button */
-      if (this.data.length > 0) {
-        this.disabledExportButton = false;
-      } else {
-        this.disabledExportButton = true;
-      }
-
-      this.dataSource.data = this.data;
-    });
   }
 
   resetDataTable() {
@@ -108,5 +113,11 @@ export class DataListComponent implements OnInit {
       this.dataHelper.trimData(this.data),
       'Counter_Report_'
     );
+  }
+
+  ngOnDestroy() {
+    if (this.getResultSubscriber) {
+      this.getResultSubscriber.unsubscribe();
+    }
   }
 }

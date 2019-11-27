@@ -5,7 +5,7 @@ import { Config } from '../config';
 
 const config = Config.validatorMessage;
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ValidatorService {
   constructor(private alert: AlertService) {}
@@ -69,29 +69,35 @@ export class ValidatorService {
       }
 
       if (e.selectedFilter === 'platform') {
-        if (!e.filterControl.value) {
+        if (!e.myGroup.get('keyInput').value) {
           this.alert.danger(config.requiredPlatform);
           valid = 0;
         } else {
-          filter.setPlatform(e.filterControl.value);
+          filter.setPlatform(
+            e.myGroup.get('keyInput').value + ',' + e.selectedFilterType
+          );
         }
       }
 
       if (e.selectedFilter === 'publisher') {
-        if (!e.filterControl.value) {
+        if (!e.myGroup.get('keyInput').value) {
           this.alert.danger(config.requiredPublisher);
           valid = 0;
         } else {
-          filter.setPublisher(e.filterControl.value);
+          filter.setPublisher(
+            e.myGroup.get('keyInput').value + ',' + e.selectedFilterType
+          );
         }
       }
 
       if (e.selectedFilter === 'title') {
-        if (!e.filterControl.value) {
+        if (!e.myGroup.get('keyInput').value) {
           this.alert.danger(config.requiredTitle);
           valid = 0;
         } else {
-          filter.setTitle(e.filterControl.value);
+          filter.setTitle(
+            e.myGroup.get('keyInput').value + ',' + e.selectedFilterType
+          );
         }
       }
     });

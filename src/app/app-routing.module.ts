@@ -12,28 +12,32 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'dashboard',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'dashboard',
-        loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
+        loadChildren: () =>
+          import('./dashboard/dashboard.module').then(m => m.DashboardModule),
       },
       {
         path: 'new-reports',
-        loadChildren: () => import('./new/new.module').then(m => m.NewModule)
+        loadChildren: () => import('./new/new.module').then(m => m.NewModule),
       },
       {
         path: 'viewandrun',
-        loadChildren: () => import('./viewandrun/viewandrun.module').then(m => m.ViewandrunModule)
-      }
+        loadChildren: () =>
+          import('./viewandrun/viewandrun.module').then(
+            m => m.ViewandrunModule
+          ),
+      },
     ],
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
   },
   {
     path: 'error',
-    component: ErrorComponent
+    component: ErrorComponent,
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -41,9 +45,9 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
       useHash: true,
       enableTracing: false,
-      preloadingStrategy: PreloadAllModules
-    })
+      preloadingStrategy: PreloadAllModules,
+    }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

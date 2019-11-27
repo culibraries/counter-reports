@@ -4,7 +4,7 @@ import {
   QueryList,
   ViewChildren,
   Output,
-  EventEmitter
+  EventEmitter,
 } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { SaveModalBoxComponent } from '../../shared';
@@ -13,7 +13,7 @@ import {
   Filter,
   ValidatorService,
   FilterRecordService,
-  FilterRecord
+  FilterRecord,
 } from '../../core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -21,7 +21,7 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css'],
-  providers: [Filter]
+  providers: [Filter],
 })
 export class FilterComponent implements OnInit {
   @ViewChildren('filterItem') filterItem: QueryList<FilterItemComponent>;
@@ -34,10 +34,10 @@ export class FilterComponent implements OnInit {
   filterRecord: FilterRecord;
   @Output() applyFilterEvent = new EventEmitter();
   @Output() resetEvent = new EventEmitter();
+  filter: Filter;
 
   constructor(
     public dialog: MatDialog,
-    private filter: Filter,
     private validator: ValidatorService,
     private route: ActivatedRoute,
     private filterRecordService: FilterRecordService
@@ -53,11 +53,9 @@ export class FilterComponent implements OnInit {
         filterObject.toJson().forEach((element, i) => {
           this.filterItems[i] = element;
         });
-
         setTimeout(() => {
           this.applyFilterEvent.emit(filterObject.getFilterURL());
         }, 500);
-
         this.filterRecordService.getById(params.id).subscribe(result => {
           this.filterRecord = result;
         });
@@ -110,6 +108,7 @@ export class FilterComponent implements OnInit {
   applyFilter(): boolean {
     /* Initialize new filter object */
     this.filter = new Filter();
+
     if (this.validator.validateFilters(this.filterItem, this.filter)) {
       /* Only apply filter when it passes the validation */
       this.applyFilterEvent.emit(this.filter.getFilterURL());
@@ -142,8 +141,8 @@ export class FilterComponent implements OnInit {
           action: 'create',
           params: this.params,
           message: this.filter,
-          message2: this.filterRecord
-        }
+          message2: this.filterRecord,
+        },
       });
     } else {
       return;

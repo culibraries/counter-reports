@@ -6,21 +6,25 @@ import { Router } from '@angular/router';
 const userUrl = env.apiUrl + '/user/?format=json';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {}
   public isAuthenticated() {
     return this.http.get(userUrl).subscribe(
       data => {
-        if (!data['groups'].includes('LIT-Counter-Reports')) {
+        if (!data['groups'].includes('LIB-Counter-Reports')) {
           this.router.navigate(['/error']);
           return false;
         } else {
           if (
-            !sessionStorage.getItem('token') || sessionStorage.getItem('token') === 'undefined'
+            !sessionStorage.getItem('token') ||
+            sessionStorage.getItem('token') === 'undefined'
           ) {
-            sessionStorage.setItem('token', data['authentication']['auth-token']);
+            sessionStorage.setItem(
+              'token',
+              data['authentication']['auth-token']
+            );
             sessionStorage.setItem('username', data['username']);
             window.location.reload();
           }

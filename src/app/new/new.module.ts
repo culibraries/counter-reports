@@ -13,6 +13,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { NewRoutingModule } from './new-routing.module';
 import { FilterComponent } from './filter/filter.component';
@@ -30,7 +31,7 @@ import { SharedModule } from '../shared/shared.module';
     FilterComponent,
     DataListComponent,
     NewComponent,
-    FilterItemComponent
+    FilterItemComponent,
   ],
   imports: [
     CommonModule,
@@ -53,7 +54,8 @@ import { SharedModule } from '../shared/shared.module';
     MatProgressBarModule,
     NgProgressModule,
     MatSnackBarModule,
-    MatTooltipModule
-  ]
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+  ],
 })
 export class NewModule {}

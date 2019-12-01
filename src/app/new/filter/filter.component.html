@@ -1,5 +1,10 @@
-<button mat-icon-button matTooltip="Select Filters" matTooltipPosition="right" (click)="toggleFilterOption()"
-  style="margin-left: 10px; margin-bottom: 7px;">
+<button
+  mat-icon-button
+  matTooltip="Select Filters"
+  matTooltipPosition="right"
+  (click)="toggleFilterOption()"
+  style="margin-left: 10px; margin-bottom: 7px;"
+>
   <mat-icon>filter_list</mat-icon>
 </button>
 
@@ -9,18 +14,25 @@
   <div class="control-filter-button">
     <button mat-stroked-button (click)="resetAll()">Reset</button>
     <button mat-stroked-button (click)="openSaveModal()">Save</button>
-    <button mat-stroked-button (click)="applyFilter()" style="background-color: #3677BD; color: white ">
+    <button
+      mat-stroked-button
+      (click)="applyFilter()"
+      style="background-color: #3677BD; color: white "
+    >
       Apply
     </button>
   </div>
   <div *ngFor="let item of filterItems" class="control-filter-content">
-    <app-filter-item #filterItem [itemDetail]=item></app-filter-item>
-    <button mat-icon-button (click)="increment()" style="margin-left: 45px;">
+    <app-filter-item #filterItemList [itemDetail]="item"></app-filter-item>
+    <button
+      mat-icon-button
+      (click)="onIncrementFilterItem()"
+      style="margin-left: 45px;"
+    >
       <mat-icon>add_circle_outline</mat-icon>
     </button>
-    <button mat-icon-button (click)="decrement(item)">
+    <button mat-icon-button (click)="onDecrementFilterItem(item)">
       <mat-icon>remove_circle_outline</mat-icon>
     </button>
   </div>
-
 </div>

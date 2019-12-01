@@ -4,7 +4,7 @@ import {
   FormControl,
   FormGroupDirective,
   NgForm,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material';
 
@@ -14,7 +14,7 @@ import {
   FilterRecord,
   Filter,
   AuthService,
-  AlertService
+  AlertService,
 } from 'src/app/core';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -34,20 +34,22 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'app-save-modal-box',
   templateUrl: './save-modal-box.component.html',
-  styleUrls: ['./save-modal-box.component.css']
+  styleUrls: ['./save-modal-box.component.css'],
 })
 export class SaveModalBoxComponent implements OnInit {
   nameFormControl = new FormControl('', [Validators.required]);
   descriptionFormControl = new FormControl('');
   matcher = new MyErrorStateMatcher();
-  now: string;
+  now = new Date().toISOString().slice(0, 10);
   created_at: string;
   updated_at: string;
 
-  filters: string;
+  filterStringDisplay: string;
   filterRecord: FilterRecord;
+
   isBelongsToMe = false;
-  isKeep = false;
+  isKeepOriginal = false;
+
   constructor(
     public dialogRef: MatDialogRef<SaveModalBoxComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -56,96 +58,108 @@ export class SaveModalBoxComponent implements OnInit {
     private alert: AlertService
   ) {}
 
-  isKeepOriginal(event) {
-    this.isKeep = event.checked;
-  }
-
   ngOnInit() {
-    if (this.data.action === 'create') {
-      if (!this.data.params) {
-        this.filters = this.data.message.getString();
+    if (this.data.action === 'save') {
+      // Brand new save filter
+      if (this.data.isBrandNewSaveFilter) {
+        this.filterStringDisplay = this.data.filterDisplay;
       } else {
-        this.nameFormControl.setValue(this.data.message2.name);
-        this.descriptionFormControl.setValue(this.data.message2.description);
-        this.filters = this.data.message.getString();
-        this.isBelongsToMe = this.auth.isUser(this.data.message2.owner);
+        // Save filter when user select a filter record from view/run: load all related data to the form
+        this.nameFormControl.setValue(this.data.filterRecord.name);
+        this.descriptionFormControl.setValue(
+          this.data.filterRecord.description
+        );
+        this.filterStringDisplay = this.data.filterDisplay;
+        this.isBelongsToMe = this.auth.isUser(this.data.filterRecord.owner);
       }
     }
 
     if (this.data.action === 'edit') {
-      const filter = new Filter();
-      this.nameFormControl.setValue(this.data.message.name);
-      this.descriptionFormControl.setValue(this.data.message.description);
-      this.filters = filter
-        .getFilterObject(this.data.message.params)
+      this.nameFormControl.setValue(this.data.filterRecord.name);
+      this.descriptionFormControl.setValue(this.data.filterRecord.description);
+      this.filterStringDisplay = new Filter()
+        .getFilterObject(this.data.filterRecord.params)
         .getString();
     }
-
-    this.now = new Date().toISOString().slice(0, 10);
   }
 
-  onNoClick(): void {
-    this.dialogRef.close('just-close');
+  onNoThanks(): void {
+    this.dialogRef.close();
   }
 
-  onSave(): void {
+  onSubmit(): void {
+    // Validate Name of filter
     if (!this.nameFormControl.valid) {
       return;
     }
-    try {
-      if (this.data.action === 'create') {
-        if (
-          (this.isKeep && this.data.params) ||
-          (!this.isKeep && !this.data.params) ||
-          (!this.isKeep &&
-            this.data.params &&
-            !this.auth.isUser(this.data.message2.owner))
-        ) {
-          this.filterRecord = new FilterRecord(
-            this.nameFormControl.value,
-            this.descriptionFormControl.value,
-            this.data.message.getFilterURL(),
-            this.auth.getUserName(),
-            this.now,
-            this.now
-          );
-          this.filterRecordService
-            .save(this.filterRecord)
-            .subscribe(data => {});
-        } else {
-          this.filterRecord = new FilterRecord(
-            this.nameFormControl.value,
-            this.descriptionFormControl.value,
-            this.data.message.getFilterURL(),
-            this.data.message2.owner,
-            this.data.message2.created_at,
-            this.now
-          );
 
-          this.filterRecordService
-            .update(this.filterRecord, this.data.message2.id)
-            .subscribe(data => {});
-        }
-      }
-
-      if (this.data.action === 'edit') {
-        this.filterRecord = new FilterRecord(
-          this.nameFormControl.value,
-          this.descriptionFormControl.value,
-          this.data.message.params,
-          this.data.message.owner,
-          this.data.message.created_at,
-          this.now
-        );
-
+    if (this.data.action === 'save') {
+      if (this.isSaveNewFilter()) {
         this.filterRecordService
-          .update(this.filterRecord, this.data.message.id)
-          .subscribe(data => {});
+          .save(
+            new FilterRecord(
+              this.nameFormControl.value,
+              this.descriptionFormControl.value,
+              this.data.filterParams, // filters
+              this.auth.getUserName(), // Owner
+              this.now,
+              this.now
+            )
+          )
+          .subscribe();
+      } else {
+        this.filterRecordService
+          .update(
+            new FilterRecord(
+              this.nameFormControl.value,
+              this.descriptionFormControl.value,
+              this.data.filterParams,
+              this.data.filterRecord.owner,
+              this.data.filterRecord.created_at,
+              this.now
+            ),
+            this.data.filterRecord.id
+          )
+          .subscribe();
       }
-      this.alert.success('Great ! You have got it');
-      this.dialogRef.close();
-    } catch (error) {
-      this.alert.danger('Oops ! Something went wrong');
     }
+
+    if (this.data.action === 'edit') {
+      this.filterRecordService
+        .update(
+          new FilterRecord(
+            this.nameFormControl.value,
+            this.descriptionFormControl.value,
+            this.data.filterRecord.params,
+            this.data.filterRecord.owner,
+            this.data.filterRecord.created_at,
+            this.now
+          ),
+          this.data.filterRecord.id
+        )
+        .subscribe();
+    }
+    this.alert.success('Great ! It is saved !');
+    this.dialogRef.close();
+  }
+
+  /**
+   * Determines whether if the 'Save' action is Creating new filterRecord
+   * when isBrandNewSaveFilter passed.
+   * when user want to keep the original record.
+   * when user want to save record which is not belongs to them => new record.
+   * @returns true if save new filter
+   */
+  private isSaveNewFilter(): boolean {
+    if (this.data.isBrandNewSaveFilter) {
+      return true;
+    }
+    if (this.isKeepOriginal) {
+      return true;
+    }
+    if (!this.auth.isUser(this.data.filterRecord.owner)) {
+      return true;
+    }
+    return false;
   }
 }

@@ -1,16 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-  MatPaginator,
-  MatSort,
-  MatTableDataSource,
-  MatDialogRef
-} from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import {
   FilterRecordService,
   FilterRecord,
   AuthService,
   Filter,
-  AlertService
+  AlertService,
 } from '../core';
 import { MatDialog } from '@angular/material';
 import { SaveModalBoxComponent, ConfirmComponent } from '../shared';
@@ -26,9 +21,9 @@ import { trigger, state, style } from '@angular/animations';
         'collapsed',
         style({ height: '0px', minHeight: '0', display: 'none' })
       ),
-      state('expanded', style({ height: '*' }))
-    ])
-  ]
+      state('expanded', style({ height: '*' })),
+    ]),
+  ],
 })
 export class ViewandrunComponent implements OnInit {
   displayedColumns: string[] = [
@@ -37,7 +32,7 @@ export class ViewandrunComponent implements OnInit {
     'owner',
     'created_at',
     'updated_at',
-    'actions'
+    'actions',
   ];
   dataSource = new MatTableDataSource([]);
   filterRecord: FilterRecord[];
@@ -53,7 +48,7 @@ export class ViewandrunComponent implements OnInit {
     private filterRecordService: FilterRecordService,
     private auth: AuthService,
     private alert: AlertService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
@@ -71,36 +66,30 @@ export class ViewandrunComponent implements OnInit {
     });
   }
 
-  delete(event: any, id: number) {
+  onDelete(event: any, id: number) {
     event.stopPropagation();
     const dialogRef = this.dialog.open(ConfirmComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        try {
-          this.filterRecordService.delete(id).subscribe(result => {
-            this.loadAllFiltersRecord();
-          });
-          this.alert.success('All right ! The record has been deleted');
-        } catch (error) {
-          this.alert.danger('Oops ! Something went wrong');
-        }
+        this.filterRecordService.delete(id).subscribe(result => {
+          this.loadAllFiltersRecord();
+        });
+        this.alert.success('All right ! The record has been deleted');
       }
     });
   }
 
-  edit(event: any, id: number) {
+  onEdit(event: any, id: number) {
     event.stopPropagation();
-    this.filterRecordService.getById(id).subscribe(result => {
+    this.filterRecordService.getById(id).subscribe(res => {
       const dialogRef = this.dialog.open(SaveModalBoxComponent, {
         width: '500px',
         height: 'auto',
-        data: { action: 'edit', message: result }
+        data: { action: 'edit', filterRecord: res },
       });
 
-      dialogRef.afterClosed().subscribe(result => {
-        if (result !== 'just-close') {
-          this.loadAllFiltersRecord();
-        }
+      dialogRef.afterClosed().subscribe(res => {
+        this.loadAllFiltersRecord();
       });
     });
   }

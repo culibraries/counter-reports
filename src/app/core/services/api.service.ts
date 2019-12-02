@@ -22,6 +22,12 @@ export class ApiService {
     return this.httpClient.get(API_URL + path, { params });
   }
 
+  public logout(
+    path: string,
+  ): Observable<any> {
+    return this.httpClient.get(API_URL + path, {responseType: 'text'});
+  }
+
   public getNextPage(path: string): Observable<any> {
     return this.httpClient.get(path);
   }

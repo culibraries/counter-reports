@@ -13,13 +13,8 @@ export class ErrorService implements ErrorHandler {
   handleError(error: Error | HttpErrorResponse) {
     const router = this.injector.get(Router);
     if (error instanceof HttpErrorResponse) {
-      let code = 0;
-      if (!navigator.onLine) {
-        code = 0;
-      }
-      code = error.status;
-      if (code !== 401) {
-        this.ngZone.run(() => router.navigate(['error/' + code]));
+      if (error.status !== 401) {
+        this.ngZone.run(() => router.navigate(['error/' + error.status]));
       }
     }
   }

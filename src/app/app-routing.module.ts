@@ -3,6 +3,7 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';
 import { AuthGuardService } from './core/services/auth-guard.service';
 import { ErrorComponent } from './error/error.component';
+import { LogoutComponent } from './logout/logout.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'error/:code',
     component: ErrorComponent,
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent,
   },
   { path: '**', redirectTo: '' },
 ];

@@ -3,22 +3,13 @@
 <div mat-dialog-content>
   <div class="form-container">
     <mat-form-field>
-      <input
-        name="inputName"
-        matInput
-        placeholder="Name (*)"
-        [formControl]="nameFormControl"
-        />
+      <input name="inputName" matInput placeholder="Name (*)" [formControl]="nameFormControl" />
       <mat-error *ngIf="nameFormControl.hasError('required')">
         Name is <strong>required</strong>
       </mat-error>
     </mat-form-field>
     <mat-form-field>
-      <textarea
-        name="textDescription"
-        [formControl]="descriptionFormControl"
-        matInput
-        placeholder="Description"
+      <textarea name="textDescription" [formControl]="descriptionFormControl" matInput placeholder="Description"
         style="height: 70px;"></textarea>
     </mat-form-field>
     <div *ngIf="filterStringDisplay" style="display: flex; padding-top: 20px">
@@ -26,30 +17,22 @@
       <span [innerHTML]="filterStringDisplay" style="padding-left: 6px;"></span>
     </div>
     <div>
-      <div style="display: flex; float: left; padding-top: 5px;">
+      <div class="date-range">
         <mat-icon>date_range</mat-icon>
-        <span style="padding-left: 6px; padding-top: 3px;"><strong>{{ now }}</strong></span>
+        <span class="date-display"><strong>{{ now }}</strong></span>
       </div>
     </div>
   </div>
 </div>
 
-<div
-  mat-dialog-actions
-  style="float: right; margin-bottom: 8px; padding-top: 30px;">
-  <mat-checkbox
-    style="padding-right: 5px; font-size: 14px;"
-    *ngIf="isBelongsToMe"
-    [(ngModel)]="isKeepOriginal">
+<div mat-dialog-actions>
+  <mat-checkbox class="check-box" *ngIf="isBelongsToMe" [(ngModel)]="isKeepOriginal">
     Keep the original
   </mat-checkbox>
   <button mat-stroked-button (click)="onNoThanks()" style="outline:0;">
     No Thanks
   </button>
-  <button
-    mat-stroked-button
-    (click)="onSubmit()"
-    style="background-color: #3677BD; color: white;margin-left: 5px; outline: 0">
+  <button mat-stroked-button (click)="onSubmit()" class="button-submit">
     Submit
   </button>
 </div>

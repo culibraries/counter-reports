@@ -17,7 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { NgxSpinnerModule } from "ngx-spinner";
+import { NgProgressModule } from '@ngx-progressbar/core';
 
 @NgModule({
   declarations: [
@@ -40,7 +40,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     MatInputModule,
     MatDialogModule,
     MatCheckboxModule,
-    NgxSpinnerModule
+    NgProgressModule
   ],
   exports: [MonthConvertPipe]
 })

@@ -25,7 +25,7 @@ export class FilterItemComponent implements OnInit, OnDestroy {
     { value: 'to', viewValue: 'To' },
   ];
 
-  filterTypes: IFilter[] = [
+  types: IFilter[] = [
     { value: 'is', viewValue: 'is' },
     { value: 'is_not', viewValue: 'is NOT' },
     { value: 'contains', viewValue: 'contains' },
@@ -33,6 +33,7 @@ export class FilterItemComponent implements OnInit, OnDestroy {
     { value: 'starts_with', viewValue: 'starts with' },
     { value: 'ends_with', viewValue: 'ends with' },
   ];
+  filterTypes: IFilter[] = [];
   options = [];
   filteredOptions: Observable<any>;
   selectedFilter = '';
@@ -73,18 +74,17 @@ export class FilterItemComponent implements OnInit, OnDestroy {
         .replace(/%26/g, '&');
 
       if (key[0] === 'from' || key[0] === 'to') {
+        this.selectedFilter = key[0];
         this.yearSelected = value.split('-')[0];
         this.monthSelected = value.split('-')[1];
+        this.selectedFilterType = 'is';
+        this.filterTypes = [{ value: 'is', viewValue: 'is' }];
+        this.selectedFilterValue = 'from';
+      } else {
+        this.selectedFilterType = value.split('*.')[0];
+        this.selectedFilter = key[0];
+        this.myGroup.setValue({ keyInput: value.split('*.')[1] });
       }
-
-      const arrValue = value.split(',');
-
-      this.selectedFilterType = arrValue.pop();
-
-      this.selectedFilter = key[0];
-      this.myGroup.setValue({
-        keyInput: arrValue.join(','),
-      });
     }
     this.loadFilterValueBySelectedFilter(this.selectedFilter);
   }
@@ -102,12 +102,14 @@ export class FilterItemComponent implements OnInit, OnDestroy {
 
     switch (value) {
       case 'platform':
+        this.filterTypes = this.types;
         this.keySubscriber = this.myGroup
           .get('keyInput')
           .valueChanges.pipe(debounceTime(500))
           .subscribe((val: any) => {
             this.options = [];
             if (this.isFilterTypeIsOrIsNot()) {
+              this.isAutocompleteDisabled = true;
               const key = val.trim();
               if (key.length >= 3) {
                 this.doneLoading = true;
@@ -118,24 +120,28 @@ export class FilterItemComponent implements OnInit, OnDestroy {
                     });
                   }
                   this.doneLoading = false;
+                  // Remove duplication efore displaying to autocomplete
+                  this.options = [...new Set(this.options)];
                 });
               } else {
                 this.doneLoading = false;
                 this.options = [];
               }
             } else {
-              this.isAutocompleteDisabled = true;
+              this.isAutocompleteDisabled = false;
             }
           });
         break;
 
       case 'publisher':
+        this.filterTypes = this.types;
         this.keySubscriber = this.myGroup
           .get('keyInput')
           .valueChanges.pipe(debounceTime(500))
           .subscribe((val: any) => {
             this.options = [];
             if (this.isFilterTypeIsOrIsNot()) {
+              this.isAutocompleteDisabled = true;
               const key = val.trim();
               if (key.length >= 3) {
                 this.doneLoading = true;
@@ -144,6 +150,8 @@ export class FilterItemComponent implements OnInit, OnDestroy {
                     data.forEach(r => {
                       this.options.push(r.name);
                     });
+                    // Remove duplication efore displaying to autocomplete
+                    this.options = [...new Set(this.options)];
                   }
                   this.doneLoading = false;
                 });
@@ -152,18 +160,20 @@ export class FilterItemComponent implements OnInit, OnDestroy {
                 this.options = [];
               }
             } else {
-              this.isAutocompleteDisabled = true;
+              this.isAutocompleteDisabled = false;
             }
           });
         break;
 
       case 'title':
+        this.filterTypes = this.types;
         this.keySubscriber = this.myGroup
           .get('keyInput')
           .valueChanges.pipe(debounceTime(500))
           .subscribe((val: any) => {
             this.options = [];
             if (this.isFilterTypeIsOrIsNot()) {
+              this.isAutocompleteDisabled = true;
               const key = val.trim();
               if (key.length >= 3) {
                 this.doneLoading = true;
@@ -172,6 +182,8 @@ export class FilterItemComponent implements OnInit, OnDestroy {
                     data.forEach(r => {
                       this.options.push(r.title);
                     });
+                    // Remove duplication efore displaying to autocomplete
+                    this.options = [...new Set(this.options)];
                   }
                   this.doneLoading = false;
                 });
@@ -180,16 +192,15 @@ export class FilterItemComponent implements OnInit, OnDestroy {
                 this.options = [];
               }
             } else {
-              this.isAutocompleteDisabled = true;
+              this.isAutocompleteDisabled = false;
             }
           });
         break;
 
       case 'from': {
         // Only load 'is' filterType to filterType dropdown
-        this.filterTypes = this.filterTypes.filter(
-          filter => filter.value === 'is'
-        );
+        this.filterTypes = [{ value: 'is', viewValue: 'is' }];
+
         this.selectedFilterType = 'is';
         this.selectedFilterValue = 'from';
         break;
@@ -197,9 +208,8 @@ export class FilterItemComponent implements OnInit, OnDestroy {
 
       case 'to': {
         // Only load 'is' filterType to filterType dropdown
-        this.filterTypes = this.filterTypes.filter(
-          filter => filter.value === 'is'
-        );
+        this.filterTypes = [{ value: 'is', viewValue: 'is' }];
+
         this.selectedFilterType = 'is';
         this.selectedFilterValue = 'to';
         break;
@@ -225,9 +235,6 @@ export class FilterItemComponent implements OnInit, OnDestroy {
   }
 
   onChangeFilterType() {
-    // Reset keyInput: empty
-    this.myGroup.setValue({ keyInput: '' });
-
     // Disable autocomplete if filterType NOT : is or is_not
     this.isAutocompleteDisabled = !this.isFilterTypeIsOrIsNot();
   }

@@ -100,7 +100,7 @@ export class FilterComponent implements OnInit {
     /* Reset the filterItems */
     this.filterItems = []; // Clear all
     this.filterItems.push([]); // Initnilize an empty filterItem
-
+    this.filterDisplay = '';
     /* Sent resetEvent to data-list.componet to reset all data in the table */
     this.resetEvent.emit();
   }
@@ -117,6 +117,7 @@ export class FilterComponent implements OnInit {
       const filter: Filter = this.convertToFilterObject(
         this.arrayFilterItemList
       );
+      this.filterDisplay = filter.getString();
       this.applyFilterEvent.emit(filter.getFilterURL());
       return true;
     } else {
@@ -176,30 +177,35 @@ export class FilterComponent implements OnInit {
   private convertToFilterObject(filterItemList: any): Filter {
     const filter = new Filter();
     filterItemList.forEach(e => {
-      if (e.selectedFilter === 'from' || e.selectedFilter === 'to') {
+      if (e.selectedFilter === 'from') {
         filter.setFrom(e.yearSelected + '-' + e.monthSelected + '-' + '01');
+      }
+      if ( e.selectedFilter === 'to')
+      {
         filter.setTo(e.yearSelected + '-' + e.monthSelected + '-' + '01');
       }
       if (e.selectedFilter === 'platform') {
         filter.setPlatform(
-          e.myGroup.get('keyInput').value + ',' + e.selectedFilterType
+          e.selectedFilterType + '*.' + e.myGroup.get('keyInput').value
         );
       }
       if (e.selectedFilter === 'publisher') {
         filter.setPublisher(
-          e.myGroup.get('keyInput').value + ',' + e.selectedFilterType
+          e.selectedFilterType + '*.' + e.myGroup.get('keyInput').value
         );
       }
       if (e.selectedFilter === 'title') {
         filter.setTitle(
-          e.myGroup.get('keyInput').value + ',' + e.selectedFilterType
+          e.selectedFilterType + '*.' + e.myGroup.get('keyInput').value
         );
       }
     });
     return filter;
   }
 
-  private convertToArrayFilterItemList(filterItemList: QueryList<FilterItemComponent>): {}[] {
+  private convertToArrayFilterItemList(
+    filterItemList: QueryList<FilterItemComponent>
+  ): {}[] {
     const output = [];
     filterItemList.forEach(e => {
       output.push(this.reFilterItemList(e));

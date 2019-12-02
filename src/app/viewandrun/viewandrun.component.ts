@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import {
   FilterRecordService,
@@ -10,6 +10,7 @@ import {
 import { MatDialog } from '@angular/material';
 import { SaveModalBoxComponent, ConfirmComponent } from '../shared';
 import { trigger, state, style } from '@angular/animations';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-viewandrun',
@@ -25,7 +26,7 @@ import { trigger, state, style } from '@angular/animations';
     ]),
   ],
 })
-export class ViewandrunComponent implements OnInit {
+export class ViewandrunComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'name',
     'description',
@@ -39,6 +40,7 @@ export class ViewandrunComponent implements OnInit {
   isBelongsToMe: boolean;
   filter = new Filter();
   expandedElement: [] | null;
+  filterRecordSubscription: Subscription;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -57,13 +59,19 @@ export class ViewandrunComponent implements OnInit {
   }
 
   loadAllFiltersRecord() {
-    this.filterRecordService.getAll().subscribe(result => {
-      result.forEach(e => {
-        e['isBelongsToMe'] = this.auth.isUser(e.owner);
-        e['filterDisplay'] = this.filter.getFilterObject(e.params).getString();
+    this.alert.loading('loading...');
+    this.filterRecordSubscription = this.filterRecordService
+      .getAll()
+      .subscribe(result => {
+        result.forEach(e => {
+          e['isBelongsToMe'] = this.auth.isUser(e.owner);
+          e['filterDisplay'] = this.filter
+            .getFilterObject(e.params)
+            .getString();
+        });
+        this.dataSource.data = result;
+        this.alert.dismiss();
       });
-      this.dataSource.data = result;
-    });
   }
 
   onDelete(event: any, id: number) {
@@ -99,5 +107,12 @@ export class ViewandrunComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  ngOnDestroy() {
+    if (this.filterRecordSubscription) {
+      this.filterRecordSubscription.unsubscribe();
+    }
+    this.alert.dismiss();
   }
 }

@@ -31,10 +31,10 @@ const routes: Routes = [
           ),
       },
     ],
-    // canActivate: [AuthGuardService],
+    canActivate: [AuthGuardService],
   },
   {
-    path: 'error',
+    path: 'error/:code',
     component: ErrorComponent,
   },
   { path: '**', redirectTo: '' },

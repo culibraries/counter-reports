@@ -4,14 +4,14 @@ import { StaticService } from '../core';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
   publicationTotal: number;
   publisherTotal: number;
   platformTotal: number;
 
-  constructor(private staticService: StaticService) { }
+  constructor(private staticService: StaticService) {}
 
   ngOnInit() {
     this.staticService.get().subscribe(data => {

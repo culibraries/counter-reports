@@ -106,7 +106,9 @@ export class SaveModalBoxComponent implements OnInit {
               this.now
             )
           )
-          .subscribe();
+          .subscribe(() => {
+            this.alert.success('Great ! It is saved !');
+          });
       } else {
         this.filterRecordService
           .update(
@@ -120,7 +122,9 @@ export class SaveModalBoxComponent implements OnInit {
             ),
             this.data.filterRecord.id
           )
-          .subscribe();
+          .subscribe(() => {
+            this.alert.success('Great ! It is saved !');
+          });
       }
     }
 
@@ -137,9 +141,10 @@ export class SaveModalBoxComponent implements OnInit {
           ),
           this.data.filterRecord.id
         )
-        .subscribe();
+        .subscribe(() => {
+          this.alert.success('Great ! It is saved !');
+        });
     }
-    this.alert.success('Great ! It is saved !');
     this.dialogRef.close();
   }
 

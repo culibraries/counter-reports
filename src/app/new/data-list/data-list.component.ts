@@ -49,7 +49,7 @@ export class DataListComponent implements OnInit, OnDestroy {
     private alert: AlertService,
     private exportService: ExportExcelService,
     private dataHelper: DataHelper
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
@@ -57,7 +57,8 @@ export class DataListComponent implements OnInit, OnDestroy {
     this.disabledExportButton = true;
   }
 
-  private loadDataToTable(filterURL: string) {
+  loadDataToTable(filterURL: string) {
+    this.resetDataTable();
     if (filterURL === '') {
       this.alert.default(Config.messages.warningAllRecords);
     } else {
@@ -68,29 +69,34 @@ export class DataListComponent implements OnInit, OnDestroy {
 
   private applyFilterByCallingAPI(filterURL: string) {
     let output = [];
-    this.resetDataTable();
 
     this.getResultSubscriber = this.publicationService
       .getByPageNext(filterURL)
-      .subscribe(res => {
-        res.forEach((e: any) => {
-          output = output.concat(e);
-        });
+      .subscribe(
+        res => {
+          res.forEach((e: any) => {
+            output = output.concat(e);
+          });
 
-        /* Reformating Data from API*/
-        this.data = this.dataHelper.convertPublicationData(output);
+          if (output.length > 0) {
+            this.disabledExportButton = false;
+            /* Reformating Data from API*/
+            this.data = this.dataHelper.convertPublicationData(output);
 
-        // Displaying alert
-        this.alert.dismiss();
-        this.alert.success(this.data.length + ' record(s) has found');
+            // Displaying alert
+            this.alert.success(this.data.length + ' record(s) has found');
 
-        /* Enable export button */
-        this.disabledExportButton = this.data.length > 0;
-
-
-        // Load data to table
-        this.dataSource.data = this.data;
-      });
+            // Load data to table
+            this.dataSource.data = this.data;
+          } else {
+            // Displaying alert
+            this.alert.success('0 record has found');
+            this.disabledExportButton = true;
+          }
+        },
+        err => this.alert.danger('Error! Please try again or submit a ticket.'),
+        () => void 0
+      );
   }
 
   resetDataTable() {
@@ -117,5 +123,6 @@ export class DataListComponent implements OnInit, OnDestroy {
     if (this.getResultSubscriber) {
       this.getResultSubscriber.unsubscribe();
     }
+    this.alert.dismiss();
   }
 }

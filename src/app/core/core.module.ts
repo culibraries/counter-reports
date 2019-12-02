@@ -1,5 +1,7 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule, Optional, SkipSelf, ErrorHandler } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgxSpinnerModule } from 'ngx-spinner';
+
 import {
   ApiService,
   PlatformService,
@@ -12,7 +14,8 @@ import {
   ExportExcelService,
   ValidatorService,
   FilterRecordService,
-  StaticService
+  StaticService,
+  ErrorService,
 } from './services';
 import { DataHelper } from './helpers';
 
@@ -22,7 +25,12 @@ import { EnsureModuleLoadedOnceGuard } from './ensure-module-loaded-once.guard';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, HttpClientModule, MatSnackBarModule],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    MatSnackBarModule,
+    NgxSpinnerModule,
+  ],
   providers: [
     ApiService,
     PlatformService,
@@ -37,7 +45,11 @@ import { EnsureModuleLoadedOnceGuard } from './ensure-module-loaded-once.guard';
     ValidatorService,
     FilterRecordService,
     StaticService,
-  ]
+    {
+      provide: ErrorHandler,
+      useClass: ErrorService,
+    },
+  ],
 })
 export class CoreModule extends EnsureModuleLoadedOnceGuard {
   // Ensure that CoreModule is only loaded into AppModule

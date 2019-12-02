@@ -8,7 +8,7 @@
   outline: 0;
 }
 
-.form-container>* {
+.form-container > * {
   width: 100%;
 }
 
@@ -16,6 +16,33 @@
   margin-bottom: 20px;
 }
 
-.form-container form>* {
+.form-container form > * {
   margin: 5px 0;
+}
+
+.date-range {
+  display: flex;
+  float: left;
+  padding-top: 5px;
+}
+
+.date-display {
+  padding-left: 6px;
+  padding-top: 3px;
+}
+
+.mat-dialog-actions {
+  float: right;
+  margin-bottom: 8px;
+  padding-top: 30px;
+}
+.button-submit {
+  background-color: #3677bd;
+  color: white;
+  margin-left: 5px;
+  outline: 0;
+}
+.check-box {
+  padding-right: 5px;
+  font-size: 14px;
 }

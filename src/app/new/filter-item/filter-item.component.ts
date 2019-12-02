@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
+
 import { PlatformService, PublisherService, TitleService } from '../../core';
 import { Config } from '../../core';
-import { ActivatedRoute } from '@angular/router';
 
-export interface Filter {
+export interface IFilter {
   value: string;
   viewValue: string;
 }
@@ -14,128 +14,204 @@ export interface Filter {
 @Component({
   selector: 'app-filter-item',
   templateUrl: './filter-item.component.html',
-  styleUrls: ['./filter-item.component.css']
+  styleUrls: ['./filter-item.component.css'],
 })
-export class FilterItemComponent implements OnInit {
-  filterControl = new FormControl();
-  options = [];
-  filteredOptions: Observable<any>;
-  selectedFilter: string;
-  selectedFilterValue = '!';
-  publishers: string[] = [];
-  platforms: string[] = [];
-  titles: string[] = [];
-  monthSelected: string;
-  yearSelected: string;
-  doneLoading: boolean = false;
-  @Input() itemDetail: {};
-
-  filters: Filter[] = [
+export class FilterItemComponent implements OnInit, OnDestroy {
+  filters: IFilter[] = [
     { value: 'platform', viewValue: 'Platform' },
     { value: 'publisher', viewValue: 'Publisher' },
     { value: 'title', viewValue: 'Title' },
     { value: 'from', viewValue: 'From' },
-    { value: 'to', viewValue: 'To' }
+    { value: 'to', viewValue: 'To' },
   ];
+
+  types: IFilter[] = [
+    { value: 'is', viewValue: 'is' },
+    { value: 'is_not', viewValue: 'is NOT' },
+    { value: 'contains', viewValue: 'contains' },
+    { value: 'does_not_contains', viewValue: 'does NOT contains' },
+    { value: 'starts_with', viewValue: 'starts with' },
+    { value: 'ends_with', viewValue: 'ends with' },
+  ];
+  filterTypes: IFilter[] = [];
+  options = [];
+  filteredOptions: Observable<any>;
+  selectedFilter = '';
+  selectedFilterType = '';
+  selectedFilterValue = '!';
+
+  monthSelected: string;
+  yearSelected: string;
+  isAutocompleteDisabled = true;
+  myGroup: FormGroup;
+  doneLoading = false;
+
+  @Input() itemDetail: any;
 
   years: string[] = Config.years;
   months: string[] = Config.months;
   filterDisplayTransform: [] = [];
-
-  @Output() platfomrsTest: EventEmitter<any> = new EventEmitter<any>();
+  keySubscriber: any;
 
   constructor(
     private platformService: PlatformService,
     private publisherService: PublisherService,
-    private titleService: TitleService,
-    private route: ActivatedRoute
+    private titleService: TitleService
   ) {}
 
   ngOnInit() {
-    if (typeof this.itemDetail !== 'number') {
+    // Set default value
+    this.myGroup = new FormGroup({
+      keyInput: new FormControl(''),
+    });
+    this.selectedFilter = 'platform';
+    this.selectedFilterType = 'is';
+    // Load filterRecords into correctsponding filter fields.
+    if (Object.keys(this.itemDetail).length > 0) {
       const key = Object.keys(this.itemDetail);
       const value = Object.values(this.itemDetail)
         .toString()
         .replace(/%26/g, '&');
-      this.selectedFilter = key[0];
-      this.filterControl.setValue(value);
-      this.loadFilterValueBySelectedFilter(this.selectedFilter);
+
       if (key[0] === 'from' || key[0] === 'to') {
+        this.selectedFilter = key[0];
         this.yearSelected = value.split('-')[0];
         this.monthSelected = value.split('-')[1];
+        this.selectedFilterType = 'is';
+        this.filterTypes = [{ value: 'is', viewValue: 'is' }];
+        this.selectedFilterValue = 'from';
+      } else {
+        this.selectedFilterType = value.split('*.')[0];
+        this.selectedFilter = key[0];
+        this.myGroup.setValue({ keyInput: value.split('*.')[1] });
       }
     }
-
-    this.filteredOptions = this.filterControl.valueChanges.pipe(
-      startWith(''),
-      map(value => (value.length >= 1 ? this._filter(value).slice(0, 30) : []))
-    );
+    this.loadFilterValueBySelectedFilter(this.selectedFilter);
   }
 
-  isEmpty(obj) {
-    for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        return false;
-      }
-    }
-    return true;
+  onKeySearchFocus() {
+    if (this.myGroup.get('keyInput').value.length < 3) this.options = [];
   }
 
   loadFilterValueBySelectedFilter(value: string) {
-    this.filterControl.disable();
-    this.doneLoading = true;
+    this.options = [];
+
+    if (this.keySubscriber) {
+      this.keySubscriber.unsubscribe();
+    }
 
     switch (value) {
-      case 'platform': {
-        this.filterControl.enable();
-        this.platformService.getAll().subscribe(data => {
-          data.forEach(r => {
-            this.platforms.push(r.name);
+      case 'platform':
+        this.filterTypes = this.types;
+        this.keySubscriber = this.myGroup
+          .get('keyInput')
+          .valueChanges.pipe(debounceTime(500))
+          .subscribe((val: any) => {
+            this.options = [];
+            if (this.isFilterTypeIsOrIsNot()) {
+              this.isAutocompleteDisabled = true;
+              const key = val.trim();
+              if (key.length >= 3) {
+                this.doneLoading = true;
+                this.platformService.get(key).subscribe(data => {
+                  if (data.length > 0) {
+                    data.forEach(r => {
+                      this.options.push(r.name);
+                    });
+                  }
+                  this.doneLoading = false;
+                  // Remove duplication efore displaying to autocomplete
+                  this.options = [...new Set(this.options)];
+                });
+              } else {
+                this.doneLoading = false;
+                this.options = [];
+              }
+            } else {
+              this.isAutocompleteDisabled = false;
+            }
           });
-          this.doneLoading = false;
-        });
-        this.options = this.platforms;
         break;
-      }
 
       case 'publisher':
-        {
-          this.publisherService.getAll().subscribe(data => {
-            this.filterControl.enable();
-            data.forEach(r => {
-              this.publishers.push(r.name);
-            });
-            this.doneLoading = false;
+        this.filterTypes = this.types;
+        this.keySubscriber = this.myGroup
+          .get('keyInput')
+          .valueChanges.pipe(debounceTime(500))
+          .subscribe((val: any) => {
+            this.options = [];
+            if (this.isFilterTypeIsOrIsNot()) {
+              this.isAutocompleteDisabled = true;
+              const key = val.trim();
+              if (key.length >= 3) {
+                this.doneLoading = true;
+                this.publisherService.get(key).subscribe(data => {
+                  if (data.length > 0) {
+                    data.forEach(r => {
+                      this.options.push(r.name);
+                    });
+                    // Remove duplication efore displaying to autocomplete
+                    this.options = [...new Set(this.options)];
+                  }
+                  this.doneLoading = false;
+                });
+              } else {
+                this.doneLoading = false;
+                this.options = [];
+              }
+            } else {
+              this.isAutocompleteDisabled = false;
+            }
           });
-        }
-        this.options = this.publishers;
         break;
 
-      case 'title': {
-        this.titleService.getAll().subscribe(data => {
-          this.filterControl.enable();
-          data.forEach(r => {
-            this.titles.push(r.title);
+      case 'title':
+        this.filterTypes = this.types;
+        this.keySubscriber = this.myGroup
+          .get('keyInput')
+          .valueChanges.pipe(debounceTime(500))
+          .subscribe((val: any) => {
+            this.options = [];
+            if (this.isFilterTypeIsOrIsNot()) {
+              this.isAutocompleteDisabled = true;
+              const key = val.trim();
+              if (key.length >= 3) {
+                this.doneLoading = true;
+                this.titleService.get(key).subscribe(data => {
+                  if (data.length > 0) {
+                    data.forEach(r => {
+                      this.options.push(r.title);
+                    });
+                    // Remove duplication efore displaying to autocomplete
+                    this.options = [...new Set(this.options)];
+                  }
+                  this.doneLoading = false;
+                });
+              } else {
+                this.doneLoading = false;
+                this.options = [];
+              }
+            } else {
+              this.isAutocompleteDisabled = false;
+            }
           });
-          this.doneLoading = false;
-        });
-        this.options = this.titles;
         break;
-      }
 
       case 'from': {
-        this.filterControl.enable();
-        this.selectedFilterValue = 'from';
-        this.doneLoading = false;
+        // Only load 'is' filterType to filterType dropdown
+        this.filterTypes = [{ value: 'is', viewValue: 'is' }];
 
+        this.selectedFilterType = 'is';
+        this.selectedFilterValue = 'from';
         break;
       }
 
       case 'to': {
-        this.filterControl.enable();
-        this.selectedFilterValue = 'to';
-        this.doneLoading = false;
+        // Only load 'is' filterType to filterType dropdown
+        this.filterTypes = [{ value: 'is', viewValue: 'is' }];
 
+        this.selectedFilterType = 'is';
+        this.selectedFilterValue = 'to';
         break;
       }
 
@@ -147,24 +223,31 @@ export class FilterItemComponent implements OnInit {
   }
 
   onChangeFilterOption() {
-    this.filterControl.setValue('');
+    this.myGroup.setValue({ keyInput: '' });
     this.selectedFilterValue = '!';
     this.loadFilterValueBySelectedFilter(this.selectedFilter);
   }
 
-  resetFilterOption() {
-    this.selectedFilter = undefined;
-    this.filterControl.setValue('');
-    this.platforms = [];
-    this.publishers = [];
-    this.titles = [];
+  isFilterTypeIsOrIsNot(): boolean {
+    return (
+      this.selectedFilterType === 'is' || this.selectedFilterType === 'is_not'
+    );
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+  onChangeFilterType() {
+    // Disable autocomplete if filterType NOT : is or is_not
+    this.isAutocompleteDisabled = !this.isFilterTypeIsOrIsNot();
+  }
 
-    return this.options.filter(option =>
-      option.toLowerCase().includes(filterValue)
-    );
+  resetFilterOption() {
+    this.selectedFilter = undefined;
+    this.myGroup.setValue({ keyInput: '' });
+    this.ngOnDestroy();
+  }
+
+  ngOnDestroy() {
+    if (this.keySubscriber) {
+      this.keySubscriber.unsubscribe();
+    }
   }
 }

@@ -30,7 +30,7 @@ export class FilterRecord {
       owner: this.owner,
       params: this.params,
       created_at: this.created_at,
-      updated_at: this.updated_at
+      updated_at: this.updated_at,
     };
     return output;
   }

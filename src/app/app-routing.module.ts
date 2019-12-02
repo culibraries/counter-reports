@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.component';
 import { AuthGuardService } from './core/services/auth-guard.service';
-import { LogoutComponent } from './logout/logout.component';
+import { ErrorComponent } from './error/error.component';
 
 const routes: Routes = [
   {
@@ -13,33 +12,32 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'dashboard',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'dashboard',
-        loadChildren: './dashboard/dashboard.module#DashboardModule'
+        loadChildren: () =>
+          import('./dashboard/dashboard.module').then(m => m.DashboardModule),
       },
       {
         path: 'new-reports',
-        loadChildren: './new/new.module#NewModule'
+        loadChildren: () => import('./new/new.module').then(m => m.NewModule),
       },
       {
         path: 'viewandrun',
-        loadChildren: './viewandrun/viewandrun.module#ViewandrunModule'
-      }
+        loadChildren: () =>
+          import('./viewandrun/viewandrun.module').then(
+            m => m.ViewandrunModule
+          ),
+      },
     ],
-    canActivate: [AuthGuardService]
-  },
-
-  {
-    path: 'login',
-    component: LoginComponent
+    canActivate: [AuthGuardService],
   },
   {
-    path: 'logout',
-    component: LogoutComponent
+    path: 'error/:code',
+    component: ErrorComponent,
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -47,9 +45,9 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
       useHash: true,
       enableTracing: false,
-      preloadingStrategy: PreloadAllModules
-    })
+      preloadingStrategy: PreloadAllModules,
+    }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

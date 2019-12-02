@@ -1,27 +1,28 @@
 # CounterReports
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.3.
+Providing a web interface that allows user can filtering, searching, export JR1 reports. All of JR1 reports data are loaded into database. The app is implemented by Angular 8.2.13. Angular CLI (8.3.19)
+## Installing
 
-## Development server
+```
+git clone git@github.com:culibraries/counter-reports.git counter-reports
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+cd counter-reports
 
-## Code scaffolding
+npm install
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+# run at localhost:4200
+ng serve -o
+```
+
+## Prerequisites
+
+You will need to be the member of group on MyGroup. Contact to LIT CU Libraries or group's admin for more information.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Docker Build:
+`docker build -t culibraries/counter-reports:[version] .`
 
-## Running unit tests
+## License
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Libraries IT - University Of Colorado - Boulder

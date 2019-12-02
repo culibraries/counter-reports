@@ -1,48 +1,47 @@
 import { Injectable } from '@angular/core';
 import { env } from '../../../environments/environment';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 const API_URL = env.apiUrl;
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
+  headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'X-CSRFToken': this.getCookie('csrftoken'),
+  });
+
   constructor(private httpClient: HttpClient) {}
 
-  // API: GET
   public get(
     path: string,
     params: HttpParams = new HttpParams()
   ): Observable<any> {
-    console.log(API_URL + path);
-    return this.httpClient
-      .get(API_URL + path, { params })
-      .pipe(catchError(this.formatErrors));
+    return this.httpClient.get(API_URL + path, { params });
   }
 
-  // API: POST
+  public getNextPage(path: string): Observable<any> {
+    return this.httpClient.get(path);
+  }
+
   public post(path: string, body: {}): Observable<any> {
-    return this.httpClient
-      .post(API_URL + path, JSON.stringify(body))
-      .pipe(catchError(this.formatErrors));
+    return this.httpClient.post(API_URL + path, body, {
+      headers: this.headers,
+    });
   }
 
-  // API: DELETE
   public delete(path: string): Observable<any> {
-    return this.httpClient
-      .delete(API_URL + path)
-      .pipe(catchError(this.formatErrors));
+    return this.httpClient.delete(API_URL + path, { headers: this.headers });
   }
 
-  // API: PUT
   public put(path: string, body: {}): Observable<any> {
-    return this.httpClient
-      .put(API_URL + path, JSON.stringify(body))
-      .pipe(catchError(this.formatErrors));
+    return this.httpClient.put(API_URL + path, body, { headers: this.headers });
   }
 
-  private formatErrors(error: any) {
-    return throwError(error.error);
+  public getCookie(name: string): string {
+    const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    return v ? v[2] : null;
   }
 }

@@ -15,7 +15,7 @@ export const Config = {
     notExist: 'No active account found with the given credentials', // Account Not found in the system
     tokenisNotValid: 'You are out of session ! Please log back in', // Invalid Token
     generalErrorMessage:
-      'Error ! Please create a ticket to LIT for further assistanct'
+      'Error ! Please create a ticket to LIT for further assistance'
   },
   snackBar: {
     duration: 4000

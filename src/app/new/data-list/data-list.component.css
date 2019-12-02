@@ -23,7 +23,6 @@ tr.element-row:not(.expanded-row):active {
   display: flex;
 }
 
-
 .mat-form-field {
   font-size: 14px;
   width: 20%;
@@ -33,8 +32,8 @@ tr.element-row:not(.expanded-row):active {
 .export-button {
   float: right;
   outline: 0;
-  background-color: #3677BD;
-  color: white
+  background-color: #3677bd;
+  color: white;
 }
 
 .export-button:disabled {
@@ -59,4 +58,9 @@ tr.element-row:not(.expanded-row):active {
 
 ul {
   padding-left: 0em;
+}
+
+.pagination {
+  width: 100%;
+  display: inline-block;
 }

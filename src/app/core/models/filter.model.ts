@@ -99,23 +99,34 @@ export class Filter {
   public getString(): string {
     let outString = '';
     if (this.platform.length > 0) {
-      outString += '<strong> Platform: </strong>' + this.platform.join(', ');
+      outString += '<strong> Platform: </strong>';
+      this.platform.forEach((e, i, arr) => {
+        outString +=
+          ' <strong>[' + e.split('*.')[0] + ']</strong> ' + e.split('*.')[1];
+      });
     }
     if (this.publisher.length > 0) {
-      outString += '<strong> Publisher: </strong>' + this.publisher.join(', ');
+      outString += '<strong> Publisher: </strong>';
+      this.publisher.forEach((e, i, arr) => {
+        outString +=
+          ' <strong>[' + e.split('*.')[0] + ']</strong> ' + e.split('*.')[1];
+      });
     }
     if (this.title.length > 0) {
-      const titleOut = this.getTitle(this.title.join(', '));
-      outString += '<strong> Title: </strong>' + titleOut;
+      outString += '<strong> Title: </strong>';
+      this.title.forEach((e, i, arr) => {
+        outString +=
+          ' <strong>[' + e.split('*.')[0] + ']</strong> ' + e.split('*.')[1];
+      });
     }
     if (this.from) {
-      outString += '<strong> From: </strong>' + this.from;
+      outString += ' <strong> From: </strong> ' + this.from;
       if (this.to) {
-        outString += '<strong> To: </strong>' + this.to;
+        outString += ' <strong> To: </strong> ' + this.to;
       } else {
         const now: Date = new Date();
 
-        outString += '<strong> To: </strong>' + now.toISOString().slice(0, 10);
+        outString += ' <strong> To: </strong> ' + now.toISOString().slice(0, 10);
       }
     }
 
@@ -123,7 +134,7 @@ export class Filter {
   }
 
   public getFilterURL(): string {
-    let output = [];
+    const output = [];
     let range = '';
     if (this.title.length > 0) {
       output.push('title=' + this.title.join('|'));

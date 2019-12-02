@@ -11,7 +11,7 @@ export class TitleService {
 
   get(key: string): Observable<Title[]> {
     return this.apiService
-      .get('/counter/titles/?format=json&limit=10&key=' + key)
+      .get('/counter/titles/?format=json&limit=20&key=' + key)
       .pipe(map(data => data['results']));
   }
 }

@@ -34,7 +34,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
   },
   {
-    path: 'error',
+    path: 'error/:code',
     component: ErrorComponent,
   },
   { path: '**', redirectTo: '' },

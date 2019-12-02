@@ -13,22 +13,7 @@ export class AuthService {
   public isAuthenticated() {
     return this.http.get(userUrl).subscribe(
       data => {
-        if (!data['groups'].includes('LIB-Counter-Reports')) {
-          this.router.navigate(['/error']);
-          return false;
-        } else {
-          if (
-            !sessionStorage.getItem('token') ||
-            sessionStorage.getItem('token') === 'undefined'
-          ) {
-            sessionStorage.setItem(
-              'token',
-              data['authentication']['auth-token']
-            );
-            sessionStorage.setItem('username', data['username']);
-            window.location.reload();
-          }
-        }
+        sessionStorage.setItem('username', data['username']);
       },
       err => this.login(), // This will redirect to the system login page
       () => void 0
@@ -49,6 +34,6 @@ export class AuthService {
 
   public login() {
     return (window.location.href =
-      env.apiUrl + '/api-saml/sso/saml?next=/counter-reports');
+      env.apiUrl + '/api-saml/sso/saml?next=/reports/counter');
   }
 }

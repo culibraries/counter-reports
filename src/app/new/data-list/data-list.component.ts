@@ -9,6 +9,7 @@ import {
   ExportExcelService,
 } from '../../core';
 import { Config } from '../../core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-data-list',
@@ -37,10 +38,9 @@ export class DataListComponent implements OnInit, OnDestroy {
   expandedElement: [] | null;
   data: any;
   monthDatas: MonthData[] = [];
-  monthData: MonthData = { month: '', total: 0 };
   dataSource = new MatTableDataSource([]);
   disabledExportButton: boolean;
-  getResultSubscriber: any;
+  getResultSubscriber: Subscription;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -58,6 +58,7 @@ export class DataListComponent implements OnInit, OnDestroy {
   }
 
   loadDataToTable(filterURL: string) {
+    this.resetDataTable();
     if (filterURL === '') {
       this.alert.default(Config.messages.warningAllRecords);
     } else {
@@ -68,37 +69,40 @@ export class DataListComponent implements OnInit, OnDestroy {
 
   private applyFilterByCallingAPI(filterURL: string) {
     let output = [];
-    this.resetDataTable();
 
-    if (this.getResultSubscriber) {
-      this.getResultSubscriber.unsubscribe();
-    }
     this.getResultSubscriber = this.publicationService
       .getByPageNext(filterURL)
-      .subscribe(result => {
-        result.forEach((element: any) => {
-          output = output.concat(element);
-        });
+      .subscribe(
+        res => {
+          res.forEach((e: any) => {
+            output = output.concat(e);
+          });
 
-        /* Reformating Data from API*/
-        this.data = this.dataHelper.convertPublicationData(output);
+          if (output.length > 0) {
+            this.disabledExportButton = false;
+            /* Reformating Data from API*/
+            this.data = this.dataHelper.convertPublicationData(output);
 
-        this.alert.dismiss();
-        this.alert.success(this.data.length + ' record(s) has found');
+            // Displaying alert
+            this.alert.success(this.data.length + ' record(s) has found');
 
-        /* Enable export button */
-        if (this.data.length > 0) {
-          this.disabledExportButton = false;
-        } else {
-          this.disabledExportButton = true;
-        }
-        this.dataSource.data = this.data;
-      });
+            // Load data to table
+            this.dataSource.data = this.data;
+          } else {
+            // Displaying alert
+            this.alert.success('0 record has found');
+            this.disabledExportButton = true;
+          }
+        },
+        err => this.alert.danger('Error! Please try again or submit a ticket.'),
+        () => void 0
+      );
   }
 
   resetDataTable() {
     this.dataSource.data = [];
     this.disabledExportButton = true;
+    this.ngOnDestroy();
   }
 
   searchFilter(filterValue: string) {
@@ -119,5 +123,6 @@ export class DataListComponent implements OnInit, OnDestroy {
     if (this.getResultSubscriber) {
       this.getResultSubscriber.unsubscribe();
     }
+    this.alert.dismiss();
   }
 }

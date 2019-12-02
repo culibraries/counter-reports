@@ -10,7 +10,7 @@ export class PlatformService {
   constructor(private apiService: ApiService) {}
   get(key: string): Observable<Platform[]> {
     return this.apiService
-      .get('/counter/platforms/?format=json&limit=10&key=' + key)
+      .get('/counter/platforms/?format=json&limit=20&key=' + key)
       .pipe(map(data => data['results']));
   }
 }

@@ -1,20 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-  MatPaginator,
-  MatSort,
-  MatTableDataSource,
-  MatDialogRef
-} from '@angular/material';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import {
   FilterRecordService,
   FilterRecord,
   AuthService,
   Filter,
-  AlertService
+  AlertService,
 } from '../core';
 import { MatDialog } from '@angular/material';
 import { SaveModalBoxComponent, ConfirmComponent } from '../shared';
 import { trigger, state, style } from '@angular/animations';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-viewandrun',
@@ -26,24 +22,25 @@ import { trigger, state, style } from '@angular/animations';
         'collapsed',
         style({ height: '0px', minHeight: '0', display: 'none' })
       ),
-      state('expanded', style({ height: '*' }))
-    ])
-  ]
+      state('expanded', style({ height: '*' })),
+    ]),
+  ],
 })
-export class ViewandrunComponent implements OnInit {
+export class ViewandrunComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'name',
     'description',
     'owner',
     'created_at',
     'updated_at',
-    'actions'
+    'actions',
   ];
   dataSource = new MatTableDataSource([]);
   filterRecord: FilterRecord[];
   isBelongsToMe: boolean;
   filter = new Filter();
   expandedElement: [] | null;
+  filterRecordSubscription: Subscription;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -53,7 +50,7 @@ export class ViewandrunComponent implements OnInit {
     private filterRecordService: FilterRecordService,
     private auth: AuthService,
     private alert: AlertService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
@@ -62,45 +59,45 @@ export class ViewandrunComponent implements OnInit {
   }
 
   loadAllFiltersRecord() {
-    this.filterRecordService.getAll().subscribe(result => {
-      result.forEach(e => {
-        e['isBelongsToMe'] = this.auth.isUser(e.owner);
-        e['filterDisplay'] = this.filter.getFilterObject(e.params).getString();
+    this.alert.loading('loading...');
+    this.filterRecordSubscription = this.filterRecordService
+      .getAll()
+      .subscribe(result => {
+        result.forEach(e => {
+          e['isBelongsToMe'] = this.auth.isUser(e.owner);
+          e['filterDisplay'] = this.filter
+            .getFilterObject(e.params)
+            .getString();
+        });
+        this.dataSource.data = result;
+        this.alert.dismiss();
       });
-      this.dataSource.data = result;
-    });
   }
 
-  delete(event: any, id: number) {
+  onDelete(event: any, id: number) {
     event.stopPropagation();
     const dialogRef = this.dialog.open(ConfirmComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        try {
-          this.filterRecordService.delete(id).subscribe(result => {
-            this.loadAllFiltersRecord();
-          });
-          this.alert.success('All right ! The record has been deleted');
-        } catch (error) {
-          this.alert.danger('Oops ! Something went wrong');
-        }
+        this.filterRecordService.delete(id).subscribe(result => {
+          this.loadAllFiltersRecord();
+        });
+        this.alert.success('All right ! The record has been deleted');
       }
     });
   }
 
-  edit(event: any, id: number) {
+  onEdit(event: any, id: number) {
     event.stopPropagation();
-    this.filterRecordService.getById(id).subscribe(result => {
+    this.filterRecordService.getById(id).subscribe(res => {
       const dialogRef = this.dialog.open(SaveModalBoxComponent, {
         width: '500px',
         height: 'auto',
-        data: { action: 'edit', message: result }
+        data: { action: 'edit', filterRecord: res },
       });
 
-      dialogRef.afterClosed().subscribe(result => {
-        if (result !== 'just-close') {
-          this.loadAllFiltersRecord();
-        }
+      dialogRef.afterClosed().subscribe(res => {
+        this.loadAllFiltersRecord();
       });
     });
   }
@@ -110,5 +107,12 @@ export class ViewandrunComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  ngOnDestroy() {
+    if (this.filterRecordSubscription) {
+      this.filterRecordSubscription.unsubscribe();
+    }
+    this.alert.dismiss();
   }
 }

@@ -2,3 +2,9 @@
   padding-left: 40px;
   padding-right: 40px;
 }
+.loading-img {
+  float: left;
+  margin-top: 20px;
+  text-align: center;
+  width: 215px;
+}

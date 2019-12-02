@@ -15,7 +15,8 @@ import {
   FilterRecordService,
   FilterRecord,
 } from '../../core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-filter',
@@ -24,107 +25,119 @@ import { ActivatedRoute } from '@angular/router';
   providers: [Filter],
 })
 export class FilterComponent implements OnInit {
-  @ViewChildren('filterItem') filterItem: QueryList<FilterItemComponent>;
+  @ViewChildren('filterItemList')
+  filterItemList: QueryList<FilterItemComponent>;
 
   filterItems = [];
   isShowFilterOption = false;
 
   filterDisplay = '';
-  params: boolean = false;
+  isBrandNewSaveFilter = true;
   filterRecord: FilterRecord;
   @Output() applyFilterEvent = new EventEmitter();
   @Output() resetEvent = new EventEmitter();
   filter: Filter;
+
+  arrayFilterItemList = [];
 
   constructor(
     public dialog: MatDialog,
     private validator: ValidatorService,
     private route: ActivatedRoute,
     private filterRecordService: FilterRecordService
-  ) {
-    this.route.params.subscribe(params => {
-      if (!this.isEmpty(params)) {
-        this.params = true;
-        const newFilter = new Filter();
-        const filterObject = newFilter.getFilterObject(params.params);
-        this.filterDisplay = filterObject.getString();
-        this.isShowFilterOption = true;
-        this.filterItems.length = filterObject.countItem();
-        filterObject.toJson().forEach((element, i) => {
-          this.filterItems[i] = element;
-        });
-        setTimeout(() => {
-          this.applyFilterEvent.emit(filterObject.getFilterURL());
-        }, 500);
-        this.filterRecordService.getById(params.id).subscribe(result => {
-          this.filterRecord = result;
-        });
+  ) {}
+
+  ngOnInit() {
+    this.route.params.subscribe((paramsResponse: Params) => {
+      if (!paramsResponse.hasOwnProperty('params')) {
+        return;
       }
+
+      this.isBrandNewSaveFilter = false;
+
+      // Initilize filterObject
+      const filterObject = new Filter().getFilterObject(paramsResponse.params);
+
+      // Display Filter Title
+      this.filterDisplay = filterObject.getString();
+
+      // Display Filter Panel
+      this.isShowFilterOption = true;
+
+      filterObject.toJson().forEach((e, i) => {
+        this.filterItems[i] = e;
+      });
+
+      setTimeout(() => {
+        this.applyFilterEvent.emit(filterObject.getFilterURL());
+      }, 500);
+
+      this.filterRecordService.getById(paramsResponse.id).subscribe(result => {
+        this.filterRecord = result;
+      });
     });
   }
-
-  isEmpty(obj) {
-    for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  ngOnInit() {}
 
   toggleFilterOption() {
     if (this.filterItems.length === 0) {
-      this.filterItems.push(this.filterItems.length);
+      this.filterItems.push([]);
     }
+
     this.isShowFilterOption = !this.isShowFilterOption;
 
-    /* Display filter string if the panel filter option close */
-    if (this.isShowFilterOption) {
-      this.filterDisplay = '';
-    } else {
-      this.filterDisplay = this.filter.getString();
+    if (this.filterItemList) {
+      this.arrayFilterItemList = this.convertToArrayFilterItemList(
+        this.filterItemList
+      );
     }
+    const filter: Filter = this.convertToFilterObject(this.arrayFilterItemList);
+
+    /* Display filter title if the panel filter option close */
+    this.filterDisplay = this.isShowFilterOption ? '' : filter.getString();
   }
 
   resetAll() {
-    /* Reset the filters */
-    this.filterItems = [];
-    this.filterItems.push(this.filterItems.length);
-    this.filter.reset();
-
-    /* Reset filter value */
-    this.filterItem.forEach(e => {
-      e.resetFilterOption();
-      e.monthSelected = '';
-      e.yearSelected = '';
-    });
-
-    /* Sent resetEvent to data-list.componet to reset data in the table */
+    /* Reset the filterItems */
+    this.filterItems = []; // Clear all
+    this.filterItems.push([]); // Initnilize an empty filterItem
+    this.filterDisplay = '';
+    /* Sent resetEvent to data-list.componet to reset all data in the table */
     this.resetEvent.emit();
   }
 
   applyFilter(): boolean {
-    /* Initialize new filter object */
-    this.filter = new Filter();
+    // Convert FilterItemComponent to readable filter items array before processing
+    if (this.filterItemList) {
+      this.arrayFilterItemList = this.convertToArrayFilterItemList(
+        this.filterItemList
+      );
+    }
 
-    if (this.validator.validateFilters(this.filterItem, this.filter)) {
-      /* Only apply filter when it passes the validation */
-      this.applyFilterEvent.emit(this.filter.getFilterURL());
+    if (this.validator.validateFilters(this.filterItemList)) {
+      const filter: Filter = this.convertToFilterObject(
+        this.arrayFilterItemList
+      );
+      this.filterDisplay = filter.getString();
+      this.applyFilterEvent.emit(filter.getFilterURL());
       return true;
     } else {
       return false;
     }
   }
 
-  increment() {
-    this.filterItems.push(this.filterItems.length);
+  onIncrementFilterItem() {
+    // Add placeholder empty {} to the filter item list
+    this.filterItems.push([]);
   }
 
-  decrement(item: number) {
+  onDecrementFilterItem(item: []) {
+    // Get current index of filter item
     const index = this.filterItems.indexOf(item);
+
+    // Remove selected filter item from the list
     this.filterItems.splice(index, 1);
+
+    // Clear all when ther is no filter
     if (this.filterItems.length === 0) {
       this.isShowFilterOption = false;
       this.resetAll();
@@ -132,20 +145,94 @@ export class FilterComponent implements OnInit {
   }
 
   openSaveModal() {
-    this.filter = new Filter();
-    if (this.validator.validateFilters(this.filterItem, this.filter)) {
+    // Convert FilterItemComponent to readable filter items array to process
+    if (this.filterItemList) {
+      this.arrayFilterItemList = this.convertToArrayFilterItemList(
+        this.filterItemList
+      );
+    }
+
+    // Validate all filters before saving
+    if (this.validator.validateFilters(this.arrayFilterItemList)) {
+      const filter: Filter = this.convertToFilterObject(
+        this.arrayFilterItemList
+      );
+
       this.dialog.open(SaveModalBoxComponent, {
         width: '500px',
         height: 'auto',
         data: {
-          action: 'create',
-          params: this.params,
-          message: this.filter,
-          message2: this.filterRecord,
+          action: 'save',
+          isBrandNewSaveFilter: this.isBrandNewSaveFilter,
+          filterDisplay: filter.getString(),
+          filterParams: filter.getFilterURL(),
+          filterRecord: this.filterRecord ? this.filterRecord : '',
         },
       });
     } else {
       return;
     }
+  }
+
+  private convertToFilterObject(filterItemList: any): Filter {
+    const filter = new Filter();
+    filterItemList.forEach(e => {
+      if (e.selectedFilter === 'from') {
+        filter.setFrom(e.yearSelected + '-' + e.monthSelected + '-' + '01');
+      }
+      if ( e.selectedFilter === 'to')
+      {
+        filter.setTo(e.yearSelected + '-' + e.monthSelected + '-' + '01');
+      }
+      if (e.selectedFilter === 'platform') {
+        filter.setPlatform(
+          e.selectedFilterType + '*.' + e.myGroup.get('keyInput').value
+        );
+      }
+      if (e.selectedFilter === 'publisher') {
+        filter.setPublisher(
+          e.selectedFilterType + '*.' + e.myGroup.get('keyInput').value
+        );
+      }
+      if (e.selectedFilter === 'title') {
+        filter.setTitle(
+          e.selectedFilterType + '*.' + e.myGroup.get('keyInput').value
+        );
+      }
+    });
+    return filter;
+  }
+
+  private convertToArrayFilterItemList(
+    filterItemList: QueryList<FilterItemComponent>
+  ): {}[] {
+    const output = [];
+    filterItemList.forEach(e => {
+      output.push(this.reFilterItemList(e));
+    });
+    return output;
+  }
+
+  private reFilterItemList(filterItemList: FilterItemComponent): {} {
+    return {
+      selectedFilter: filterItemList['selectedFilter']
+        ? filterItemList['selectedFilter']
+        : '',
+      selectedFilterType: filterItemList['selectedFilterType']
+        ? filterItemList['selectedFilterType']
+        : '',
+      selectedFilterValue: filterItemList['selectedFilterValue']
+        ? filterItemList['selectedFilterValue']
+        : '',
+      yearSelected: filterItemList['yearSelected']
+        ? filterItemList['yearSelected']
+        : '',
+      monthSelected: filterItemList['monthSelected']
+        ? filterItemList['monthSelected']
+        : '',
+      myGroup: filterItemList['myGroup']
+        ? filterItemList['myGroup']
+        : new FormGroup({}),
+    };
   }
 }

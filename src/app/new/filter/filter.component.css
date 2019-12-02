@@ -5,6 +5,15 @@
   right: 22px;
 }
 
+.button-filter {
+  margin-left: 10px;
+  margin-bottom: 7px;
+}
+.button-apply-filter {
+  background-color: #3677bd;
+  color: white;
+}
+
 .control-filter-button button {
   margin-left: 10px;
   outline: 0;
@@ -53,8 +62,8 @@
   width: 40px;
   height: 40px;
   border: solid 4px transparent;
-  border-top-color: #00C8B1 !important;
-  border-left-color: #00C8B1 !important;
+  border-top-color: #00c8b1 !important;
+  border-left-color: #00c8b1 !important;
   border-radius: 50%;
 }
 

@@ -11,19 +11,19 @@ export class MonthConvertPipe implements PipeTransform {
     let output = '';
     switch (arrDate[1]) {
       case '01': {
-        output = 'January';
+        output = 'Jan';
         break;
       }
       case '02': {
-        output = 'Febuary';
+        output = 'Feb';
         break;
       }
       case '03': {
-        output = 'March';
+        output = 'Mar';
         break;
       }
       case '04': {
-        output = 'April';
+        output = 'Apr';
         break;
       }
       case '05': {
@@ -31,31 +31,31 @@ export class MonthConvertPipe implements PipeTransform {
         break;
       }
       case '06': {
-        output = 'June';
+        output = 'Jun';
         break;
       }
       case '07': {
-        output = 'July';
+        output = 'Jul';
         break;
       }
       case '08': {
-        output = 'August';
+        output = 'Aug';
         break;
       }
       case '09': {
-        output = 'September';
+        output = 'Sep';
         break;
       }
       case '10': {
-        output = 'October';
+        output = 'Oct';
         break;
       }
       case '11': {
-        output = 'November';
+        output = 'Nov';
         break;
       }
       case '12': {
-        output = 'December';
+        output = 'Dec';
         break;
       }
     }

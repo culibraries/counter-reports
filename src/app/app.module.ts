@@ -21,9 +21,9 @@ import { ErrorComponent } from './error/error.component';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     CoreModule,
-    SharedModule
+    SharedModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

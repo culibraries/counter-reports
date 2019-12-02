@@ -1,50 +1,52 @@
 <mat-grid-list cols="4" rowHeigh="4:1">
-  <mat-grid-tile style="height: 329px;">
-    <mat-card style="width: 150px; height: 300px">
+  <mat-grid-tile class="grid-title">
+    <mat-card>
       <mat-card-content>
-        <div style=" text-align: center;">
-          <mat-icon style="font-size: 50px; margin-right: 27px;">account_balance</mat-icon><br>
-          <span style="font-size: 20px; font-weight: bold;">Publications</span><br>
-          <span style="font-size: 27px; font-weight: bold;">{{publicationTotal}}</span><br>
+        <div>
+          <mat-icon>account_balance</mat-icon><br>
+          <span class="text">Publications</span><br>
+          <span class="number">{{publicationTotal}}</span><br>
         </div>
       </mat-card-content>
     </mat-card>
   </mat-grid-tile>
-  <mat-grid-tile style="height: 329px;">
-    <mat-card style="width: 150px; height: 300px;">
+  <mat-grid-tile class="grid-title">
+    <mat-card>
       <mat-card-content>
-        <div style=" text-align: center;">
-          <mat-icon style="font-size: 50px;margin-right: 27px;">book</mat-icon><br>
-          <span style="font-size: 20px; font-weight: bold;">Publishers</span><br>
-          <span style="font-size: 27px; font-weight: bold;">{{publisherTotal}}</span><br>
+        <div>
+          <mat-icon>book</mat-icon><br>
+          <span class="text">Publishers</span><br>
+          <span class="number">{{publisherTotal}}</span><br>
         </div>
       </mat-card-content>
     </mat-card>
   </mat-grid-tile>
-  <mat-grid-tile style="height: 329px;">
-    <mat-card style="width: 150px; height: 300px;">
+  <mat-grid-tile class="grid-title">
+    <mat-card>
       <mat-card-content>
-        <div style=" text-align: center;">
-          <mat-icon style="font-size: 50px; margin-right: 27px;">list_alt</mat-icon><br>
-          <span style="font-size: 20px; font-weight: bold;">Platforms</span><br>
-          <span style="font-size: 27px; font-weight: bold;">{{platformTotal}}</span><br>
+        <div>
+          <mat-icon>list_alt</mat-icon><br>
+          <span class="text">Platforms</span><br>
+          <span class="number">{{platformTotal}}</span><br>
         </div>
       </mat-card-content>
     </mat-card>
   </mat-grid-tile>
-  <mat-grid-tile style="height: 329px;">
-    <mat-card style="width: 150px; height: 302px;">
+  <mat-grid-tile class="grid-title">
+    <mat-card>
       <mat-card-content>
-        <div style=" text-align: center; margin-bottom: 10px;">
-          <mat-icon style="font-size: 50px; margin-right: 27px;">calendar_today</mat-icon><br>
-          <span style="font-size: 20px; font-weight: bold;">Years</span><br>
-          <span style="font-size: 27px; font-weight: bold;">2018</span><br>
-          <span style="font-size: 27px; font-weight: bold;">2017</span><br>
-          <span style="font-size: 27px; font-weight: bold;">2016</span><br>
-          <span style="font-size: 27px; font-weight: bold;">2015</span><br>
-          <span style="font-size: 27px; font-weight: bold;">2014</span><br>
+        <div style="margin-bottom: 10px;">
+          <mat-icon>calendar_today</mat-icon><br>
+          <span class="text">Years</span><br>
+          <span class="number">2018</span><br>
+          <span class="number">2017</span><br>
+          <span class="number">2016</span><br>
+          <span class="number">2015</span><br>
+          <span class="number">2014</span><br>
         </div>
       </mat-card-content>
     </mat-card>
   </mat-grid-tile>
 </mat-grid-list>
+
+<ngx-spinner bdColor="rgba(255,255,255,2.0)" color="black" type="ball-spin-clockwise"></ngx-spinner>

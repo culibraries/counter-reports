@@ -18,7 +18,7 @@ export class ErrorService implements ErrorHandler {
         code = 0;
       }
       code = error.status;
-      if (code !== 403) {
+      if (code !== 401) {
         this.ngZone.run(() => router.navigate(['error/' + code]));
       }
     }

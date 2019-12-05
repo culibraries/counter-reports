@@ -13,10 +13,6 @@ export class DataHelper {
           total = 0;
           r[key] = { ...o, MonthsTotal: [] };
         }
-        r[key].effective_dates =
-          this.monthPipe.transform(arr[0].period) +
-          ' ' +
-          this.monthPipe.transform(arr[arr.length - 1].period);
         r[key].MonthsTotal.push({
           month: o.period,
           total: o.requests,
@@ -26,6 +22,15 @@ export class DataHelper {
         return r;
       }, {})
     );
+
+    output.forEach((e, i, arr) => {
+      arr[i]['effective_dates'] =
+        this.monthPipe.transform(arr[i]['MonthsTotal'][0].month) +
+        ' ' +
+        this.monthPipe.transform(
+          arr[i]['MonthsTotal'][arr[i]['MonthsTotal'].length - 1].month
+        );
+    });
     return output;
   }
 

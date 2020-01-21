@@ -68,24 +68,22 @@ export class Filter {
   }
 
   public setPlatform(platform: string) {
-    this.platform.push(platform);
+    platform = platform.trim();
+    this.platform.push(escape(platform));
   }
 
   public setPublisher(publisher: string) {
-    this.publisher.push(publisher);
+    publisher = publisher.trim();
+    this.publisher.push(escape(publisher));
   }
 
   public setTitle(title: string) {
     title = title.trim();
-    title = title
-      .replace('&', '%26')
-      .replace('#', '%23')
-      .replace(';', '%3B');
-    this.title.push(title);
+    this.title.push(escape(title));
   }
 
   public getTitle(title: string) {
-    return title.replace(/%26/g, '&');
+    return unescape(title);
   }
 
   public setFrom(from: string) {
@@ -126,24 +124,33 @@ export class Filter {
       } else {
         const now: Date = new Date();
 
-        outString += ' <strong> To: </strong> ' + now.toISOString().slice(0, 10);
+        outString +=
+          ' <strong> To: </strong> ' + now.toISOString().slice(0, 10);
       }
     }
 
-    return outString;
+    return unescape(outString);
   }
 
   public getFilterURL(): string {
     const output = [];
     let range = '';
     if (this.title.length > 0) {
-      output.push('title=' + this.title.join('|'));
+      output.push(
+        'title=' + this.title.map((e, i, arr) => escape(unescape(e))).join('|')
+      );
     }
     if (this.platform.length > 0) {
-      output.push('platform=' + this.platform.join('|'));
+      output.push(
+        'platform=' +
+          this.platform.map((e, i, arr) => escape(unescape(e))).join('|')
+      );
     }
     if (this.publisher.length > 0) {
-      output.push('publisher=' + this.publisher.join('|'));
+      output.push(
+        'publisher=' +
+          this.publisher.map((e, i, arr) => escape(unescape(e))).join('|')
+      );
     }
     if (this.from) {
       range = this.from;

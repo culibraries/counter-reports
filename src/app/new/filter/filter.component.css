@@ -8,6 +8,7 @@
 .button-filter {
   margin-left: 10px;
   margin-bottom: 7px;
+  float: left;
 }
 .button-apply-filter {
   background-color: #3677bd;

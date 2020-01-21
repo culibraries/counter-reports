@@ -69,9 +69,7 @@ export class FilterItemComponent implements OnInit, OnDestroy {
     // Load filterRecords into correctsponding filter fields.
     if (Object.keys(this.itemDetail).length > 0) {
       const key = Object.keys(this.itemDetail);
-      const value = Object.values(this.itemDetail)
-        .toString()
-        .replace(/%26/g, '&');
+      const value = unescape(Object.values(this.itemDetail).toString());
 
       if (key[0] === 'from' || key[0] === 'to') {
         this.selectedFilter = key[0];

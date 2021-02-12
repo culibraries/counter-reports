@@ -2,7 +2,7 @@
   matSortActive="total" matSortDirection="desc">
   <ng-container matColumnDef="title">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Journal Title </th>
-    <td mat-cell *matCellDef="let element" style="width: 400px;">
+    <td mat-cell *matCellDef="let element" style="width: 370px;">
       {{element.title}} </td>
   </ng-container>
 
@@ -34,6 +34,21 @@
       Effectives Dates</th>
     <td mat-cell *matCellDef="let element"> {{element.effective_dates}} </td>
   </ng-container>
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 60px;">
+      Status</th>
+    <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+  </ng-container>
+  <ng-container matColumnDef="total_requests">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 40px;">
+      Total Requests </th>
+    <td mat-cell *matCellDef="let element"><strong> {{randomNumber}} </strong></td>
+  </ng-container>
+  <ng-container matColumnDef="total_uniques">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 40px;">
+      Unique Requests </th>
+    <td mat-cell *matCellDef="let element"><strong> {{randomNumber}} </strong></td>
+  </ng-container>
   <ng-container matColumnDef="total">
     <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 40px;">
       Total </th>
@@ -48,7 +63,7 @@
         <ul class="list-expendiable">
           <li *ngFor="let month of element.MonthsTotal">
             <span>{{ month.month | monthConvert}}</span>:
-            <strong class="total-expendiable">{{month.total}}</strong>
+            <strong class="total-expendiable">{{month.total}}/60</strong>
           </li>
 
         </ul><br>

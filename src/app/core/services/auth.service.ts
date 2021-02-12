@@ -33,7 +33,7 @@ export class AuthService {
   }
 
   public login() {
-    return (window.location.href =
-      env.apiUrl + '/api-saml/sso/saml?next=/reports/counter');
+    // return (window.location.href =
+    //   'https://test-libapps.colorado.edu/api/api-saml/sso/saml?next=/reports/counter');
   }
 }

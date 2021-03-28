@@ -20,7 +20,6 @@ export class FilterItemComponent implements OnInit, OnDestroy {
   filters: IFilter[] = [
     { value: 'platform', viewValue: 'Platform' },
     { value: 'publisher', viewValue: 'Publisher' },
-    { value: 'report_type', viewValue: 'Report Type'},
     { value: 'title', viewValue: 'Title' },
     { value: 'from', viewValue: 'From' },
     { value: 'to', viewValue: 'To' },

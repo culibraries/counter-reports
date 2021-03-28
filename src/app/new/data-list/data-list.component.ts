@@ -32,9 +32,13 @@ export class DataListComponent implements OnInit, OnDestroy {
     'platform',
     'print_issn',
     'online_issn',
+    'isbn',
+    'yop',
     'effective_dates',
+    'status',
     'total',
   ];
+
   expandedElement: [] | null;
   data: any;
   monthDatas: MonthData[] = [];
@@ -85,7 +89,6 @@ export class DataListComponent implements OnInit, OnDestroy {
 
             // Displaying alert
             this.alert.success(this.data.length + ' record(s) has found');
-
             // Load data to table
             this.dataSource.data = this.data;
           } else {

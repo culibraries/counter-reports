@@ -20,6 +20,7 @@ export class FilterItemComponent implements OnInit, OnDestroy {
   filters: IFilter[] = [
     { value: 'platform', viewValue: 'Platform' },
     { value: 'publisher', viewValue: 'Publisher' },
+    { value: 'report_type', viewValue: 'Report Type'},
     { value: 'title', viewValue: 'Title' },
     { value: 'from', viewValue: 'From' },
     { value: 'to', viewValue: 'To' },
@@ -50,6 +51,7 @@ export class FilterItemComponent implements OnInit, OnDestroy {
 
   years: string[] = Config.years;
   months: string[] = Config.months;
+  rTypes: string[] = Config.reportType;
   filterDisplayTransform: [] = [];
   keySubscriber: any;
 
@@ -99,6 +101,10 @@ export class FilterItemComponent implements OnInit, OnDestroy {
     }
 
     switch (value) {
+      case 'report_type':
+        this.filterTypes = [{ value: 'is', viewValue: 'is' }];
+        this.selectedFilterValue = 'report_type';
+
       case 'platform':
         this.filterTypes = this.types;
         this.keySubscriber = this.myGroup
@@ -146,7 +152,7 @@ export class FilterItemComponent implements OnInit, OnDestroy {
                 this.publisherService.get(key).subscribe(data => {
                   if (data.length > 0) {
                     data.forEach(r => {
-                      this.options.push(r.name);
+                      this.options.push(r.publisher);
                     });
                     // Remove duplication efore displaying to autocomplete
                     this.options = [...new Set(this.options)];

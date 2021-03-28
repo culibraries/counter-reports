@@ -1,63 +1,71 @@
-<table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort
-  matSortActive="total" matSortDirection="desc">
+<table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort matSortActive="total" matSortDirection="desc">
   <ng-container matColumnDef="title">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Journal Title </th>
-    <td mat-cell *matCellDef="let element" style="width: 400px;">
+    <td mat-cell *matCellDef="let element" style="width: 350px;">
       {{element.title}} </td>
   </ng-container>
-
   <ng-container matColumnDef="publisher">
     <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 150px;">
       Publisher </th>
     <td mat-cell *matCellDef="let element"> {{element.publisher}} </td>
   </ng-container>
-
   <ng-container matColumnDef="platform">
     <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 150px;">
       Platform </th>
     <td mat-cell *matCellDef="let element"> {{element.platform}} </td>
   </ng-container>
-
   <ng-container matColumnDef="print_issn">
     <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 85px;">
       Print ISSN </th>
     <td mat-cell *matCellDef="let element"> {{element.print_issn}} </td>
   </ng-container>
-
   <ng-container matColumnDef="online_issn">
     <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 85px;">
       Online ISSN </th>
     <td mat-cell *matCellDef="let element"> {{element.online_issn}} </td>
   </ng-container>
+  <ng-container matColumnDef="isbn">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 40px;">
+      ISBN </th>
+    <td mat-cell *matCellDef="let element"><strong> </strong></td>
+  </ng-container>
+  <ng-container matColumnDef="yop">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 40px;">
+      YOP </th>
+    <td mat-cell *matCellDef="let element"><strong> </strong></td>
+  </ng-container>
   <ng-container matColumnDef="effective_dates">
     <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 135px;">
-      Effectives Dates</th>
+      Reporting Period</th>
     <td mat-cell *matCellDef="let element"> {{element.effective_dates}} </td>
+  </ng-container>
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 40px;">
+      Status</th>
+    <td mat-cell *matCellDef="let element"> P </td>
   </ng-container>
   <ng-container matColumnDef="total">
     <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 40px;">
-      Total </th>
+      Total Requests </th>
     <td mat-cell *matCellDef="let element"><strong> {{element.total}} </strong></td>
   </ng-container>
-
   <ng-container matColumnDef="expandedDetail">
-    <td mat-cell *matCellDef="let element"
-      [attr.colspan]="displayedColumns.length">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
       <div class="element-detail" [@detailExpand]="element == expandedElement ?
         'expanded' : 'collapsed'">
         <ul class="list-expendiable">
           <li *ngFor="let month of element.MonthsTotal">
             <span>{{ month.month | monthConvert}}</span>:
-            <strong class="total-expendiable">{{month.total}}</strong>
+            <strong class="total-expendiable">{{month.total}}/60</strong>
           </li>
 
         </ul><br>
-        <ul *ngIf="element.journal_doi || element.proprietary_id"
-          style="list-style-type: none; margin-left: 240px;">
+        <ul *ngIf="element.journal_doi || element.proprietary_id" style="list-style-type: none; margin-left: 240px;">
           <li *ngIf="element.journal_doi">Journal DOI: <strong
               class="total-expendiable">{{element.journal_doi}}</strong>
           </li>
           <li *ngIf="element.proprietary_id">Proprietary ID: <strong>{{element.proprietary_id}}</strong></li>
+          <li>URI: placeholder for URI</li>
         </ul>
 
       </div>
@@ -65,23 +73,18 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let element; columns: displayedColumns;"
-    class="element-row"
+  <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="element-row"
     [class.expanded-row]="expandedElement === element"
     (click)="expandedElement= expandedElement === element ? null : element">
   </tr>
-  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']"
-    class="detail-row"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
 </table>
 
 <div class="pagination">
-  <mat-paginator style="float: left" [length]="100" [pageSize]="30"
-    [pageSizeOptions]="[5, 10, 25, 100]">
+  <mat-paginator style="float: left" [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
   </mat-paginator>
   <mat-form-field style="width: 400px; float: left">
-    <input style="outline: 0" matInput
-      (keyup)="searchFilter($event.target.value)" placeholder="Search...">
+    <input style="outline: 0" matInput (keyup)="searchFilter($event.target.value)" placeholder="Search...">
   </mat-form-field>
-  <button class="export-button" mat-stroked-button (click)="export()"
-    [disabled]="disabledExportButton">Export</button>
+  <button class="export-button" mat-stroked-button (click)="export()" [disabled]="disabledExportButton">Export</button>
 </div>

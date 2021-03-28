@@ -35,11 +35,28 @@
         <span class="element-invisible">Menu</span>
       </label>
       <input type="checkbox" id="show-main-menu" role="button">
-      <ul>
+      <ul class="nav">
         <li><a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true}">
             Dashboard</a></li>
-        <li><a routerLink="/new-reports" routerLinkActive="active">New Report</a></li>
+        <li><a routerLink="/new-reports" routerLinkActive="active">New Report</a>
+          <ul>
+            <li><a routerLink="/new-reports">Database Reports</a></li>
+            <li><a routerLink="/new-reports">Title Reports</a>
+              <ul >
+                <li><a routerLink="/new-reports">Journals</a></li>
+                <li><a routerLink="/new-reports">eBooks</a></li>
+              </ul>
+            </li>
+
+          </ul>
+        </li>
         <li><a routerLink="/viewandrun" routerLinkActive="active">View / Run</a></li>
+        <li><a routerLink="/about" routerLinkActive="active">Help</a>
+          <ul>
+            <li><a routerLink="/about" routerLinkActive="active">About</a></li>
+            <li><a routerLink="/faq" routerLinkActive="active">FAQ</a></li>
+          </ul>
+        </li>
       </ul>
     </nav>
   </div>

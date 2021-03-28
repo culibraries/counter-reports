@@ -9,13 +9,15 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 
+ARG ENV=staging
+
 RUN npm ci
 
 COPY . /app
 
 ## Build the angular app in production mode and store the artifacts in dist folder
 
-RUN npm run ng build -- --prod --aot --vendor-chunk --common-chunk --output-path=dist --buildOptimizer
+RUN npm run ng build -- --prod --output-path=dist --configuration=${ENV}
 
 
 # ### STAGE 2: Setup ###

@@ -59,4 +59,8 @@ export const Config = {
     '11',
     '12',
   ],
+  reportType: [
+    'Journal',
+    'eBooks'
+  ]
 };

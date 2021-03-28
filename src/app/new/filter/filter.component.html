@@ -22,6 +22,7 @@
     >
       Apply
     </button>
+
   </div>
   <div *ngFor="let item of filterItems" class="control-filter-content">
     <app-filter-item #filterItemList [itemDetail]="item"></app-filter-item>
@@ -36,4 +37,5 @@
       <mat-icon>remove_circle_outline</mat-icon>
     </button>
   </div>
+
 </div>

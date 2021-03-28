@@ -34,6 +34,6 @@ export class AuthService {
 
   public login() {
     return (window.location.href =
-      env.apiUrl + 'api-saml/sso/saml?next=/reports/counter');
+      env.apiUrl + '/api-saml/sso/saml?next=/reports/counter');
   }
 }

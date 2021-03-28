@@ -30,6 +30,9 @@ export class DataHelper {
         this.monthPipe.transform(
           arr[i]['MonthsTotal'][arr[i]['MonthsTotal'].length - 1].month
         );
+      arr[i]['total_requests'] = Math.floor(Math.random() * 100) + 10;
+      arr[i]['total_uniques'] = Math.floor(Math.random() * 100) + 10;
+
     });
     return output;
   }

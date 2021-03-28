@@ -43,6 +43,21 @@
   </mat-form-field>
 </span>
 
+<span *ngIf="selectedFilterValue === 'report_type'">
+  <mat-form-field style="width: 150px;">
+    <mat-label>Types</mat-label>
+    <mat-select [(value)]="rTypes">
+      <mat-option>Journals
+
+      </mat-option>
+      <mat-option>eBooks
+
+      </mat-option>
+    </mat-select>
+
+  </mat-form-field>
+</span>
+
 <mat-form-field [formGroup]="myGroup" style="width: 300px;" *ngIf="selectedFilterValue=='!'">
   <input matInput #trigger="matAutocompleteTrigger" formControlName="keyInput" [matAutocomplete]="auto"
     (focus)="onKeySearchFocus()" *ngIf="isAutocompleteDisabled">

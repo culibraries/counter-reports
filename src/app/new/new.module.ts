@@ -13,6 +13,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatRadioModule} from '@angular/material/radio';
 
 import { NewRoutingModule } from './new-routing.module';
 import { FilterComponent } from './filter/filter.component';
@@ -49,7 +51,9 @@ import { SharedModule } from '../shared/shared.module';
     ReactiveFormsModule,
     MatSnackBarModule,
     MatTooltipModule,
-    MatCardModule
+    MatCardModule,
+    MatButtonToggleModule,
+    MatRadioModule
   ],
 })
 export class NewModule {}

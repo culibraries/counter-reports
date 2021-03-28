@@ -4,6 +4,8 @@ import { AppLayoutComponent } from './shared/layout/app-layout/app-layout.compon
 import { AuthGuardService } from './core/services/auth-guard.service';
 import { ErrorComponent } from './error/error.component';
 import { LogoutComponent } from './logout/logout.component';
+import { AboutComponent } from './about/about.component';
+import { FaqComponent } from './faq/faq.component';
 
 const routes: Routes = [
   {
@@ -31,6 +33,14 @@ const routes: Routes = [
             m => m.ViewandrunModule
           ),
       },
+      {
+        path: 'about',
+        component: AboutComponent
+      },
+      {
+        path: 'faq',
+        component: FaqComponent
+      }
     ],
     canActivate: [AuthGuardService],
   },

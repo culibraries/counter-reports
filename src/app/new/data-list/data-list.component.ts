@@ -90,6 +90,7 @@ export class DataListComponent implements OnInit, OnDestroy {
             // Displaying alert
             this.alert.success(this.data.length + ' record(s) has found');
             // Load data to table
+            console.log(this.data);
             this.dataSource.data = this.data;
           } else {
             // Displaying alert

@@ -19,13 +19,14 @@ export class ApiService {
     path: string,
     params: HttpParams = new HttpParams()
   ): Observable<any> {
-    return this.httpClient.get(API_URL + path, { params });
+    return this.httpClient.get(API_URL + path, {
+      headers: this.headers,
+      params,
+    });
   }
 
-  public logout(
-    path: string,
-  ): Observable<any> {
-    return this.httpClient.get(API_URL + path, {responseType: 'text'});
+  public logout(path: string): Observable<any> {
+    return this.httpClient.get(API_URL + path, { responseType: 'text' });
   }
 
   public getNextPage(path: string): Observable<any> {

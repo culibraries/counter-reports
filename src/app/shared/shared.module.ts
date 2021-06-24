@@ -27,7 +27,6 @@ import { NgProgressModule } from '@ngx-progressbar/core';
     SaveModalBoxComponent,
     ConfirmComponent
   ],
-  entryComponents: [SaveModalBoxComponent, ConfirmComponent],
   imports: [
     CommonModule,
     RouterModule,

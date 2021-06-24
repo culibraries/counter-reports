@@ -6,7 +6,7 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { SaveModalBoxComponent } from '../../shared';
 import { FilterItemComponent } from '../filter-item/filter-item.component';
 import {

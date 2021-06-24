@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import {
   FilterRecordService,
   FilterRecord,
@@ -7,7 +9,7 @@ import {
   Filter,
   AlertService,
 } from '../core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { SaveModalBoxComponent, ConfirmComponent } from '../shared';
 import { trigger, state, style } from '@angular/animations';
 import { Subscription } from 'rxjs';

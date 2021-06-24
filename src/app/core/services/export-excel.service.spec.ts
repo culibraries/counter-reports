@@ -6,7 +6,7 @@ describe('ExportExcelService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: ExportExcelService = TestBed.get(ExportExcelService);
+    const service: ExportExcelService = TestBed.inject(ExportExcelService);
     expect(service).toBeTruthy();
   });
 });

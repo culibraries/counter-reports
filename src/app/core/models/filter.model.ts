@@ -1,3 +1,5 @@
+import { Injectable } from "@angular/core";
+@Injectable()
 export class Filter {
   title?: string[];
   platform?: string[];

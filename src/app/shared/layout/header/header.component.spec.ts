@@ -60,8 +60,8 @@
 //   }));
 
 //   beforeEach(() => {
-//     router = TestBed.get(Router);
-//     location = TestBed.get(Location);
+//     router = TestBed.inject(Router);
+//     location = TestBed.inject(Location);
 //     router.resetConfig([
 //       {
 //         path: 'dashboard',
@@ -76,7 +76,7 @@
 //         loadChildren: 'ViewandrunModule'
 //       }
 //     ]);
-//     loader = TestBed.get(NgModuleFactoryLoader);
+//     loader = TestBed.inject(NgModuleFactoryLoader);
 //     loader.stubbedModules = {
 //       DashboardModule,
 //       NewModule,

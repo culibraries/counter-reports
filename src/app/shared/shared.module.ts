@@ -17,7 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { NgProgressModule } from '@ngx-progressbar/core';
+import { NgProgressModule } from 'ngx-progressbar';
 
 @NgModule({
   declarations: [

@@ -23,10 +23,10 @@ You will need to be the member of group on MyGroup. Contact to LIT CU Libraries 
 Docker Build:
 
 Staging
-`docker build --build-arg ENG=staging -t culibraries/counter-reports:[version]-staging . && docker push culibraries/counter-reports:[version]-staging`
+`docker build --build-arg ENV=staging -t culibraries/counter-reports:[version]-staging . && docker push culibraries/counter-reports:[version]-staging`
 
 Production
-`docker build --build-arg ENG=production -t culibraries/counter-reports:[version] . && docker push culibraries/counter-reports:[version]`
+`docker build --build-arg ENV=production -t culibraries/counter-reports:[version] . && docker push culibraries/counter-reports:[version]`
 ## License
 
 Libraries IT - University Of Colorado - Boulder

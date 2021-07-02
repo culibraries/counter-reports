@@ -1,6 +1,6 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AlertService } from './alert.service';
 
@@ -23,7 +23,7 @@ describe('AlertService', () => {
   });
 
   it('should be created', () => {
-    const service: AlertService = TestBed.get(AlertService);
+    const service: AlertService = TestBed.inject(AlertService);
     expect(service).toBeTruthy();
   });
 

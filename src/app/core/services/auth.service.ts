@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { env } from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-const userUrl = env.apiUrl + '/user/?format=json';
+const userUrl = environment.apiUrl + '/user/?format=json';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +34,6 @@ export class AuthService {
 
   public login() {
     return (window.location.href =
-      env.apiUrl + '/api-saml/sso/saml?next=/reports/counter');
+      environment.apiUrl + '/api-saml/sso/saml?next=/reports/counter');
   }
 }

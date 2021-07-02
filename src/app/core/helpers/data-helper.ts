@@ -1,5 +1,7 @@
 import { Publication } from '../models';
 import { MonthConvertPipe } from '../../shared/pipes/month-convert.pipe';
+import { Injectable } from "@angular/core";
+@Injectable()
 export class DataHelper {
   monthPipe = new MonthConvertPipe();
   constructor() {}

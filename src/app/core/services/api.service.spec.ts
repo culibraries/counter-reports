@@ -6,7 +6,7 @@ import {
 
 import { ApiService } from './api.service';
 import { HttpParams } from '@angular/common/http';
-import { env } from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 describe('ApiService', () => {
   let injector: TestBed;
@@ -34,10 +34,10 @@ describe('ApiService', () => {
     });
     const req = httpMock.expectOne({
       method: 'GET',
-      url: `${env.apiUrl}/any?q=dummy`
+      url: `${environment.apiUrl}/any?q=dummy`
     });
 
-    expect(req.request.urlWithParams).toBe(`${env.apiUrl}/any?q=dummy`);
+    expect(req.request.urlWithParams).toBe(`${environment.apiUrl}/any?q=dummy`);
     expect(req.request.method).toEqual('GET');
     expect(req.request.params).toEqual(dummyParams);
     req.flush(anyValue);
@@ -50,10 +50,10 @@ describe('ApiService', () => {
     });
     const req = httpMock.expectOne({
       method: 'GET',
-      url: `${env.apiUrl}/any`
+      url: `${environment.apiUrl}/any`
     });
 
-    expect(req.request.url).toBe(`${env.apiUrl}/any`);
+    expect(req.request.url).toBe(`${environment.apiUrl}/any`);
     expect(req.request.method).toEqual('GET');
     req.flush(anyValue);
   });

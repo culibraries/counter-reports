@@ -4,11 +4,11 @@
   "newProjectRoot": "projects",
   "projects": {
     "counter-reports": {
+      "projectType": "application",
+      "schematics": {},
       "root": "",
       "sourceRoot": "src",
-      "projectType": "application",
       "prefix": "app",
-      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -17,7 +17,7 @@
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/assets"
             ],
@@ -26,54 +26,70 @@
               "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/custom.css"
             ],
-            "scripts": [],
-            "es5BrowserSupport": true
+            "scripts": []
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
               "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                }
-              ]
+              "optimization": true,
+              "vendorChunk": false,
+              "extractLicenses": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "outputHashing": "all"
             },
             "staging": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.staging.ts"
                 }
-              ]
+              ],
+              "buildOptimizer": true,
+              "optimization": true,
+              "vendorChunk": false,
+              "extractLicenses": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "outputHashing": "all"
             }
-          }
+          },
+          "defaultConfiguration": "staging"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "counter-reports:build"
-          },
           "configurations": {
             "production": {
               "browserTarget": "counter-reports:build:production"
+            },
+            "staging": {
+              "browserTarget": "counter-reports:build:staging"
             }
-          }
+          },
+          "defaultConfiguration": "staging"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -86,8 +102,8 @@
           "options": {
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
             "styles": [
               "src/style.css"
             ],
@@ -98,14 +114,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         }
@@ -129,16 +142,19 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "e2e/src/**/*.ts",
+              "e2e/src/**/*.html"
             ]
           }
         }
       }
     }
   },
-  "defaultProject": "counter-reports"
+  "defaultProject": "counter-reports",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

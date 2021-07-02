@@ -7,7 +7,7 @@
 //   beforeEach(() => TestBed.configureTestingModule({}));
 
 //   it('should be created', () => {
-//     const service: StaticService = TestBed.get(StaticService);
+//     const service: StaticService = TestBed.inject(StaticService);
 //     expect(service).toBeTruthy();
 //   });
 // });
